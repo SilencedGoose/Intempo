@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<!-- put template tag load line here -->
+
+<html>
+
+  <head lang="en">
+    <meta charset="UTF-8" />
+    <title>
+      Intempo -
+      {% block title_block %}
+        Page Name
+      {% endblock %}
+    </title>
+  </head>
+
+  <body>
+    <div id="nav">
+      <nav>
+        <ul>
+          <li><a href="{% url 'intempo:home' %}">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+
+
+    <div>
+      {% block body_block %}
+      {% endblock %}
+    </div>
+  </body>
+
+</html>
