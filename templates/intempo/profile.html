@@ -6,8 +6,34 @@
 {% endblock %}
 
 {% block body_block %}
-  username
-  profile pic
-  favourite albums
-  reviews and comments
+  <div id="user_profile">
+    <h1>Your Profile</h1><br>
+    <h5>{{ username }}</h5><br>
+    Joined: {{ join_date }}<br>
+    <br>
+
+    PROFILE IMAGE<br>
+    <br>
+
+    <h3>Your Collection</h3><br>
+    ALBUMS<br>
+    <a href="{% url 'intempo:album_page' %}">Album Page</a>
+    <br><br>
+
+    <div class="profile_sidebar">
+      <h3>Similar Users</h3>
+    </div>
+  </div>
+
+  <div id="other_user_profile">
+    <h1>{{ username }}</h1><br>
+    ALBUMS<br>
+    <a href="{% url 'intempo:album_page' %}">Album Page</a><br>
+
+    <div class="profile_sidebar">
+      PROFILE PICTURE<br>
+      <h3>Similar Users</h3>
+    </div>
+  </div>
+
 {% endblock %}

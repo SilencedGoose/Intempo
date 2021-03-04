@@ -6,8 +6,21 @@
 {% endblock %}
 
 {% block body_block %}
-  login<br>
-  username
-  password
-  submit button
+  {% block form_area_block %}
+    <div>
+      <h1>Login</h1><br>
+      FORM...<br>
+      Username<br>
+      Password<br>
+      LOGIN BUTTON<br>
+
+      ------<br>
+      Don't have an account?<br>
+      SIGN UP BUTTON<br>
+      <a href="{% url 'intempo:signup' %}">Sign Up</a>
+    </div>
+  {% endblock %}
+
+  <br>
+  COOL IMAGE HERE
 {% endblock %}
