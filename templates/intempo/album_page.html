@@ -2,14 +2,24 @@
 {% load staticfiles %}
 
 {% block title_block %}
-  {{ album_name }}
+  {{ name }}
 {% endblock %}
 
 {% block body_block %}
-  album name
-  cover image
-  rating
-  reviews
-  add review
-  add comment to review
+  <h1>{{ name }}</h1><br>
+  RATING<br>
+  <br>
+  <ul>
+    <li>Tag 1</li>
+    <li>Tag 2</li>
+    <li>Tag 3</li>
+  </ul>
+  <br>
+  {{ description }}
+  <br>
+
+  <div id="reviews">
+    <h2>Reviews</h2><br>
+    REVIEWS
+  </div>
 {% endblock %}

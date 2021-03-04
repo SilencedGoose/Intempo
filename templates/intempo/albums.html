@@ -6,6 +6,16 @@
 {% endblock %}
 
 {% block body_block %}
-  filters
-  albums list
+  <h1>All Albums</h1><br>
+
+  <ul>
+    <li>Sort By</li>
+    <li>Add Filter +</li>
+    <li>Add Album +</li>
+    <li>Search</li>
+  </ul><br>
+
+  
+  ALBUMS<br>
+  <a href="{% url 'intempo:album_page' %}">Album Page</a>
 {% endblock %}
