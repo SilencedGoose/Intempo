@@ -1,8 +1,11 @@
+#!/usr/bin/env python
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','intempo_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'intempo_project.settings')
 
 
 import django
+django.setup()
+
 from datetime import datetime
 django.setup()
 from django.contrib.auth.models import User
@@ -26,37 +29,39 @@ def populate():
     {'username':'PeterTheCritic', 'password':'password', 'profile_picture': (os.path.join(os.path.dirname(__file__),"profile_pictures/1.jpg")), 'join_date':datetime.now()},
     {'username':'LauraLovesMusic', 'password':'password', 'profile_picture': (os.path.join(os.path.dirname(__file__),"profile_pictures/2.jpg")), 'join_date':datetime.now()} ]
     
+    Reviewslist = [
+    {'time_posted':datetime.now(),'review_text':'Amazing my favourite album', 'rating':10.0,'user_id':UserProfile.getByUsername('MusicLover101'),'album_id': Album.objects.get_or_create(name = 'Blue')},
+    {'time_posted':datetime.now(),'review_text':'Terrible album from a terrible band.AVOID!!!', 'rating':1.0,'user_id':UserProfile.getByUsername('PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
+    {'time_posted':datetime.now(),'review_text':'Enjoyed this album quite a bit.','rating':5.0,'user_id':2,'album_id':1,'user_id':UserProfile.getByUsername('LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
+    {'time_posted':datetime.now(),'review_text':'Without a doubt the best album ever... if your and idiot!!', 'rating':2.0,'user_id':UserProfile.getByUsername('PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Rumours')},
+    {'time_posted':datetime.now(),'review_text':'Nice album, will listen to again.', 'rating':7.5,'user_id':UserProfile.getByUsername('LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Nevermind')}
+    ]
+    
+    Commentslist = [
+    {'time_posted':datetime.now(),'comment_text':"Wrong!! I am very smart and you are wrong!!",'user_id':UserProfile.getByUsername('MusicLover101'),'review_id': Review.objects.get_or_create(rating = 10.0)},
+    {'time_posted':datetime.now(),'comment_text':"I love this album as well",'user_id':UserProfile.getByUsername('LauraLovesMusic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
+    {'time_posted':datetime.now(),'comment_text':"Sounds good. Will have a listen.",'user_id':UserProfile.getByUsername('PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
+    {'time_posted':datetime.now(),'comment_text':"You hit it out of the park with this one.",'user_id':UserProfile.getByUsername('MusicLover101'),'review_id': Review.objects.get_or_create(rating = 1.0)},
+    {'time_posted':datetime.now(),'comment_text':"Yawn.XD",'user_id':UserProfile.getByUsername('PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 10.0)},
+    ]
+
+    print("- Adding albums")
     for myAlbum in Albumslist:
         add_album(myAlbum)
-    print(Album.objects.get(name='Blue').artist)
-        
+    
+    print("- Adding users")
     for myUser in Userslist:
         add_user(myUser)
-    print(UserProfile.objects.get(username = 'PeterTheCritic').user_id)
-    Reviewslist = [
-    {'time_posted':datetime.now(),'review_text':'Amazing my favourite album', 'rating':10.0,'user_id':UserProfile.objects.get(username = 'MusicLover101'),'album_id': Album.objects.get_or_create(name = 'Blue')},
-    {'time_posted':datetime.now(),'review_text':'Terrible album from a terrible band.AVOID!!!', 'rating':1.0,'user_id':UserProfile.objects.get(username = 'PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
-    {'time_posted':datetime.now(),'review_text':'Enjoyed this album quite a bit.','rating':5.0,'user_id':2,'album_id':1,'user_id':UserProfile.objects.get(username = 'LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
-    {'time_posted':datetime.now(),'review_text':'Without a doubt the best album ever... if your and idiot!!', 'rating':2.0,'user_id':UserProfile.objects.get(username= 'PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Rumours')},
-    {'time_posted':datetime.now(),'review_text':'Nice album, will listen to again.', 'rating':7.5,'user_id':UserProfile.objects.get(username = 'LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Nevermind')}
-    ]
+    
+    print("- Adding reviews")
     for myReview in Reviewslist:
         add_review(myReview)
-    print(Review.objects.get(rating = 10.0).review_text)
-    Commentslist = [
-    {'time_posted':datetime.now(),'comment_text':"Wrong!! I am very smart and you are wrong!!",'user_id':UserProfile.objects.get(username = 'MusicLover101'),'review_id': Review.objects.get_or_create(rating = 10.0)},
-    {'time_posted':datetime.now(),'comment_text':"I love this album as well",'user_id':UserProfile.objects.get(username = 'LauraLovesMusic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
-    {'time_posted':datetime.now(),'comment_text':"Sounds good. Will have a listen.",'user_id':UserProfile.objects.get(username = 'PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
-    {'time_posted':datetime.now(),'comment_text':"You hit it out of the park with this one.",'user_id':UserProfile.objects.get(username = 'MusicLover101'),'review_id': Review.objects.get_or_create(rating = 1.0)},
-    {'time_posted':datetime.now(),'comment_text':"Yawn.XD",'user_id':UserProfile.objects.get(username = 'PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 10.0)},
-    ]
 
-
-        
-
+    print("- Adding comments!")    
     for myComment in Commentslist:
         add_comment(myComment)
-    print(Comment.objects.get(comment_text = "Yawn.XD").user.username)
+    
+    print("Finished without any errors!")
 
 def add_album(myAlbum):
     A = Album.objects.get_or_create(name=myAlbum['name'],artist=myAlbum['artist'],creation_date = myAlbum['creation_date'])[0]
@@ -68,7 +73,7 @@ def add_album(myAlbum):
     
 def add_user(myUser):
     M = User.objects.get_or_create(username = myUser['username'])[0]
-    U = UserProfile.objects.get_or_create(join_date = myUser['join_date'],username = myUser['username'],user=M)[0]
+    U = UserProfile.objects.get_or_create(join_date = myUser['join_date'], user=M)[0]
     U.profile_picture = myUser['profile_picture']
     U.password = myUser['password']
     U.save()
