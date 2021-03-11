@@ -28,6 +28,7 @@ def get_sentinel_user():
         
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=20,default='deleted_user')
     profile_picture = models.ImageField(upload_to="profile_images", blank=True)
     join_date = models.DateField()
 
