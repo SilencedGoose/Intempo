@@ -8,10 +8,20 @@
 {% block form_area_block %}
   <div>
     <h1>Sign Up</h1><br>
-    FORM...<br>
-    Username<br>
-    Password<br>
-    Confirm Password<br>
-    SIGN UP BUTTON<br>
-  </div>
+
+		{% if registered %}
+			Thanks for registering<br>
+			<a href="{% url 'intempo:home' %}">Return to homepage</a>
+
+		{% else %}
+	    <form id="user_form" method="post" action="{% url 'intempo:signup' %}" enctype="multipart/form-data">
+	      {% csrf_token %}
+
+				{{ user_form.as_p }}
+				{{ profile_form.as_p }}
+
+	      <input type="submit" name="submit" value="Log In">
+	    </form>
+	  </div>
+	{% endif %}
 {% endblock %}

@@ -9,18 +9,26 @@
   {% block form_area_block %}
     <div>
       <h1>Login</h1><br>
-      FORM...<br>
-      Username<br>
-      Password<br>
-      LOGIN BUTTON<br>
+    	<form id="login_form" method="post" action="{% url 'intempo:login' %}">
+    		{% csrf_token %}
+
+    		Username:<br>
+        <input type="text" name="username" size="30">
+    		<br>
+    		Password:<br>
+        <input type="password" name="password" size="30">
+    		<br>
+        <br>
+
+    		<input type="submit" value="Log In">
+    	</form>
 
       ------<br>
       Don't have an account?<br>
-      SIGN UP BUTTON<br>
       <a href="{% url 'intempo:signup' %}">Sign Up</a>
     </div>
   {% endblock %}
 
   <br>
-  COOL IMAGE HERE
+  <img src="{% static 'images/login-signup.png' %}" alt="Collage of albums." />
 {% endblock %}

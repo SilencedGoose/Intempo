@@ -12,7 +12,7 @@ class Album(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     @property
     # Calculates the average reviews of the album to one decimal place
     def avg_review(self):
@@ -25,7 +25,7 @@ class Album(models.Model):
 # finds/creates the "deleted_user" (also implies that this isn't a valid username?)
 def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted_user')[0]
-        
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to="profile_images", blank=True)
@@ -33,7 +33,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
-    
+
     # TODO: Complete
     # Returns profiles similar to the user
     def similar_profiles(self):
@@ -46,7 +46,7 @@ class UserProfile(models.Model):
                 # for all the albums the user (self) has rated,
                     # add to the squared distance between the the rating of the user and this user and save it in a map
                     pass
-        
+
         # take the top 5 elements from the dictionary with the highest similarity value
         similar_profiles = [key for key, value in sorted(similarityValue.items(), key=lambda entry:entry[1], reverse=True)][:5]
         return similar_profiles
