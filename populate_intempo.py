@@ -13,6 +13,11 @@ from intempo.models import Album, UserProfile, Review, Comment
 
 
 def populate():
+    print("- Clearing pre-existing data")
+    Album.objects.all().delete()
+    UserProfile.objects.all().delete()
+    Review.objects.all().delete()
+    Comment.objects.all().delete()
 
     Albumslist = [
     {'name': "What's Going on", 'artist':'Marvin Gaye', 'creation_date':datetime.now(), 'album_cover': os.path.join(os.path.dirname(__file__),"Cover_Art/0.jpg"),'description': "Marvin Gaye’s masterpiece began as a reaction to police brutality. In May 1969, Renaldo “Obie” Benson, the Four Tops’ bass singer, watched TV coverage of hundreds of club-wielding cops breaking up the People’s Park, a protest hub in Berkeley. Aghast at the violence, Benson began to write a song with Motown lyricist Al Cleveland, trying to capture the confusion and pain of the times. He knew he had something big in his nascent version of “What’s Going On,” but the rest of the Four Tops weren’t interested, and Benson’s efforts to get Joan Baez to record it didn’t work out, either.",'tags':'Motown, soul, R&B'},
@@ -29,22 +34,6 @@ def populate():
     {'username':'PeterTheCritic', 'password':'password', 'profile_picture': (os.path.join(os.path.dirname(__file__),"profile_pictures/1.jpg")), 'join_date':datetime.now()},
     {'username':'LauraLovesMusic', 'password':'password', 'profile_picture': (os.path.join(os.path.dirname(__file__),"profile_pictures/2.jpg")), 'join_date':datetime.now()} ]
     
-    Reviewslist = [
-    {'time_posted':datetime.now(),'review_text':'Amazing my favourite album', 'rating':10.0,'user_id':UserProfile.getByUsername('MusicLover101'),'album_id': Album.objects.get_or_create(name = 'Blue')},
-    {'time_posted':datetime.now(),'review_text':'Terrible album from a terrible band.AVOID!!!', 'rating':1.0,'user_id':UserProfile.getByUsername('PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
-    {'time_posted':datetime.now(),'review_text':'Enjoyed this album quite a bit.','rating':5.0,'user_id':2,'album_id':1,'user_id':UserProfile.getByUsername('LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
-    {'time_posted':datetime.now(),'review_text':'Without a doubt the best album ever... if your and idiot!!', 'rating':2.0,'user_id':UserProfile.getByUsername('PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Rumours')},
-    {'time_posted':datetime.now(),'review_text':'Nice album, will listen to again.', 'rating':7.5,'user_id':UserProfile.getByUsername('LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Nevermind')}
-    ]
-    
-    Commentslist = [
-    {'time_posted':datetime.now(),'comment_text':"Wrong!! I am very smart and you are wrong!!",'user_id':UserProfile.getByUsername('MusicLover101'),'review_id': Review.objects.get_or_create(rating = 10.0)},
-    {'time_posted':datetime.now(),'comment_text':"I love this album as well",'user_id':UserProfile.getByUsername('LauraLovesMusic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
-    {'time_posted':datetime.now(),'comment_text':"Sounds good. Will have a listen.",'user_id':UserProfile.getByUsername('PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
-    {'time_posted':datetime.now(),'comment_text':"You hit it out of the park with this one.",'user_id':UserProfile.getByUsername('MusicLover101'),'review_id': Review.objects.get_or_create(rating = 1.0)},
-    {'time_posted':datetime.now(),'comment_text':"Yawn.XD",'user_id':UserProfile.getByUsername('PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 10.0)},
-    ]
-
     print("- Adding albums")
     for myAlbum in Albumslist:
         add_album(myAlbum)
@@ -53,9 +42,25 @@ def populate():
     for myUser in Userslist:
         add_user(myUser)
     
+    Reviewslist = [
+    {'time_posted':datetime.now(),'review_text':'Amazing my favourite album', 'rating':10.0,'user_id':UserProfile.get_by_username('MusicLover101'),'album_id': Album.objects.get_or_create(name = 'Blue')},
+    {'time_posted':datetime.now(),'review_text':'Terrible album from a terrible band.AVOID!!!', 'rating':1.0,'user_id':UserProfile.get_by_username('PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
+    {'time_posted':datetime.now(),'review_text':'Enjoyed this album quite a bit.','rating':5.0,'user_id':2,'album_id':1,'user_id':UserProfile.get_by_username('LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Pet Sounds')},
+    {'time_posted':datetime.now(),'review_text':'Without a doubt the best album ever... if your and idiot!!', 'rating':2.0,'user_id':UserProfile.get_by_username('PeterTheCritic'),'album_id': Album.objects.get_or_create(name = 'Rumours')},
+    {'time_posted':datetime.now(),'review_text':'Nice album, will listen to again.', 'rating':7.5,'user_id':UserProfile.get_by_username('LauraLovesMusic'),'album_id': Album.objects.get_or_create(name = 'Nevermind')}
+    ]
+
     print("- Adding reviews")
     for myReview in Reviewslist:
         add_review(myReview)
+
+    Commentslist = [
+    {'time_posted':datetime.now(),'comment_text':"Wrong!! I am very smart and you are wrong!!",'user_id':UserProfile.get_by_username('MusicLover101'),'review_id': Review.objects.get_or_create(rating = 10.0)},
+    {'time_posted':datetime.now(),'comment_text':"I love this album as well",'user_id':UserProfile.get_by_username('LauraLovesMusic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
+    {'time_posted':datetime.now(),'comment_text':"Sounds good. Will have a listen.",'user_id':UserProfile.get_by_username('PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 7.5)},
+    {'time_posted':datetime.now(),'comment_text':"You hit it out of the park with this one.",'user_id':UserProfile.get_by_username('MusicLover101'),'review_id': Review.objects.get_or_create(rating = 1.0)},
+    {'time_posted':datetime.now(),'comment_text':"Yawn.XD",'user_id':UserProfile.get_by_username('PeterTheCritic'),'review_id': Review.objects.get_or_create(rating = 10.0)},
+    ]
 
     print("- Adding comments!")    
     for myComment in Commentslist:
