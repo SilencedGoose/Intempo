@@ -16,6 +16,18 @@ class Album(models.Model):
     def __str__(self):
         return self.name
 
+    def add_tags(self, l):
+        """
+        Adds the list of tags into the album
+        """
+        self.tags = ", ".join(l)
+
+    def tags_as_list(self):
+        """
+        Returns the tags as a list
+        """
+        return self.tags.split(", ")
+
     @property
     def avg_rating(self):
         """

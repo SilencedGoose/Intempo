@@ -1,0 +1,149 @@
+{
+    "albums":[
+        {
+            "name":"What's Going on", 
+            "artist":"Marvin Gaye", 
+            "creation_date":[20, 1, 1971], 
+            "album_cover":"Cover_Art/0.jpg",
+            "description":"Marvin Gaye’s masterpiece began as a reaction to police brutality. In May 1969, Renaldo “Obie” Benson, the Four Tops’ bass singer, watched TV coverage of hundreds of club-wielding cops breaking up the People’s Park, a protest hub in Berkeley. Aghast at the violence, Benson began to write a song with Motown lyricist Al Cleveland, trying to capture the confusion and pain of the times. He knew he had something big in his nascent version of “What’s Going On,” but the rest of the Four Tops weren’t interested, and Benson’s efforts to get Joan Baez to record it didn’t work out, either.",
+            "tags":["Motown", "soul", "R&B"]
+        },
+        {
+            "name":"Pet Sounds", 
+            "artist":"The Beach Boys", 
+            "creation_date":[16, 5, 1966], 
+            "album_cover":"Cover_Art/1.jpg",
+            "description":"“Who’s gonna hear this shit?” Beach Boys singer Mike Love asked the band’s resident genius, Brian Wilson, in 1966, as Wilson played him the new songs he was working on. “The ears of a dog?” Confronted with his bandmate’s contempt, Wilson made lemonade of lemons. “Ironically,” he observed, “Mike’s barb inspired the album’s title.”",
+            "tags" :["Pop", "Boy Band"]
+        },
+        {
+            "name":"Blue", 
+            "artist":"Joni Mitchell", 
+            "creation_date":[22, 6, 1971], 
+            "album_cover":"Cover_Art/2.jpg",
+            "description" :"In 1971, Joni Mitchell represented the West Coast feminine ideal — celebrated by Robert Plant as “a girl out there with love in her eyes and flowers in her hair” on Led Zeppelin’s “Goin’ to California.” It was a status that Mitchell hadn’t asked for and did not want:“I went, ‘Oh, my God, a lot of people are listening to me,’” she recalled in 2013. “’They better find out who they’re worshiping. Let’s see if they can take it. Let’s get real.’ So I wrote Blue.”",
+            "tags":["folk music", "pop", "contemporary"]
+        },
+        {
+            "name":"Songs in the Key of Life", 
+            "artist":"Stevie Wonder", 
+            "creation_date":[28, 9, 1976], 
+            "album_cover":"Cover_Art/3.jpg",
+            "description" :"Months before the recording sessions for Songs in the Key of Life ended, the musicians in Stevie Wonder’s band had T-shirts made up that proclaimed, “We’re almost finished.” It was the stock answer to casual fans and Motown executives and everybody who’d fallen in love with Wonder’s early-Seventies gems – 1972’s Talking Book, 1973’s Innervisions, and 1974’s Fulfillingness’ First Finale – and who had been waiting two years for the next chapter. “I believed there was a lot that needed to be said,” Wonder said. More, in fact, than he could fit onto a double album – also included was a bonus EP, a seven-inch single with four more songs from the sessions.",
+            "tags":["Motown", "soul"]
+        },
+        {
+            "name":"Abbey Road", 
+            "artist":"The Beatles", 
+            "creation_date":[26, 9, 1969], 
+            "album_cover":"Cover_Art/4.jpg",
+            "description":"Abbey Road is the eleventh studio album by the English rock band the Beatles, released on 26 September 1969 by Apple Records.",
+            "tags":["boy band", "rock", "pop"]
+        },
+        {
+            "name":"Nevermind", 
+            "artist":"Nirvana", 
+            "creation_date":[24, 9, 1991], 
+            "album_cover":"Cover_Art/5.jpg",
+            "description":"Nevermind is the second studio album by American rock band Nirvana, released on September 24, 1991 by DGC Records. Produced by Butch Vig, it was Nirvana's first release on the DGC label, as well as the first to feature drummer Dave Grohl.",
+            "tags" :["rock", "90s", "masterpiece"]
+        },
+        {
+            "name":"Rumours", 
+            "artist":"Fleetwood Mac", 
+            "creation_date":[4, 2, 1977], 
+            "album_cover":"Cover_Art/6.jpg",
+            "description":"Rumours is the eleventh studio album by British-American rock band Fleetwood Mac, released on 4 February 1977 by Warner Bros. Records. Largely recorded in California in 1976, it was produced by the band with Ken Caillat and Richard Dashut.",
+            "tags":["rock", "70s", "masterpiece"]
+        }
+    ],
+    "users":[
+        {
+            "username":"MusicLover101", 
+            "password":"password", 
+            "profile_picture":"profile_pictures/0.jpg",
+            "join_date":[24, 1, 2021]
+        },
+        {
+            "username":"PeterTheCritic", 
+            "password":"password", 
+            "profile_picture":"profile_pictures/1.jpg", 
+            "join_date":[8, 2, 2021]
+        },
+        {
+            "username":"LauraLovesMusic", 
+            "password":"password", 
+            "profile_picture":"profile_pictures/2.jpg", 
+            "join_date":[15, 3, 2021]
+        } 
+    ],
+    "reviews":[
+        {
+            "time_posted":[1, 2, 2021],
+            "review_text":"Amazing my favourite album", 
+            "rating":10.0,
+            "username":"MusicLover101",
+            "album":"Blue"
+        },
+        {
+            "time_posted":[15, 2, 2021],
+            "review_text":"Terrible album from a terrible band.AVOID!!!", 
+            "rating":1.0,
+            "username":"PeterTheCritic",
+            "album":"Pet Sounds"
+        },
+        {
+            "time_posted":[16, 3, 2021],
+            "review_text":"Enjoyed this album quite a bit.",
+            "rating":5.0,
+            "username":"LauraLovesMusic",
+            "album":"Pet Sounds"
+        },
+        {
+            "time_posted":[15, 2, 2021],
+            "review_text":"Without a doubt the best album ever... if your and idiot!!", 
+            "rating":2.0,
+            "username":"PeterTheCritic",
+            "album":"Rumours"
+        },
+        {
+            "time_posted":[16, 3, 2021],
+            "review_text":"Nice album, will listen to again.", 
+            "rating":7.5,
+            "username":"LauraLovesMusic",
+            "album":"Nevermind"
+        }
+    ],
+    "comments":[
+        {
+            "time_posted":[16, 2, 2021],
+            "comment_text":"Wrong!! I am very smart and you are wrong!!",
+            "username":"MusicLover101",
+            "review":["PeterTheCritic", "Pet Sounds"]
+        },
+        {
+            "time_posted":[16, 2, 2021],
+            "comment_text":"I love this album as well",
+            "username":"LauraLovesMusic",
+            "review":["PeterTheCritic", "Rumours"]
+        },
+        {
+            "time_posted":[17, 3, 2021],
+            "comment_text":"Sounds good. Will have a listen.",
+            "username":"PeterTheCritic",
+            "review":["LauraLovesMusic", "Nevermind"]
+        },
+        {
+            "time_posted":[20, 2, 2021],
+            "comment_text":"You hit it out of the park with this one.",
+            "username":"MusicLover101",
+            "review":["PeterTheCritic", "Pet Sounds"]
+        },
+        {
+            "time_posted":[3, 2, 2021],
+            "comment_text":"Yawn.XD",
+            "username":"PeterTheCritic",
+            "review":["MusicLover101", "Blue"]
+        }
+    ]
+}
