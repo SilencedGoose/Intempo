@@ -40,11 +40,11 @@ class Album(models.Model):
         return round(sum(ratings)/len(ratings), 1)
     
     @property
-    def time_since_creation(self):
+    def time_of_creation(self):
         """
-        Returns a well-formatted string representing the time passed since creation
+        Returns the time of creation as a well-formatted string
         """
-        return formatted_difference(self.creation_date)
+        return self.creation_date.strftime('%d %B %Y')
 
 # finds/creates the "deleted_user" (also implies that this isn't a valid username?)
 def get_sentinel_user():
