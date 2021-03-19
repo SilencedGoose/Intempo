@@ -8,7 +8,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 class AlbumAdmin(admin.ModelAdmin):
     list_display = ('id','name', 'artist','creation_date','album_cover','description','tags')
-    
+
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('id','album','time_posted', 'review_text','rating','user')
 
@@ -20,4 +20,3 @@ admin.site.register(UserProfile,UserProfileAdmin)
 admin.site.register(Album,AlbumAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Comment,CommentAdmin)
-
