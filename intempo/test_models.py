@@ -5,18 +5,33 @@ from django.contrib.auth.models import User
 
 from .models import Album, Review, UserProfile, formatted_difference
 
+# Album creation times
+album_creation_time = [
+    datetime(2010, 1, 2),
+    datetime(2011, 2, 4),
+    datetime(2012, 3, 6),
+    datetime(2013, 4, 8),
+    datetime(2014, 5, 10),
+    datetime(2015, 6, 12),
+    datetime(2016, 7, 14),
+    datetime(2017, 8, 16),
+    datetime(2018, 9, 18),
+    datetime(2019, 10, 20),
+]
+
 def setup_albums():
     """
     Sets up the albums at the start
     """
     for i in range(10):
-        Album.objects.create(
+        tags = ["tag" + str(j) for j in range(i)]
+        album = Album.objects.create(
             name="album" + str(i),
             artist="artist" + str(i),
-            creation_date=datetime.now(),
+            creation_date=album_creation_time[i],
             description="Album " + str(i),
-            tags="tag0, tag1, tag2"
         )
+        album.set_tags(tags)
 
 def setup_users():
     """
@@ -45,12 +60,13 @@ ratings = [
 ]
 
 def setup_reviews():
+    time_now = datetime.now()
     for i in range(10):
         album = Album.objects.get(name="album" + str(i))
         for j in range(i):
             user = UserProfile.get_by_username("user" + str(j))
             Review.objects.create(
-                time_posted=datetime.now(), 
+                time_posted=time_now - timedelta(days=2*i), 
                 review_text="This is the review text for album " + str(i) + " from user " + str(j), 
                 rating=ratings[i][j], 
                 album=album,
@@ -62,8 +78,18 @@ class AlbumTestCase(TestCase):
         setup_albums()
         setup_users()
         setup_reviews()
+    
+    def test_time_of_creation(self):
+        """
+        Tests the property time_of_creation
+        """
+        first_10_months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"]
+        for i in range(10):
+            album = Album.objects.get(name="album" + str(i))
+            date = str(2*i+2)
+            self.assertEqual(album.time_of_creation, ("0" + date if len(date) == 1 else date) + " " + first_10_months[i] + " 201" + str(i))
 
-    def test_avg_rating_after_initialised(self):
+    def test_avg_rating_with_ratings(self):
         """
         Tests the average rating for an album that already has ratings
         """
@@ -72,13 +98,44 @@ class AlbumTestCase(TestCase):
             album = Album.objects.get(name="album" + str(i))
             self.assertEqual(album.avg_rating, round(sum(ratings[i])/i, 1))
     
-    def test_avg_rating_before_initialised(self):
+    def test_avg_rating_without_ratings(self):
         """
         Tests the average rating for an album that doesn't have ratings
         """
         # album0 has no reviews, so its avg_rating is 0.0
         album0 = Album.objects.get(name="album0")
         self.assertEqual(album0.avg_rating, 0.0)
+    
+    def test_trending_albums(self):
+        """
+        Tests the static method trending albums 
+        """
+        pass
+
+    def test_top_rated_albums(self):
+        """
+        Tests the static method top_rated albums
+        """
+        pass
+
+    def test_tags_attribute(self):
+        """
+        Tests the tag attribute has correct values
+        """
+        for i in range(10):
+            album = Album.objects.get(name="album"+str(i))
+            tags = ["tag"+str(j) for j in range(i)]
+            self.assertEqual(album.tags, "" if len(tags) == 0 else ", ".join(tags))
+
+    def test_filter_by_tags(self):
+        """
+        Tests the static method filter_by_tags
+        """
+        for i in range(10):
+            albums_filtered = Album.filter_by_tag("tag" + str(i))
+            albums_expected = [Album.objects.get(name="album"+str(j)) for j in range(i+1, 10)]
+            self.assertEqual(albums_filtered, albums_expected)
+
     
 class UserProfileTestCase(TestCase):
     def setUp(self):
@@ -95,7 +152,6 @@ class UserProfileTestCase(TestCase):
             userprofile = UserProfile.get_by_username("user" + str(i))
             self.assertEqual(userprofile.user, user)
 
-
     def test_username(self):
         """
         Tests the property username
@@ -103,7 +159,7 @@ class UserProfileTestCase(TestCase):
         for i in range(10):
             userprofile = UserProfile.get_by_username("user" + str(i))
             self.assertEqual(userprofile.username, "user" + str(i))
-
+    
     def test_no_similar_profiles(self):
         """
         Tests whether the users who have reviewed less than (or equal to) 3 reviews have no similar profile
@@ -144,6 +200,43 @@ class UserProfileTestCase(TestCase):
         # on the other hand, 2 users who have given very different ratings to the same albums do not get recommended, i.e. user2 and user3
         self.assertTrue(user2 not in similar_profiles_user3)
         self.assertTrue(user3 not in similar_profiles_user2)
+    
+    def test_user_collection(self):
+        """
+        Tests the collection attribute of a user
+        """
+        pass
+
+    def test_user_has_rated(self):
+        """
+        Tests the function user.has_rated(album)
+        """
+        for i in range(10):
+            user = UserProfile.get_by_username("user"+str(i))
+            for j in range(10):
+                album = Album.objects.get(name="album"+str(j))
+                if i < j:
+                    self.assertTrue(user.has_rated(album))
+                else:
+                    self.assertFalse(user.has_rated(album))
+
+class ReviewTestCase(TestCase):
+    def setUp(self):
+        setup_albums()
+        setup_users()
+        setup_reviews()
+    
+    def test_for_album(self):
+        """
+        Tests the static method Review.for_album(album) returns albums the user has rated, and in chronological order
+        """
+        for i, album in enumerate(Album.objects.all()):
+            # changes from queryset to normal list
+            reviews = [review for review in Review.for_album(album)]
+            self.assertEqual(len(reviews), i)
+            sorted_reviews = sorted(reviews, key=lambda review:review.time_posted, reverse=True)
+            # the reviews should have already been sorted
+            self.assertEqual(reviews, sorted_reviews)
 
 
 class DateTestCase(TestCase):

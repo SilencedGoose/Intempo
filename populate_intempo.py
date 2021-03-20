@@ -57,8 +57,8 @@ def add_album(myAlbum):
         album_cover = myAlbum['album_cover'],
         description = myAlbum['description']
     )
-    A.add_tags(myAlbum['tags'])
     A.save()
+    A.set_tags(myAlbum['tags'])
     return A
     
 def add_user(myUser):
