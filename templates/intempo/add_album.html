@@ -7,29 +7,16 @@
 
 {% block body_block %}
   <h1>Add New Album</h1>
-  <form id="login_form" method="post" action="{% url 'intempo:add_album' %}">
+  <form id="add_album_form" method="post" enctype="multipart/form-data" action="{% url 'intempo:add_album' %}">
     {% csrf_token %}
 
     Album Name:<br>
-    <input type="text" name="name" size="30">
-    <br>
-    Artist:<br>
-    <input type="text" name="artist" size="30">
-    <br>
-    Date Released:<br>
-    <input type="date" name="creation_date">
-    <br>
-    Description:<br>
-    <textarea name="description" rows="4" cols="40"></textarea>
-    <br>
-    Tags:<br>
-    <input type="text" name="tags" size="30">
-    <br>
-    Album Cover:<br>
-    <input type="text" name="album_cover" size="30">
-    <br>
-    <br>
+    {% for field in form.visible_fields %}
+        {{ field.errors }}
+        {{ field.help_text }}
+        {{ field }}
+    {% endfor %}
 
-    <input type="submit" value="Add Album">
+    <input type="submit" name = "submit" value="Add Album">
   </form>
 {% endblock %}

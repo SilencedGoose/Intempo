@@ -1,0 +1,21 @@
+{% extends 'intempo/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+  Add Album
+{% endblock %}
+
+{% block body_block %}
+  <h1>Add a Review</h1>
+    <div>
+        <form id="add_review_form" method="post" action="{% url 'intempo:add_review' %}">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+            <input type="submit" name="submit" value="Create Review" />
+        </form>
+    </div>
+{% endblock %}

@@ -11,5 +11,6 @@ urlpatterns = [
     path("user/user_name/", views.profile, name="profile"),
     path("sign-up/", views.signup, name="signup"),
     path("login/", views.login, name="login"),
-    path("404/", views.not_found, name="not_found")
+    path("404/", views.not_found, name="not_found"),
+    path("albums/album_name/add_review", views.add_review, name="add_review"),
 ]
