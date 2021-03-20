@@ -25,7 +25,8 @@ class AddAlbumForm(forms.ModelForm):
     
     name = forms.CharField(help_text = "name", max_length = 30)
     artist = forms.CharField(help_text = "artist", max_length = 30)
-    creation_date = (forms.DateField(help_text="creation date")).clean
+    creation_date = forms.DateField(help_text="creation date")
+    creation_date.clean
     album_cover = forms.ImageField(help_text="add album cover", max_length = 60)
     description = forms.CharField(help_text="add description", widget = forms.Textarea)
     tags = forms.Field(help_text="add tags")
