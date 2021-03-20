@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
-from intempo.forms import UserForm, UserProfileForm
+from intempo.models import Album, UserProfile
+from django.contrib.auth.models import User
+from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm
 
 
 
@@ -35,11 +36,43 @@ def album_page(request):
 
 
 def add_album(request):
+    form = AddAlbumForm()
+    if request.method == 'POST':
+        form = AddAlbumForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            Album = form.save(commit=False)
+            Album.album_cover = request.FILES['album_cover']
+            Album.save()
+            return redirect(reverse("intempo:albums"))
+        else:
+            print(form.errors)
+            
     context_dict = {}
-    context_dict[""] = ""
+    context_dict["form"] = form
 
     response = render(request, 'intempo/add_album.html', context=context_dict)
     return response
+
+def add_review(request):
+
+    #album must be defined
+    form = AddReviewForm()
+    if request.method == 'POST':
+
+        form = AddReviewForm(request.POST)
+
+        if form.is_valid():
+            Review = form.save(commit=False)
+
+            Review.album = album
+            Review.user = UserProfile.objects.all().get(user=request.user)
+            Review.save()
+            return redirect(reverse("intempo:home"))
+        else:
+            print(form.errors)
+    return render(request, "intempo/add_review.html", {"form": form})
 
 
 def profile(request):
