@@ -34,6 +34,14 @@ def album_page(request):
     return response
 
 
+def add_album(request):
+    context_dict = {}
+    context_dict[""] = ""
+
+    response = render(request, 'intempo/add_album.html', context=context_dict)
+    return response
+
+
 def profile(request):
     context_dict = {}
     context_dict["username"] = "placeholder username"
@@ -61,9 +69,17 @@ def login(request):
     return response
 
 
+def not_found(request):
+    context_dict = {}
+    context_dict[""] = ""
+
+    response = render(request, 'intempo/not_found.html', context=context_dict)
+    return response
+
+
 
 ### USER AUTHENTICATION
-def register(request):
+def signup(request):
     registered = False
 
     if request.method == "POST":

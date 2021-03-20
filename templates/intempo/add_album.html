@@ -1,0 +1,35 @@
+{% extends 'intempo/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+  Add Album
+{% endblock %}
+
+{% block body_block %}
+  <h1>Add New Album</h1>
+  <form id="login_form" method="post" action="{% url 'intempo:add_album' %}">
+    {% csrf_token %}
+
+    Album Name:<br>
+    <input type="text" name="name" size="30">
+    <br>
+    Artist:<br>
+    <input type="text" name="artist" size="30">
+    <br>
+    Date Released:<br>
+    <input type="date" name="creation_date">
+    <br>
+    Description:<br>
+    <textarea name="description" rows="4" cols="40"></textarea>
+    <br>
+    Tags:<br>
+    <input type="text" name="tags" size="30">
+    <br>
+    Album Cover:<br>
+    <input type="text" name="album_cover" size="30">
+    <br>
+    <br>
+
+    <input type="submit" value="Add Album">
+  </form>
+{% endblock %}
