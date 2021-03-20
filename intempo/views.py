@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from intempo.models import Album, UserProfile
 from django.contrib.auth.models import User
-from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm
+from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, UpdateUserForm, UpdateUserProfileForm
 
 
 
@@ -76,11 +76,27 @@ def add_review(request):
 
 
 def profile(request):
+
+    if request.method == 'POST':
+
+        u_form = UpdateUserForm(request.POST, instance = request.user)
+        p_form = UpdateUserProfileForm(request.POST, request.FILES, instance = UserProfile.objects.all().get(user=request.user))
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect(reverse("intempo:profile"))
+    else:
+        u_form = UpdateUserForm(instance = request.user)
+        p_form = UpdateUserProfileForm(instance=UserProfile.objects.all().get(user=request.user))
+
     context_dict = {}
     context_dict["username"] = "placeholder username"
     context_dict["user_id"] = "0"
     context_dict["join_date"] = "11/03/2021"
     context_dict["profile_picture"] = "0.png"
+    context_dict["u_form"] = u_form
+    context_dict["p_form"] = p_form
 
     response = render(request, 'intempo/profile.html', context=context_dict)
     return response

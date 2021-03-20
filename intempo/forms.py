@@ -51,3 +51,15 @@ class AddReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('review_text', 'rating',)
+
+class UpdateUserForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+
+class UpdateUserProfileForm(forms.ModelForm):
+    
+    class Meta:
+        model = UserProfile
+        fields = ('profile_picture',)
