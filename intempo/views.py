@@ -73,7 +73,7 @@ def not_found(request):
     context_dict = {}
     context_dict[""] = ""
 
-    response = render(request, 'intempo/not_found.html', context=context_dict)
+    response = render(request, '404.html', context=context_dict)
     return response
 
 
