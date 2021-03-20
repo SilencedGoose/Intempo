@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from intempo.models import UserProfile, Album, Review
+from intempo.models import UserProfile, Album, Review, Comment
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -46,11 +46,15 @@ class AddReviewForm(forms.ModelForm):
     review_text = forms.CharField(help_text="write review here", widget = forms.Textarea)
     rating = forms.FloatField(help_text="add a rating", initial=0.0, validators=[validate_rating])
 
-
-
     class Meta:
         model = Review
         fields = ('review_text', 'rating',)
+
+class AddCommentForm(forms.ModelForm):
+    comment_text = forms.CharField(label = "add comment");
+    class Meta:
+        model = Comment
+        fields = ('comment_text',)
 
 class UpdateUserForm(forms.ModelForm):
 

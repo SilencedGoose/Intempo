@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from intempo.models import Album, UserProfile
+from intempo.models import Album, UserProfile, Review
 from django.contrib.auth.models import User
-from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, UpdateUserForm, UpdateUserProfileForm
+from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 
 
 
@@ -26,10 +26,25 @@ def albums(request):
 
 
 def album_page(request):
+    #cannot add comment yet
+    #review object must be passed in 
+
+    form = AddCommentForm()
+    if request.method == 'POST':
+        current_user_profile = UserProfile.objects.all().get(user = request.user)
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = current_user_profile
+            comment.review = review
+            comment.save()
+            return redirect(reverse("intempo:album_page"))
+            
     context_dict = {}
     context_dict["name"] = "placeholder album name"
     context_dict["description"] = "placeholder description"
     context_dict["album_cover"] = "0.png"
+    context_dict["form"] = form
 
     response = render(request, 'intempo/album_page.html', context=context_dict)
     return response
