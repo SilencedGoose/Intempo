@@ -25,7 +25,7 @@ def albums(request):
     return response
 
 
-def album_page(request):
+def album_page(request, album_id):
     #cannot add comment yet
     #review object must be passed in 
 
@@ -39,11 +39,16 @@ def album_page(request):
             comment.review = review
             comment.save()
             return redirect(reverse("intempo:album_page"))
+    
+    # album = Album.objects.get(id=album_id)
+    album = Album.objects.all()[2]
             
     context_dict = {}
-    context_dict["name"] = "placeholder album name"
-    context_dict["description"] = "placeholder description"
-    context_dict["album_cover"] = "0.png"
+    context_dict["album"] = album
+    context_dict["reviews"] = Review.for_album(album)
+    # context_dict["name"] = "placeholder album name"
+    # context_dict["description"] = "placeholder description"
+    # context_dict["album_cover"] = "0.png"
     context_dict["form"] = form
 
     response = render(request, 'intempo/album_page.html', context=context_dict)
