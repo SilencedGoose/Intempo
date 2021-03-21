@@ -14,6 +14,16 @@
 
     <img src="{{ MEDIA_URL }}/profile_pictures/{{ profile_picture }}" alt="Profile picture" /><br>
     <br>
+    <div>
+      <form id="user_form" method="post" action="{% url 'intempo:profile' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ u_form.as_p }}
+        {{ p_form.as_p }}
+
+        <input type="submit" name="submit" value="Update">
+      </form>
+    </div>
 
     <h3>Your Collection</h3><br>
     ALBUMS<br>

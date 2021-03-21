@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from intempo.models import Album, UserProfile
+from intempo.models import Album, UserProfile, Review
 from django.contrib.auth.models import User
-from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm
+from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 
 
 
@@ -26,10 +26,25 @@ def albums(request):
 
 
 def album_page(request):
+    #cannot add comment yet
+    #review object must be passed in 
+
+    form = AddCommentForm()
+    if request.method == 'POST':
+        current_user_profile = UserProfile.objects.all().get(user = request.user)
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = current_user_profile
+            comment.review = review
+            comment.save()
+            return redirect(reverse("intempo:album_page"))
+            
     context_dict = {}
     context_dict["name"] = "placeholder album name"
     context_dict["description"] = "placeholder description"
     context_dict["album_cover"] = "0.png"
+    context_dict["form"] = form
 
     response = render(request, 'intempo/album_page.html', context=context_dict)
     return response
@@ -76,11 +91,27 @@ def add_review(request):
 
 
 def profile(request):
+
+    if request.method == 'POST':
+
+        u_form = UpdateUserForm(request.POST, instance = request.user)
+        p_form = UpdateUserProfileForm(request.POST, request.FILES, instance = UserProfile.objects.all().get(user=request.user))
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect(reverse("intempo:profile"))
+    else:
+        u_form = UpdateUserForm(instance = request.user)
+        p_form = UpdateUserProfileForm(instance=UserProfile.objects.all().get(user=request.user))
+
     context_dict = {}
     context_dict["username"] = "placeholder username"
     context_dict["user_id"] = "0"
     context_dict["join_date"] = "11/03/2021"
     context_dict["profile_picture"] = "0.png"
+    context_dict["u_form"] = u_form
+    context_dict["p_form"] = p_form
 
     response = render(request, 'intempo/profile.html', context=context_dict)
     return response
