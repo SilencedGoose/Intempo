@@ -16,6 +16,7 @@
     </title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    {% with user=request.user %}{% endwith %}
   </head>
 
   <body>
@@ -27,7 +28,12 @@
           <li><a href="{% url 'intempo:home' %}">Home</a></li>
           <li><a href="{% url 'intempo:albums' %}">Albums</a></li>
           <li><a href="{% url 'intempo:profile' %}">Profile</a></li>
-          <li><a href="{% url 'intempo:login' %}">Login/Sign Up</a></li>
+          {% if user.is_authenticated == False %}
+            <li><a href="{% url 'intempo:login' %}">Login</a></li>
+            <li><a href="{% url 'intempo:signup' %}">Sign Up</a></li>
+          {% else %}
+            <li><a href="{% url 'intempo:logout' %}?next={% url 'intempo:home' %}">Logout</a></li>
+          {% endif %}
         </ul>
       </nav>
     </div>
