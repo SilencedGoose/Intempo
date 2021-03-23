@@ -2,7 +2,6 @@ import os
 
 from django.db import models
 from django.contrib.auth.models import User
-
 from datetime import datetime, timedelta
 
 class Album(models.Model):
@@ -30,7 +29,7 @@ class Album(models.Model):
         """
         if len(self.tags) == 0:
             return []
-        return self.tags.split(", ")
+        return self.tags.upper().split(", ")
 
     @property
     def avg_rating(self):

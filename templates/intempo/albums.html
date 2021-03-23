@@ -9,13 +9,34 @@
   <h1>All Albums</h1><br>
 
   <ul>
-    <li>Sort By</li>
-    <li>Add Filter +</li>
-    <li>Add Album +</li>
+	<form id="form" method="GET" action="{% url 'intempo:albums' %}">
+			    <li> {{ form.as_p }}</li>
+			<input type="submit" name="submit" value="Submit" />
+	</form>
+    <li><a href="add_album"> Add Album +</li></a>
     <li>Search</li>
-  </ul><br>
-
+  </ul>
   
-  ALBUMS<br>
-  <a href="{% url 'intempo:album_page' %}">Album Page</a>
+  <div class = 'para'>
+		{% if Albums %}
+			<ul>
+				 <div>
+					{% for album in Albums%}
+						<div style="float:left; width:400px; height:400px; padding: 50px;">
+						<a href="/albums/{{album.name}}">
+						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
+						<p>{{album.name}}<br><a/>
+						{{album.creation_date}}<br> 
+						{{album.artist}}<br>
+						average rating: {{album.avg_rating}}
+						</p>
+						</div>
+					{% endfor%}
+						</div>
+			</ul>
+		{% else %}
+				<strong>No pages currently in category.</strong>
+		{% endif %}
+
+	</div>
 {% endblock %}
