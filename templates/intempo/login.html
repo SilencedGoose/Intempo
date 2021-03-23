@@ -1,4 +1,5 @@
 {% extends 'intempo/base.html' %}
+{% load crispy_forms_tags %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -7,26 +8,24 @@
 
 {% block body_block %}
   {% block form_area_block %}
+    <div class="content-section">
+    <form id="login_form" method="POST" action="{% url 'intempo:login' %}">
+      {% csrf_token %}
+      <fieldset class="form-group col-3">
+        <legend class="border-bottom mb-4 col-3">Login</legend>
+        {{ form|crispy }}
+      </fieldset>
+      <br>
+      <div class="form-group">
+        <button class="btn btn-outline-info col-3" type="submit">Login</button>
+      </div>
+    </form>
     <div>
-      <h1>Login</h1><br>
-    	<form id="login_form" method="post" action="{% url 'intempo:login' %}">
-    		{% csrf_token %}
-
-    		Username:<br>
-        <input type="text" name="username" size="30">
-    		<br>
-    		Password:<br>
-        <input type="password" name="password" size="30">
-    		<br>
-        <br>
-
-    		<input type="submit" value="Log In">
-    	</form>
-
-      ------<br>
-      Don't have an account?<br>
-      <a href="{% url 'intempo:signup' %}">Sign Up</a>
+      <small class="text-muted">
+        Don't Have An Account? <a class="ml-2" href="{% url 'intempo:signup' %}">Sign Up</a>
+      </small>
     </div>
+  </div>
   {% endblock %}
 
   <br>

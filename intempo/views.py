@@ -177,33 +177,3 @@ def signup(request):
         profile_form = UserProfileForm()
 
     return render(request, "intempo/signup.html", context = {"user_form": user_form, "profile_form": profile_form, "registered": registered})
-
-
-
-def user_login(request):
-    # If the request is a HTTP POST, try to pull out the relevant information.
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        user = authenticate(username=username, password=password)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                return redirect(reverse("intempo:home"))
-            else:
-                return HttpResponse("Your account is disabled.")
-        else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-
-    else:
-        return render(request, "intempo/login.html")
-
-
-
-@login_required
-def user_logout(request):
-    logout(request)
-    return redirect(reverse("intempo:home"))
