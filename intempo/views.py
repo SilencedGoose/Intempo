@@ -153,7 +153,7 @@ def signup(request):
 
     if request.method == "POST":
         user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+        profile_form = UserProfileForm(request.POST, request.FILES)
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
@@ -169,6 +169,7 @@ def signup(request):
 
             profile.save()
             registered = True
+            return redirect(reverse("intempo:home"))
         else:
             print(user_form.errors, profile_form.errors)
     else:
