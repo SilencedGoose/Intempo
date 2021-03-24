@@ -167,7 +167,7 @@ class UserProfile(models.Model):
 
 class Review(models.Model):
     time_posted = models.DateField(default=datetime.now)
-    review_text = models.TextField()
+    review_text = models.TextField(blank=True)
     rating = models.FloatField()
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
@@ -188,6 +188,13 @@ class Review(models.Model):
         Returns all the reviews for an album in chronological order
         """
         return Review.objects.filter(album=album).order_by('-time_posted')
+
+    @property
+    def comments(self):
+        """
+        Returns all the comments for this review in chronological order
+        """
+        return Comment.objects.filter(review=self).order_by('-time_posted')
 
 class Comment(models.Model):
     time_posted = models.DateField(default=datetime.now)

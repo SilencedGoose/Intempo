@@ -27,7 +27,7 @@
 
     <h3>Your Collection</h3><br>
     ALBUMS<br>
-    <a href="{% url 'intempo:album_page' %}">Album Page</a>
+    <a href="{% url 'intempo:album_page' 0 %}">Album Page</a>
     <br><br>
 
     <div class="profile_sidebar">
@@ -38,7 +38,7 @@
   <div id="other_user_profile">
     <h1>{{ username }}</h1><br>
     ALBUMS<br>
-    <a href="{% url 'intempo:album_page' %}">Album Page</a><br>
+    <a href="{% url 'intempo:album_page' 0 %}">Album Page</a><br>
 
     <div class="profile_sidebar">
       <img src="{{ MEDIA_URL }}/profile_pictures/{{ profile_picture }}" alt="Profile picture" /><br><br>

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -66,7 +65,10 @@ def album_page(request, album_id):
             return redirect(reverse("intempo:album_page"))
     
     # album = Album.objects.get(id=album_id)
-    album = Album.objects.all()[2]
+    try:
+        album = Album.objects.all()[album_id]
+    except IndexError:
+        return redirect(reverse("intempo:albums"))
             
     context_dict = {}
     context_dict["album"] = album
@@ -75,6 +77,11 @@ def album_page(request, album_id):
     # context_dict["description"] = "placeholder description"
     # context_dict["album_cover"] = "0.png"
     context_dict["form"] = form
+    if not request.user.is_anonymous:
+        user = UserProfile.get_by_username(request.user.username)
+        context_dict["rated"] = user.has_rated(album)
+    else:
+        context_dict["rated"] = True
 
     response = render(request, 'intempo/album_page.html', context=context_dict)
     return response

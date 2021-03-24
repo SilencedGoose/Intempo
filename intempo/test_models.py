@@ -106,18 +106,6 @@ class AlbumTestCase(TestCase):
         album0 = Album.objects.get(name="album0")
         self.assertEqual(album0.avg_rating, 0.0)
     
-    def test_trending_albums(self):
-        """
-        Tests the static method trending albums 
-        """
-        pass
-
-    def test_top_rated_albums(self):
-        """
-        Tests the static method top_rated albums
-        """
-        pass
-
     def test_tags_attribute(self):
         """
         Tests the tag attribute has correct values
@@ -201,12 +189,6 @@ class UserProfileTestCase(TestCase):
         self.assertTrue(user2 not in similar_profiles_user3)
         self.assertTrue(user3 not in similar_profiles_user2)
     
-    def test_user_collection(self):
-        """
-        Tests the collection attribute of a user
-        """
-        pass
-
     def test_user_has_rated(self):
         """
         Tests the function user.has_rated(album)
