@@ -10,7 +10,7 @@
     <div class="col-sm align-self-start">
       <h1 class="col-sm">
         <span>{{ album.name }}</span>
-        <span style="padding: 3pt;" id="rating" class="rounded-circle border border-primary">{{ album.avg_rating }}</span>
+        <span class="rating rounded-circle border border-secondary float-end">{{ album.avg_rating }}</span>
       </h1>
       <h3>
         {% for tag in album.tags_as_list %}
@@ -21,25 +21,57 @@
         <p>{{ album.description }}</p>
       </div>
     </div>
-    <img class="col-sm align-self-end" id="profile-picture" style="max-width: 40em; max-height: 50em;" src="{{ MEDIA_URL }}/{{ album.album_cover }}" alt="Profile picture" />
+    <!-- <img class="col-sm align-self-end" id="profile-picture" style="max-width: 40em; max-height: 50em;" src="{{ MEDIA_URL }}/{{ album.album_cover }}" alt="Profile picture" /> -->
   </div>
   
   <div id="reviews">
-    <h2>Reviews</h2><br>
+    <h2>
+      {% if reviews|length == 1%}
+        1 Review
+      {% else %}
+        {{ reviews|length }} Reviews
+      {% endif %}
+    </h2>
+    {% if rated == False %}
+      <p>
+        {% if reviews|length == 0 %}
+          Be the first to review this album!
+        {% else %}
+          You haven't reviewed this album. 
+        {% endif %}
+        <a data-bs-toggle="modal" data-bs-target="#addReviewModal" class="triggers-modal">Add a review</a>
+      </p>
+    {% endif %}
+
     {% for review in reviews %}
       <div class="card">
         <div class="card-body">
-          <h6 class="card-title">
-            {{ review.user.username }}
-            <small class="text-muted">{{ review.time_since_posted }}</small>
-          </h6>
-
+          <div class="row">
+            <div class="col">
+              <h5><a href="#" class="card-title">{{ review.user.username }}</a></h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ review.time_since_posted }}</h6>
+            </div>
+            <div class="col-auto">
+              <h4><span class="rating rounded-circle border border-secondary float-end">{{ review.rating }}</span></h4>
+            </div>
+          </div>
           <p class="card-text">{{ review.review_text }}</p>
+          {% if review.comments|length > 0 %}
+          <a data-bs-toggle="modal" data-bs-target="#comments{{ forloop.counter0 }}Modal" class="card-link triggers-modal">
+            {% if review.comments|length == 1%} 
+              1 Comment
+            {% else %}
+             {{ review.comments|length }} Comments
+             {% endif %}
+          </a>
+          {% endif %}
+          <a data-bs-toggle="modal" data-bs-target="#addComment{{ forloop.counter0 }}Modal" class="card-link triggers-modal">Add a Comment</a>
         </div>
       </div>      
     {% endfor %}
   </div>
-  <div>
+
+  <!-- <div>
       <form id="form" method="post" action="{% url 'intempo:album_page' album.id %}">
         {% csrf_token %}
 
@@ -47,5 +79,85 @@
 
         <input type="submit" name="submit" value="Add Comment">
       </form>
+    </div> -->
+<div>
+    <div class="modal fade" tabindex="-1" id="addReviewModal"aria-labelledby="addReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add a review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="GET">
+            <div class="form-group">
+              <label for="formControlRange">Rating:</label>
+              <span id="rating-value">5.0</span>
+              <input type="range" class="form-range" min="0" max="10" step="0.1" id="formControlRange" oninput="onRatingChange(this)">
+            </div>
+            <div class="form-group">
+              <label for="reviewForm">Add a comment with your review (Optional)</label>
+              <textarea class="form-control" id="reviewForm" rows="2"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add review</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  {% for review in reviews %}
+  <div class="modal fade" tabindex="-1" id="addComment{{ forloop.counter0 }}Modal"aria-labelledby="addComment{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add a comment to the review by {{ review.user.username }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="GET">
+            <div class="form-group">
+              <label for="reviewForm">Comment</label>
+              <textarea class="form-control" id="reviewForm" rows="2"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add comment</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if review.comments|length > 0 %}
+    <div class="modal fade" tabindex="-1" id="comments{{ forloop.counter0 }}Modal"aria-labelledby="comments{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Comments to the review by {{ review.user.username }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {% for comment in review.comments %}
+              <div class="card">
+                <div class="card-body">
+                  <h5><a href="#" class="card-title">{{ comment.user.username }}</a></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{ comment.time_since_posted }}</h6>
+                  <p class="card-text">{{ comment.comment_text }}</p>
+                </div>
+              </div>  
+            {% endfor %}
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% endfor %}
+</div>
 {% endblock %}
