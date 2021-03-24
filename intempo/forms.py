@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from intempo.models import UserProfile, Album, Review
+from intempo.models import UserProfile, Album, Review, Comment
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -40,13 +40,13 @@ class AlbumForm(forms.ModelForm):
 #album form
 class AddAlbumForm(forms.ModelForm):
     
-    name = forms.CharField(help_text = "name", max_length = 30)
-    artist = forms.CharField(help_text = "artist", max_length = 30)
-    creation_date = forms.DateField(help_text="creation date")
+    name = forms.CharField(label = "name", max_length = 30)
+    artist = forms.CharField(label = "artist", max_length = 30)
+    creation_date = forms.DateField(label="creation date")
     creation_date.clean
-    album_cover = forms.ImageField(help_text="add album cover", max_length = 60)
-    description = forms.CharField(help_text="add description", widget = forms.Textarea)
-    tags = forms.Field(help_text="add tags")
+    album_cover = forms.ImageField(label="add album cover", max_length = 60)
+    description = forms.CharField(label="add description", widget = forms.Textarea)
+    tags = forms.Field(label="add tags")
 
     class Meta:
         model = Album
@@ -62,11 +62,27 @@ class AddReviewForm(forms.ModelForm):
             _('%(value) must be between 0 and 10 inclusive'),
             params={'value': value},
             )
-    review_text = forms.CharField(help_text="write review here", widget = forms.Textarea)
-    rating = forms.FloatField(help_text="add a rating", initial=0.0, validators=[validate_rating])
-
-
+    review_text = forms.CharField(label="write review here", widget = forms.Textarea)
+    rating = forms.FloatField(label="add a rating", initial=0.0, validators=[validate_rating])
 
     class Meta:
         model = Review
         fields = ('review_text', 'rating',)
+
+class AddCommentForm(forms.ModelForm):
+    comment_text = forms.CharField(label = "add comment");
+    class Meta:
+        model = Comment
+        fields = ('comment_text',)
+
+class UpdateUserForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+
+class UpdateUserProfileForm(forms.ModelForm):
+    
+    class Meta:
+        model = UserProfile
+        fields = ('profile_picture',)

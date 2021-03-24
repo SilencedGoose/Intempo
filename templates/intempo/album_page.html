@@ -2,25 +2,50 @@
 {% load staticfiles %}
 
 {% block title_block %}
-  {{ name }}
+  {{ album.name }}
 {% endblock %}
 
 {% block body_block %}
-  <h1>{{ name }}</h1><br>
-  RATING<br>
-  <img src="{{ MEDIA_URL }}/album_covers/{{ album_cover }}" alt="Profile picture" /><br>
-  <br>
-  <ul>
-    <li>Tag 1</li>
-    <li>Tag 2</li>
-    <li>Tag 3</li>
-  </ul>
-  <br>
-  {{ description }}
-  <br>
-
+  <div class="row">
+    <div class="col-sm align-self-start">
+      <h1 class="col-sm">
+        <span>{{ album.name }}</span>
+        <span style="padding: 3pt;" id="rating" class="rounded-circle border border-primary">{{ album.avg_rating }}</span>
+      </h1>
+      <h3>
+        {% for tag in album.tags_as_list %}
+          <span class="badge bg-primary">{{ tag }}</span>
+        {% endfor %}
+      </h3>
+      <div class="col-sm">
+        <p>{{ album.description }}</p>
+      </div>
+    </div>
+    <img class="col-sm align-self-end" id="profile-picture" style="max-width: 40em; max-height: 50em;" src="{{ MEDIA_URL }}/{{ album.album_cover }}" alt="Profile picture" />
+  </div>
+  
   <div id="reviews">
     <h2>Reviews</h2><br>
-    REVIEWS
+    {% for review in reviews %}
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">
+            {{ review.user.username }}
+            <small class="text-muted">{{ review.time_since_posted }}</small>
+          </h6>
+
+          <p class="card-text">{{ review.review_text }}</p>
+        </div>
+      </div>      
+    {% endfor %}
   </div>
+  <div>
+      <form id="form" method="post" action="{% url 'intempo:album_page' album.id %}">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <input type="submit" name="submit" value="Add Comment">
+      </form>
+    </div>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 
 class Album(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     artist = models.CharField(max_length=30)
     creation_date = models.DateField()
     album_cover = models.ImageField(upload_to="cover_art", default=os.path.join(os.path.dirname(__file__), "cover_art/default_cover.png"))
@@ -154,7 +154,7 @@ class UserProfile(models.Model):
         """
         Returns a well-formatted string representing the time passed since the user joined
         """
-        return formatted_difference(self.join_date)
+        return formatted_difference(date_to_datetime(self.join_date))
     
     def has_rated(self, album):
         """
@@ -180,7 +180,7 @@ class Review(models.Model):
         """
         Returns a well-formatted string representing the time passed since the review was posted
         """
-        return formatted_difference(self.time_posted)
+        return formatted_difference(date_to_datetime(self.time_posted))
 
     @staticmethod
     def for_album(album):
@@ -203,7 +203,10 @@ class Comment(models.Model):
         """
         Returns a well-formatted string representing the time passed since the comment was posted
         """
-        return formatted_difference(self.time_posted)
+        return formatted_difference(date_to_datetime(date_to_datetime(self.time_posted)))
+
+def date_to_datetime(time):
+    return datetime.combine(time, datetime.min.time())
 
 
 def formatted_difference(time):
