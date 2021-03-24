@@ -66,7 +66,7 @@ def album_page(request, album_id):
     
     # album = Album.objects.get(id=album_id)
     try:
-        album = Album.objects.all()[album_id]
+        album = Album.objects.all()[album_id-1]
     except IndexError:
         return redirect(reverse("intempo:albums"))
             
