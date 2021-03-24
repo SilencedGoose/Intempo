@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from intempo.models import Album, UserProfile, Review
 from django.contrib.auth.models import User
-from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
+from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 
 
 
@@ -18,10 +18,35 @@ def index(request):
 
 def albums(request):
     context_dict = {}
-    context_dict[""] = ""
-
+    form = AlbumForm()
+    if request.method == 'GET':
+        form = AlbumForm(request.GET)
+        
+        if form.is_valid():
+            if form.cleaned_data['sortby'] in [f.name for f in Album._meta.fields[1:4:]]:
+                album = Album.objects.order_by(form.cleaned_data['sortby'])
+            else:
+                album = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
+            filteredalbum = []
+            user_tags = form.cleaned_data['filter'].split(',')
+            user_tags = [i.strip().upper() for i in user_tags]
+            if user_tags != ['']:
+                for A in album:
+                    if(set(user_tags).issubset(A.tags_as_list)):
+                        filteredalbum.append(A)
+            else:
+                filteredalbum = album
+            
+            
+            context_dict["Albums"] = filteredalbum
+            context_dict["form"] = form
+            return render(request, 'intempo/albums.html', context=context_dict)
+    
+    album = Album.objects.all()
+    context_dict["Albums"] = album
+    context_dict["form"] = form
     response = render(request, 'intempo/albums.html', context=context_dict)
-    return response
+    return response   
 
 
 def album_page(request, album_id):
