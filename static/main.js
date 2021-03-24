@@ -9,9 +9,14 @@ var setFormSubmitting = function() {
 window.onload = function() {
     window.addEventListener("beforeunload", function (e) {
         if (formSubmitting) {
+            (e || window.event).returnValue = '';
             return undefined;
         }
 
-        (e || window.event).returnValue = '';
     });
 };
+
+// keeps track of the value that the user has selected when sliding the range
+function onRatingChange(form) {
+    $("#rating-value").html($(form).val())
+}

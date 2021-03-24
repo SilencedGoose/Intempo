@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+## run using python manage.py migrate --run-syncdb
+## instead of python manage.py migrate
+
+
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'intempo_project.settings')
 
@@ -9,10 +13,10 @@ django.setup()
 
 from datetime import datetime
 django.setup()
+from intempo.models import Album, UserProfile, Review, Comment
 
 from django.contrib.auth.models import User
 
-from intempo.models import Album, UserProfile, Review, Comment
 
 def convert_to_date(list):
     """
@@ -22,17 +26,19 @@ def convert_to_date(list):
 
 
 def populate():
-    print("- Clearing pre-existing data")
-    Album.objects.all().delete()
-    UserProfile.objects.all().delete()
-    Review.objects.all().delete()
-    Comment.objects.all().delete()
-
+        Album.objects.all().delete()
+        UserProfile.objects.all().delete()
+        Review.objects.all().delete()
+        Comment.objects.all().delete()
+        print("- Clearing pre-existing data")
+        
+    
     with open("population_data.json", encoding="utf-8") as f:
         data = load(f)
 
     print("- Adding albums")
     for myAlbum in data["albums"]:
+        print(myAlbum)
         add_album(myAlbum)
     
     print("- Adding users")
@@ -50,15 +56,15 @@ def populate():
     print("Finished without any errors!")
 
 def add_album(myAlbum):
-    A = Album(
+    A = Album.objects.get_or_create(
         name=myAlbum['name'],
         artist=myAlbum['artist'],
         creation_date = convert_to_date(myAlbum['creation_date']),
         album_cover = myAlbum['album_cover'],
         description = myAlbum['description']
     )
-    A.add_tags(myAlbum['tags'])
     A.save()
+    A.set_tags(myAlbum['tags'])
     return A
     
 def add_user(myUser):

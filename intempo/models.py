@@ -2,31 +2,34 @@ import os
 
 from django.db import models
 from django.contrib.auth.models import User
-
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class Album(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     artist = models.CharField(max_length=30)
     creation_date = models.DateField()
-    album_cover = models.ImageField(upload_to="cover_art", blank=True)
+    album_cover = models.ImageField(upload_to="cover_art", default=os.path.join(os.path.dirname(__file__), "cover_art/default_cover.png"))
     description = models.TextField()
     tags = models.TextField()
 
     def __str__(self):
         return self.name
 
-    def add_tags(self, l):
+    def set_tags(self, tags):
         """
-        Adds the list of tags into the album
+        Sets the list of tags into the album
         """
-        self.tags = ", ".join(l)
+        self.tags = ", ".join(tags)
+        self.save()
 
+    @property
     def tags_as_list(self):
         """
         Returns the tags as a list
         """
-        return self.tags.split(", ")
+        if len(self.tags) == 0:
+            return []
+        return self.tags.upper().split(", ")
 
     @property
     def avg_rating(self):
@@ -44,7 +47,40 @@ class Album(models.Model):
         """
         Returns the time of creation as a well-formatted string
         """
-        return self.creation_date.strftime('%d %B %Y')
+        return self.creation_date.strftime('%d %b %Y')
+
+    @staticmethod
+    def trending():
+        """
+        Returns at max 5 albums which have gotten the most reviews in the last 4 weeks
+        """
+        recent_review_count = {}
+        time_now = datetime.now()
+        # keep track of the number of reviews an album has received in the last 4 weeks
+        for review in Review.objects.all():
+            # review.time_posted is a date, but can only operate on a datetime
+            posted_time = datetime.combine(review.time_posted, datetime.min.time())
+            if posted_time < time_now - timedelta(weeks=4):
+                count = recent_review_count.get(review.album, 0)
+                recent_review_count[review.album] = count + 1
+        
+        # take the top 5 elements from the dictionary with the highest review count
+        trending_albums = [key for key, value in sorted(recent_review_count.items(), reverse=True, key=lambda entry:entry[1])][:5]
+        return trending_albums
+
+    @staticmethod
+    def top_rated():
+        """
+        Returns the top 5 albums with the highest average rating
+        """
+        return sorted(Album.objects.all(), key=lambda album:album.avg_rating, reverse=True)[:5]
+
+    @staticmethod
+    def filter_by_tag(tag):
+        """
+        Returns all the albums which have the tag provided
+        """
+        return [album for album in Album.objects.all() if tag in album.tags_as_list]
 
 # finds/creates the "deleted_user" (also implies that this isn't a valid username?)
 def get_sentinel_user():
@@ -53,7 +89,7 @@ def get_sentinel_user():
 class UserProfile(models.Model):
     # when the user gets deleted, we assign their reviews as get_sentinel_user
     user = models.OneToOneField(User, on_delete=models.SET(get_sentinel_user))
-    profile_picture = models.ImageField(upload_to="profile_pictures", default=os.path.join(os.path.dirname(__file__), "profile_pictures/default_profile_pic"))
+    profile_picture = models.ImageField(upload_to="profile_pictures", default=os.path.join(os.path.dirname(__file__), "profile_pictures/default_pic"))
     join_date = models.DateField(default=datetime.now)
 
     @staticmethod
@@ -102,15 +138,36 @@ class UserProfile(models.Model):
         return similar_profiles
     
     @property
+    def collection(self):
+        """
+        Returns all the albums that the user has rated above 7
+        """
+        collection = []
+        for review in Review.objects.filter(user=self):
+            # assumes a user could have only given one rating to an album
+            if review.rating >= 7:
+                collection.append(review.album)
+        return collection
+    
+    @property
     def time_since_joined(self):
         """
         Returns a well-formatted string representing the time passed since the user joined
         """
-        return formatted_difference(self.join_date)
+        return formatted_difference(date_to_datetime(self.join_date))
+    
+    def has_rated(self, album):
+        """
+        Returns true if the user has rated the album, false if the user hasn't rated the album
+        """
+        for review in Review.objects.all():
+            if review.user == self and review.album == album:
+                return True
+        return False
 
 class Review(models.Model):
     time_posted = models.DateField(default=datetime.now)
-    review_text = models.TextField()
+    review_text = models.TextField(blank=True)
     rating = models.FloatField()
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
@@ -123,7 +180,21 @@ class Review(models.Model):
         """
         Returns a well-formatted string representing the time passed since the review was posted
         """
-        return formatted_difference(self.time_posted)
+        return formatted_difference(date_to_datetime(self.time_posted))
+
+    @staticmethod
+    def for_album(album):
+        """
+        Returns all the reviews for an album in chronological order
+        """
+        return Review.objects.filter(album=album).order_by('-time_posted')
+
+    @property
+    def comments(self):
+        """
+        Returns all the comments for this review in chronological order
+        """
+        return Comment.objects.filter(review=self).order_by('-time_posted')
 
 class Comment(models.Model):
     time_posted = models.DateField(default=datetime.now)
@@ -139,7 +210,10 @@ class Comment(models.Model):
         """
         Returns a well-formatted string representing the time passed since the comment was posted
         """
-        return formatted_difference(self.time_posted)
+        return formatted_difference(date_to_datetime(date_to_datetime(self.time_posted)))
+
+def date_to_datetime(time):
+    return datetime.combine(time, datetime.min.time())
 
 
 def formatted_difference(time):
