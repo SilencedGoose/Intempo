@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 
+from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.utils.timezone import make_aware
 
 from .models import Album, Review, UserProfile, formatted_difference
 
@@ -28,7 +30,7 @@ def setup_albums():
         album = Album.objects.create(
             name="album" + str(i),
             artist="artist" + str(i),
-            creation_date=album_creation_time[i],
+            creation_date=make_aware(album_creation_time[i]),
             description="Album " + str(i),
         )
         album.set_tags(tags)
@@ -39,7 +41,7 @@ def setup_users():
     """
     for i in range(10):
         user = User.objects.create(username="user" + str(i))
-        UserProfile.objects.create(user=user, join_date=datetime.now())
+        UserProfile.objects.create(user=user, join_date=timezone.now())
 
 # The ratings for the 10 albums; the rating is provided by the n-th user
 ratings = [
@@ -60,7 +62,7 @@ ratings = [
 ]
 
 def setup_reviews():
-    time_now = datetime.now()
+    time_now = timezone.now()
     for i in range(10):
         album = Album.objects.get(name="album" + str(i))
         for j in range(i):
@@ -120,7 +122,7 @@ class AlbumTestCase(TestCase):
         Tests the static method filter_by_tags
         """
         for i in range(10):
-            albums_filtered = Album.filter_by_tag("tag" + str(i))
+            albums_filtered = Album.filter_by_tag("TAG" + str(i))
             albums_expected = [Album.objects.get(name="album"+str(j)) for j in range(i+1, 10)]
             self.assertEqual(albums_filtered, albums_expected)
 
@@ -227,44 +229,44 @@ class DateTestCase(TestCase):
         Tests the function `formatted_difference` returns "Just now" if the difference in the time is less than a minute
         """
         for i in range(0, 60):
-            self.assertEqual(formatted_difference(datetime.now() - timedelta(seconds=i)), "Just now")
+            self.assertEqual(formatted_difference(timezone.now() - timedelta(seconds=i)), "Just now")
     
     def test_formatted_difference_between_a_minute_and_an_hour(self):
         """
         Tests the function `formatted_difference` returns "i minute(s) ago" if the difference in time is i minute(s)
         """
-        self.assertEqual(formatted_difference(datetime.now() - timedelta(minutes=1)), "1 minute ago")
+        self.assertEqual(formatted_difference(timezone.now() - timedelta(minutes=1)), "1 minute ago")
         for i in range(2, 60):
-            self.assertEqual(formatted_difference(datetime.now() - timedelta(minutes=i)), str(i) + " minutes ago")
+            self.assertEqual(formatted_difference(timezone.now() - timedelta(minutes=i)), str(i) + " minutes ago")
     
     def test_formatted_difference_between_an_hour_and_a_day(self):
         """
         Tests the function `formatted_difference` returns "i hour(s) ago" if the difference in time is i hour(s)
         """
-        self.assertEqual(formatted_difference(datetime.now() - timedelta(hours=1)), "1 hour ago")
+        self.assertEqual(formatted_difference(timezone.now() - timedelta(hours=1)), "1 hour ago")
         for i in range(2, 24):
-            self.assertEqual(formatted_difference(datetime.now() - timedelta(hours=i)), str(i) + " hours ago")
+            self.assertEqual(formatted_difference(timezone.now() - timedelta(hours=i)), str(i) + " hours ago")
     
     def test_formatted_difference_between_a_day_and_a_month(self):
         """
         Tests the function `formatted_difference` returns "i day(s) ago" if the difference in time is i day(s)
         """
-        self.assertEqual(formatted_difference(datetime.now()  - timedelta(days=1)), "1 day ago")
+        self.assertEqual(formatted_difference(timezone.now()  - timedelta(days=1)), "1 day ago")
         for i in range(2, 31):
-            self.assertEqual(formatted_difference(datetime.now() - timedelta(days=i)), str(i) + " days ago")
+            self.assertEqual(formatted_difference(timezone.now() - timedelta(days=i)), str(i) + " days ago")
     
     def test_formatted_difference_between_a_month_and_a_year(self):
         """
         Tests the function `formatted_difference` returns "i month(s) ago" if the difference in time is i month(s)
         """
-        self.assertEqual(formatted_difference(datetime.now() - timedelta(days=31)), "1 month ago")
+        self.assertEqual(formatted_difference(timezone.now() - timedelta(days=31)), "1 month ago")
         for i in range(2, 12):
-            self.assertEqual(formatted_difference(datetime.now() - timedelta(days=30*i+1)), str(i) + " months ago")
+            self.assertEqual(formatted_difference(timezone.now() - timedelta(days=30*i+1)), str(i) + " months ago")
     
     def test_formatted_difference_above_a_year(self):
         """
         Tests the function `formatted_difference` returns "i year(s) ago" if the difference in time is i year(s)
         """
-        self.assertEqual(formatted_difference(datetime.now() - timedelta(days=365)), "1 year ago")
+        self.assertEqual(formatted_difference(timezone.now() - timedelta(days=365)), "1 year ago")
         for i in range(2, 10):
-            self.assertEqual(formatted_difference(datetime.now() - timedelta(days=365*i+1)), str(i) + " years ago")
+            self.assertEqual(formatted_difference(timezone.now() - timedelta(days=365*i+1)), str(i) + " years ago")

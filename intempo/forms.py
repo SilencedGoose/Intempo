@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from intempo.models import UserProfile, Album, Review, Comment
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
-
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.forms.widgets import NumberInput
 
 
 ## USER REGISTRATION
@@ -56,21 +56,32 @@ class AddAlbumForm(forms.ModelForm):
 
 #review form
 class AddReviewForm(forms.ModelForm):
-    def validate_rating(x):
-        if (x > 10.0) or (x < 0.0):
-            raise ValidationError(
-            _('%(value) must be between 0 and 10 inclusive'),
-            params={'value': value},
-            )
-    review_text = forms.CharField(label="write review here", widget = forms.Textarea)
-    rating = forms.FloatField(label="add a rating", initial=0.0, validators=[validate_rating])
+    # def validate_rating(self, x):
+    #     if (x > 10.0) or (x < 0.0):
+    #         raise ValidationError(
+    #         _('%(value) must be between 0 and 10 inclusive'),
+    #         params={'value': x},
+    #         )
+    rating = forms.FloatField(
+        label="Rating", 
+        max_value=10, 
+        min_value=0, 
+        initial=5.0, 
+        widget=NumberInput(attrs={'step': '0.1'}),
+        validators=[MaxValueValidator(10), MinValueValidator(0)]
+    )
+    review_text = forms.CharField(
+        label="Add a comment with your review (Optional)", 
+        widget = forms.Textarea(attrs={'rows': 2}), 
+        required=False
+    )
 
     class Meta:
         model = Review
-        fields = ('review_text', 'rating',)
+        fields = ('rating', 'review_text')
 
 class AddCommentForm(forms.ModelForm):
-    comment_text = forms.CharField(label = "add comment");
+    comment_text = forms.CharField(label = "Comment")
     class Meta:
         model = Comment
         fields = ('comment_text',)

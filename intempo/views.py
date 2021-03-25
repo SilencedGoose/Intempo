@@ -51,8 +51,6 @@ def albums(request):
 
 
 # def album_page(request, album_id):
-#     #cannot add comment yet
-#     #review object must be passed in
 
 #     form = AddCommentForm()
 #     if request.method == 'POST':
@@ -65,17 +63,26 @@ def albums(request):
 #             comment.save()
 #             return redirect(reverse("intempo:album_page"))
 
-#     try:
-#         album = Album.objects.get(id=album_id)
-#     except Album.DoesNotExist:
-#         return not_found(request)
-
 def album_page(request, album_id):
+    # addCommentForm = AddCommentForm()
+    addReviewForm = AddReviewForm()
+
     context_dict = {}
     try:
         album = Album.objects.get(id=album_id)
     except Album.DoesNotExist:
         return not_found(request)
+    
+    if request.method == 'POST':
+        form = AddReviewForm(request.POST)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.album = album
+            review.user = UserProfile.objects.all().get(user=request.user)
+            review.save()
+        return redirect(reverse("intempo:album_page", kwargs={'album_id': album_id}))
+            
     
     context_dict["album"] = album
     context_dict["reviews"] = Review.for_album(album)
@@ -85,10 +92,25 @@ def album_page(request, album_id):
         context_dict["rated"] = user.has_rated(album)
     else:
         context_dict["rated"] = True
+    # context_dict["add_comment"] = addCommentForm
+    context_dict["add_review"] = addReviewForm
 
     response = render(request, 'intempo/album_page.html', context=context_dict)
     return response
 
+# def add_comment(request, review_id):
+#     form = AddCommentForm()
+#     if request.method == 'POST':
+#         form = AddCommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             review = Review.objects.get(id=review_id)
+#             comment.review = review
+#             comment.user = UserProfile.objects.get(user=request.user)
+#             comment.save()
+#             return redirect("intempo:add_album", kwargs={'album_id': review.album.id})
+#     else:
+#         return not_found(request)
 
 def add_album(request):
     form = AddAlbumForm()
@@ -110,7 +132,6 @@ def add_album(request):
     response = render(request, 'intempo/add_album.html', context=context_dict)
     return response
 
-
 def add_review(request):
 
     #album must be defined
@@ -120,7 +141,7 @@ def add_review(request):
         form = AddReviewForm(request.POST)
 
         if form.is_valid():
-            Review = form.save(commit=False)
+            review = form.save(commit=False)
 
             Review.album = album
             Review.user = UserProfile.objects.all().get(user=request.user)
