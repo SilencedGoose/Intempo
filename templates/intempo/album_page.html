@@ -48,7 +48,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <h5><a href="#" class="card-title">{{ review.user.username }}</a></h5>
+              <h5><a href="{% url 'intempo:profile' review.user.username %}" class="card-title">{{ review.user.username }}</a></h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ review.time_since_posted }}</h6>
             </div>
             <div class="col-auto">
@@ -65,7 +65,9 @@
              {% endif %}
           </a>
           {% endif %}
-          <a data-bs-toggle="modal" data-bs-target="#addComment{{ forloop.counter0 }}Modal" class="card-link triggers-modal">Add a Comment</a>
+          {% if user.is_anonymous == False %}
+            <a data-bs-toggle="modal" data-bs-target="#addComment{{ forloop.counter0 }}Modal" class="card-link triggers-modal">Add a Comment</a>
+          {% endif %}
         </div>
       </div>      
     {% endfor %}
@@ -110,29 +112,31 @@
   </div>
 
   {% for review in reviews %}
-  <div class="modal fade" tabindex="-1" id="addComment{{ forloop.counter0 }}Modal"aria-labelledby="addComment{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add a comment to the review by {{ review.user.username }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form action="GET">
-            <div class="form-group">
-              <label for="reviewForm">Comment</label>
-              <textarea class="form-control" id="reviewForm" rows="2"></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add comment</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    {% if user.is_anonymous == False %}
+    <div class="modal fade" tabindex="-1" id="addComment{{ forloop.counter0 }}Modal"aria-labelledby="addComment{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add a comment to the review by {{ review.user.username }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="GET">
+              <div class="form-group">
+                <label for="reviewForm">Comment</label>
+                <textarea class="form-control" id="reviewForm" rows="2"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add comment</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
+    {% endif %}
+  
   {% if review.comments|length > 0 %}
     <div class="modal fade" tabindex="-1" id="comments{{ forloop.counter0 }}Modal"aria-labelledby="comments{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable">
@@ -145,7 +149,7 @@
             {% for comment in review.comments %}
               <div class="card">
                 <div class="card-body">
-                  <h5><a href="#" class="card-title">{{ comment.user.username }}</a></h5>
+                  <h5><a href="{% url 'intempo:profile' comment.user.username %}" class="card-title">{{ comment.user.username }}</a></h5>
                   <h6 class="card-subtitle mb-2 text-muted">{{ comment.time_since_posted }}</h6>
                   <p class="card-text">{{ comment.comment_text }}</p>
                 </div>
