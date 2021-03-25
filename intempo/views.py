@@ -8,6 +8,7 @@ from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm
 
 
 
+
 def index(request):
     context_dict = {}
     context_dict[""] = ""
@@ -23,8 +24,8 @@ def albums(request):
         form = AlbumForm(request.GET)
 
         if form.is_valid():
-            if form.cleaned_data['sortby'] in [f.name for f in Album._meta.fields[1:4:]]:
-                album = Album.objects.order_by(form.cleaned_data['sortby'])
+            if form.cleaned_data['sort'] in [f.name for f in Album._meta.fields[1:4:]]:
+                album = Album.objects.order_by(form.cleaned_data['sort'])
             else:
                 album = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
             filteredalbum = []
@@ -69,6 +70,7 @@ def album_page(request, album_id):
     except Album.DoesNotExist:
         return not_found(request)
 
+def album_page(request):
     context_dict = {}
     context_dict["album"] = album
     context_dict["reviews"] = Review.for_album(album)

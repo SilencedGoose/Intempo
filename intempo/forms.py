@@ -25,10 +25,10 @@ class UserProfileForm(forms.ModelForm):
         
         
 class AlbumForm(forms.ModelForm):
-    filter = forms.CharField(help_text = "filter by tags",required = False)
+    filter = forms.CharField(required = False)
     DB_Fields = list((f.name,u""+(" ".join(f.name.split("_")))) for f in Album._meta.fields[1:4:])
     DB_Fields.append(("avg_rev","Average Review"))
-    sortby = forms.ChoiceField(choices=DB_Fields, help_text = "sort by")
+    sort = forms.ChoiceField(choices=DB_Fields)
     
     class Meta:
             model = Album
