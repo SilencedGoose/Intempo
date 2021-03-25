@@ -16,13 +16,15 @@ django.setup()
 from intempo.models import Album, UserProfile, Review, Comment
 
 from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
+from django.utils.timezone import make_aware
 
 
 def convert_to_date(list):
     """
     Converts a list of [day, month, year] into a datetime object
     """
-    return datetime(day=list[0], month=list[1], year=list[2])
+    return make_aware(datetime(day=list[0], month=list[1], year=list[2]))
 
 
 def populate():
@@ -66,9 +68,13 @@ def add_album(myAlbum):
     return A
 
 def add_user(myUser):
-    M = User.objects.get_or_create(username=myUser['username'])[0]
-    M.set_password(myUser['password'])
-    M.save()
+    try:
+        M = User.objects.create_user(myUser['username'], None, 'password')
+    except IntegrityError:
+        M = User.objects.get(username=myUser['username'])
+    # M = User.objects.get_or_create(username=myUser['username'])[0]
+    # M.set_password(myUser['password'])
+    # M.save()
     U = UserProfile(
         join_date=convert_to_date(myUser['join_date']),
         user=M,

@@ -1,13 +1,16 @@
 import os
 
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 from datetime import datetime, timedelta
 
 class Album(models.Model):
     name = models.CharField(max_length=30, unique=True)
     artist = models.CharField(max_length=30)
-    creation_date = models.DateField()
+    creation_date = models.DateTimeField()
     album_cover = models.ImageField(upload_to="cover_art", default=os.path.join(os.path.dirname(__file__), "cover_art/default_cover.png"))
     description = models.TextField()
     tags = models.TextField()
@@ -90,7 +93,7 @@ class UserProfile(models.Model):
     # when the user gets deleted, we assign their reviews as get_sentinel_user
     user = models.OneToOneField(User, on_delete=models.SET(get_sentinel_user), related_name="user_profile")
     profile_picture = models.ImageField(upload_to="profile_pictures", default=os.path.join(os.path.dirname(__file__), "profile_pictures/default_pic"))
-    join_date = models.DateField(default=datetime.now)
+    join_date = models.DateTimeField(default=timezone.now)
 
     @staticmethod
     def get_by_username(username):
@@ -157,7 +160,7 @@ class UserProfile(models.Model):
         """
         Returns a well-formatted string representing the time passed since the user joined
         """
-        return formatted_difference(date_to_datetime(self.join_date))
+        return formatted_difference(self.join_date)
 
     def has_rated(self, album):
         """
@@ -169,9 +172,9 @@ class UserProfile(models.Model):
         return False
 
 class Review(models.Model):
-    time_posted = models.DateField(default=datetime.now)
+    time_posted = models.DateTimeField(default=timezone.now)
     review_text = models.TextField(blank=True)
-    rating = models.FloatField()
+    rating = models.FloatField(validators=[MaxValueValidator(10), MinValueValidator(0)])
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
 
@@ -183,7 +186,7 @@ class Review(models.Model):
         """
         Returns a well-formatted string representing the time passed since the review was posted
         """
-        return formatted_difference(date_to_datetime(self.time_posted))
+        return formatted_difference(self.time_posted)
 
     @staticmethod
     def for_album(album):
@@ -200,7 +203,7 @@ class Review(models.Model):
         return Comment.objects.filter(review=self).order_by('-time_posted')
 
 class Comment(models.Model):
-    time_posted = models.DateField(default=datetime.now)
+    time_posted = models.DateTimeField(default=timezone.now)
     comment_text = models.TextField()
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
@@ -213,17 +216,17 @@ class Comment(models.Model):
         """
         Returns a well-formatted string representing the time passed since the comment was posted
         """
-        return formatted_difference(date_to_datetime(date_to_datetime(self.time_posted)))
+        return formatted_difference(self.time_posted)
 
-def date_to_datetime(time):
-    return datetime.combine(time, datetime.min.time())
+# def date_to_datetime(time):
+#     return datetime.combine(time, datetime.min.time())
 
 
 def formatted_difference(time):
     """
     Returns the difference between the time given and the time now in a well-formatted string (similar to YouTube string)
     """
-    diff = datetime.now() - time
+    diff = timezone.now() - time
     sec_diff = round(diff.total_seconds()//1)
     # less than 60s ago -> Just now
     if sec_diff < 60:
