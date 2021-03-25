@@ -25,8 +25,8 @@ def albums(request):
         form = AlbumForm(request.GET)
         
         if form.is_valid():
-            if form.cleaned_data['sortby'] in [f.name for f in Album._meta.fields[1:4:]]:
-                album = Album.objects.order_by(form.cleaned_data['sortby'])
+            if form.cleaned_data['sort'] in [f.name for f in Album._meta.fields[1:4:]]:
+                album = Album.objects.order_by(form.cleaned_data['sort'])
             else:
                 album = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
             filteredalbum = []
