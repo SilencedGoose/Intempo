@@ -50,25 +50,25 @@ def albums(request):
     return response
 
 
-def album_page(request, album_id):
-    #cannot add comment yet
-    #review object must be passed in
+# def album_page(request, album_id):
+#     #cannot add comment yet
+#     #review object must be passed in
 
-    form = AddCommentForm()
-    if request.method == 'POST':
-        current_user_profile = UserProfile.objects.all().get(user = request.user)
-        form = AddCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = current_user_profile
-            comment.review = review
-            comment.save()
-            return redirect(reverse("intempo:album_page"))
+#     form = AddCommentForm()
+#     if request.method == 'POST':
+#         current_user_profile = UserProfile.objects.all().get(user = request.user)
+#         form = AddCommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.user = current_user_profile
+#             comment.review = review
+#             comment.save()
+#             return redirect(reverse("intempo:album_page"))
 
-    try:
-        album = Album.objects.get(id=album_id)
-    except Album.DoesNotExist:
-        return not_found(request)
+#     try:
+#         album = Album.objects.get(id=album_id)
+#     except Album.DoesNotExist:
+#         return not_found(request)
 
 def album_page(request, album_id):
     context_dict = {}
