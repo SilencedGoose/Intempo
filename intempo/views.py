@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from intempo.models import Album, UserProfile
 from django.contrib.auth.models import User
 from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm,AlbumForm
+from crispy_forms.helper import FormHelper
+
 
 
 
@@ -48,6 +50,7 @@ def albums(request):
     context_dict["form"] = form
     response = render(request, 'intempo/albums.html', context=context_dict)
     return response   
+
 
 
 def album_page(request):
