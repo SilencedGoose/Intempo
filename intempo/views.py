@@ -70,14 +70,16 @@ def album_page(request, album_id):
     except Album.DoesNotExist:
         return not_found(request)
 
-def album_page(request):
+def album_page(request, album_id):
     context_dict = {}
+    try:
+        album = Album.objects.get(id=album_id)
+    except Album.DoesNotExist:
+        return not_found(request)
+    
     context_dict["album"] = album
     context_dict["reviews"] = Review.for_album(album)
-    # context_dict["name"] = "placeholder album name"
-    # context_dict["description"] = "placeholder description"
-    # context_dict["album_cover"] = "0.png"
-    context_dict["form"] = form
+    # context_dict["form"] = form
     if not request.user.is_anonymous:
         user = UserProfile.get_by_username(request.user.username)
         context_dict["rated"] = user.has_rated(album)
