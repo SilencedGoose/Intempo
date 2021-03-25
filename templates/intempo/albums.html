@@ -13,10 +13,10 @@
 			    <li> {{ form.as_p }}</li>
 			<input type="submit" name="submit" value="Submit" />
 	</form>
-    <li><a href="add_album"> Add Album +</li></a>
+    <li><a href="add_album"> Add Album +</a></li>
     <li>Search</li>
   </ul>
-  
+
   <div class = 'para'>
 		{% if Albums %}
 			<ul>
@@ -26,7 +26,7 @@
 						<a href="{% url 'intempo:album_page' forloop.counter %}">
 						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
 						<p>{{album.name}}<br><a/>
-						{{album.creation_date}}<br> 
+						{{album.creation_date}}<br>
 						{{album.artist}}<br>
 						average rating: {{album.avg_rating}}
 						</p>
