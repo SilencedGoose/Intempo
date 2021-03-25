@@ -6,24 +6,23 @@
 {% endblock %}
 
 {% block body_block %}
+{% load crispy_forms_tags %}
   <h1>All Albums</h1><br>
 
   <ul>
-	<form id="form" method="GET" action="{% url 'intempo:albums' %}">
-			    <li> {{ form.as_p }}</li>
+	<form id="form" method="GET" action="{% url 'intempo:albums' %}" class = "bootstrap4">
+			    <li> {{ form | crispy}}</li>
 			<input type="submit" name="submit" value="Submit" />
 	</form>
     <li><a href="add_album"> Add Album +</a></li>
     <li>Search</li>
   </ul>
-
-  <div class = 'para'>
 		{% if Albums %}
 			<ul>
 				 <div>
 					{% for album in Albums%}
 						<div style="float:left; width:400px; height:400px; padding: 50px;">
-						<a href="{% url 'intempo:album_page' forloop.counter %}">
+						<a href="{% url 'intempo:album_page' album.id %}">
 						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
 						<p>{{album.name}}<br><a/>
 						{{album.creation_date}}<br>
@@ -37,6 +36,4 @@
 		{% else %}
 				<strong>No pages currently in category.</strong>
 		{% endif %}
-
-	</div>
 {% endblock %}

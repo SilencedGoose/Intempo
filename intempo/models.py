@@ -97,7 +97,10 @@ class UserProfile(models.Model):
         """
         Returns a user profile given the username
         """
-        user = User.objects.get(username=username)
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise UserProfile.DoesNotExist("User matching query does not exist.")
         return UserProfile.objects.get(user=user)
 
     @property
@@ -147,7 +150,7 @@ class UserProfile(models.Model):
             # assumes a user could have only given one rating to an album
             if review.rating >= 7:
                 collection.append(review.album)
-        return collection
+        return sorted(collection, key=lambda album:album.avg_rating)
 
     @property
     def time_since_joined(self):
