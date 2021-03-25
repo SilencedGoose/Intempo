@@ -152,8 +152,6 @@ def profile(request, username):
         u_form = None
         p_form = None
 
-    print(profile.profile_picture)
-
     context_dict = {}
     context_dict["username"] = username
     context_dict["user_id"] = profile.id
