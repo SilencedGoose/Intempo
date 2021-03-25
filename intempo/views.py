@@ -161,21 +161,18 @@ def profile(request, username):
     if request.method == 'POST':
         u_form = UpdateUserForm(request.POST, instance = request.user)
         p_form = UpdateUserProfileForm(request.POST, request.FILES, instance = UserProfile.objects.all().get(user=request.user))
-        this_user = True
 
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
             return redirect(reverse("intempo:profile"))
     elif request.user == User.objects.get(username=username):
-        this_user = False
         u_form = UpdateUserForm(instance = request.user)
         p_form = UpdateUserProfileForm(instance=UserProfile.objects.all().get(user=request.user))
     else:
-        this_user = True
         u_form = None
         p_form = None
-    
+
     context_dict = {}
     context_dict["username"] = username
     context_dict["user_id"] = profile.id
@@ -185,7 +182,7 @@ def profile(request, username):
     context_dict["p_form"] = p_form
     context_dict["Albums"] = profile.collection
     context_dict["Similar"] = profile.similar_profiles
-    context_dict["this_user"] = this_user
+    context_dict["this_user"] = request.user == User.objects.get(username=username)
 
     response = render(request, 'intempo/profile.html', context=context_dict)
     return response

@@ -19,7 +19,9 @@
           <div>
             <img src="{{ MEDIA_URL }}/{{ profile_picture }}" id="profile-picture" alt="Profile picture" /><br>
             <br>
-            <button id="edit-button" onclick="toggle_edit_profile()">Edit Profile</button><br><br>
+						{% if this_user == True %}
+            	<button id="edit-button" onclick="toggle_edit_profile()">Edit Profile</button><br><br>
+						{% endif %}
           </div>
         </div>
 
@@ -69,21 +71,8 @@
 						</div>
 					</ul>
 				{% else %}
-						<strong>No albums reviewed.</strong>
+						<strong>No similar users.</strong>
 				{% endif %}
       </div>
     </div>
-  <!-- 
-    <div id="other-user-profile">
-      <p>hi</p>
-      <h1>{{ username }}</h1><br>
-      ALBUMS<br>
-      <a href="{% url 'intempo:album_page' 0 %}">Album Page</a><br>
-
-      <div class="profile_sidebar">
-        <img src="{{ MEDIA_URL }}/profile_pictures/{{ profile_picture }}" alt="Profile picture" /><br><br>
-        <h3>Similar Users</h3>
-      </div>
-    </div>
-  -->
 {% endblock %}
