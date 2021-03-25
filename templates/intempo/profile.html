@@ -6,12 +6,11 @@
 {% endblock %}
 
 {% block body_block %}
-  {% if user.is_authenticated == True %}
     <div id="user-profile">
       <div id="profile-left">
         <div id="profile-header">
           <div id="info">
-            <h1>Your Profile</h1>
+            <h1>Profile</h1>
             <h5>{{ username }}</h5>
             Joined: {{ join_date }}<br>
             <br>
@@ -25,7 +24,7 @@
         </div>
 
         <div>
-          <form id="user_form" method="post" action="{% url 'intempo:profile' %}" enctype="multipart/form-data">
+          <form id="user_form" method="post" action="{% url 'intempo:profile' username %}" enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ u_form.as_p }}
@@ -42,7 +41,7 @@
 						 <div>
 							{% for album in Albums%}
 								<div style="float:left; width:400px; height:400px; padding: 50px;">
-								<a href="{% url 'intempo:album_page' forloop.counter %}">
+								<a href="{% url 'intempo:album_page' album.id %}">
 								<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
 								</div>
 							{% endfor%}
@@ -61,7 +60,7 @@
 							{% for user in Similar %}
 								<div class="card">
 									<div class="card-body">
-										<a href="{% url 'intempo:profile' %}">
+										<a href="{% url 'intempo:profile' user.username %}">
 										<img src="{{ MEDIA_URL }}{{ user.profile_picture }}" id="profile-picture" class="img-thumbnail" alt="{{user.username}}">
 										<p id="username">{{user.username}}</p>
 									</div>
@@ -74,7 +73,7 @@
 				{% endif %}
       </div>
     </div>
-  {% else %}
+  <!-- 
     <div id="other-user-profile">
       <p>hi</p>
       <h1>{{ username }}</h1><br>
@@ -86,5 +85,5 @@
         <h3>Similar Users</h3>
       </div>
     </div>
-  {% endif %}
+  -->
 {% endblock %}

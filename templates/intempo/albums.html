@@ -23,7 +23,7 @@
 				 <div>
 					{% for album in Albums%}
 						<div style="float:left; width:400px; height:400px; padding: 50px;">
-						<a href="{% url 'intempo:album_page' forloop.counter %}">
+						<a href="{% url 'intempo:album_page' album.id %}">
 						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
 						<p>{{album.name}}<br><a/>
 						{{album.creation_date}}<br>

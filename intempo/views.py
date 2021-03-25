@@ -64,11 +64,10 @@ def album_page(request, album_id):
             comment.save()
             return redirect(reverse("intempo:album_page"))
 
-    # album = Album.objects.get(id=album_id)
     try:
-        album = Album.objects.all()[album_id-1]
-    except IndexError:
-        return redirect(reverse("intempo:albums"))
+        album = Album.objects.get(id=album_id)
+    except Album.DoesNotExist:
+        return not_found(request)
 
     context_dict = {}
     context_dict["album"] = album
@@ -128,50 +127,40 @@ def add_review(request):
     return render(request, "intempo/add_review.html", {"form": form})
 
 
-def profile(request):
+def profile(request, username):
+    try:
+        profile = UserProfile.get_by_username(username)
+    except UserProfile.DoesNotExist:
+        return not_found(request)
+
     if request.method == 'POST':
         u_form = UpdateUserForm(request.POST, instance = request.user)
         p_form = UpdateUserProfileForm(request.POST, request.FILES, instance = UserProfile.objects.all().get(user=request.user))
+        this_user = True
 
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
             return redirect(reverse("intempo:profile"))
-    else:
+    elif request.user == User.objects.get(username=username):
+        this_user = False
         u_form = UpdateUserForm(instance = request.user)
         p_form = UpdateUserProfileForm(instance=UserProfile.objects.all().get(user=request.user))
-
-
-
-    #getting a list of albums which were reviewed by the user
-    current_user = UserProfile.objects.all().get(user = request.user)
-    album_names = Review.objects.values("album").filter(user=current_user)
-
-    albums = []
-    for a in album_names:
-        albums.append(Album.objects.all().get(name = a))
-
-    albums = sorted(albums, key=lambda a:a.avg_rating, reverse=True)
-
-
-
-    #getting a list of similar users
-    similar_users = []
-
-    #### PLACEHOLDER!! - need to add something to find similar users
-    similar_users.append(current_user)
-
-
-
+    else:
+        this_user = True
+        u_form = None
+        p_form = None
+    
     context_dict = {}
-    context_dict["username"] = request.user.username
-    context_dict["user_id"] = request.user.id
-    context_dict["join_date"] = request.user.user_profile.join_date
-    context_dict["profile_picture"] = request.user.user_profile.profile_picture
+    context_dict["username"] = username
+    context_dict["user_id"] = profile.id
+    context_dict["join_date"] = profile.time_since_joined
+    context_dict["profile_picture"] = profile.profile_picture
     context_dict["u_form"] = u_form
     context_dict["p_form"] = p_form
-    context_dict["Albums"] = albums
-    context_dict["Similar"] = similar_users
+    context_dict["Albums"] = profile.collection
+    context_dict["Similar"] = profile.similar_profiles
+    context_dict["this_user"] = this_user
 
     response = render(request, 'intempo/profile.html', context=context_dict)
     return response
