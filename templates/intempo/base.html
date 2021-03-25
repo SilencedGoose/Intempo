@@ -30,11 +30,11 @@
         <ul>
           <li><a href="{% url 'intempo:home' %}">Home</a></li>
           <li><a href="{% url 'intempo:albums' %}">Albums</a></li>
-          <li><a href="{% url 'intempo:profile' %}">Profile</a></li>
           {% if user.is_authenticated == False %}
             <li><a href="{% url 'intempo:login' %}">Login</a></li>
             <li><a href="{% url 'intempo:signup' %}">Sign Up</a></li>
           {% else %}
+            <li><a href="{% url 'intempo:profile' %}">Profile</a></li>
             <li><a href="{% url 'intempo:logout' %}?next={% url 'intempo:home' %}">Logout</a></li>
           {% endif %}
         </ul>

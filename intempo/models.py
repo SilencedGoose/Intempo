@@ -41,7 +41,7 @@ class Album(models.Model):
             return 0.0
         ratings = [review.rating for review in reviews]
         return round(sum(ratings)/len(ratings), 1)
-    
+
     @property
     def time_of_creation(self):
         """
@@ -63,7 +63,7 @@ class Album(models.Model):
             if posted_time < time_now - timedelta(weeks=4):
                 count = recent_review_count.get(review.album, 0)
                 recent_review_count[review.album] = count + 1
-        
+
         # take the top 5 elements from the dictionary with the highest review count
         trending_albums = [key for key, value in sorted(recent_review_count.items(), reverse=True, key=lambda entry:entry[1])][:5]
         return trending_albums
@@ -88,7 +88,7 @@ def get_sentinel_user():
 
 class UserProfile(models.Model):
     # when the user gets deleted, we assign their reviews as get_sentinel_user
-    user = models.OneToOneField(User, on_delete=models.SET(get_sentinel_user))
+    user = models.OneToOneField(User, on_delete=models.SET(get_sentinel_user), related_name="user_profile")
     profile_picture = models.ImageField(upload_to="profile_pictures", default=os.path.join(os.path.dirname(__file__), "profile_pictures/default_pic"))
     join_date = models.DateField(default=datetime.now)
 
@@ -129,14 +129,14 @@ class UserProfile(models.Model):
                     value, count = distance_dict.get(other_review.user, (0, 0))
                     distance_dict[other_review.user] = (value + (other_review.rating - self_review.rating) ** 2, count + 1)
 
-        # change from tuple of (value, count) to average by computing value/count. 
+        # change from tuple of (value, count) to average by computing value/count.
         # Also, must have at least rated 2 albums in common.
         distance_dict = {key: value/count for key, (value, count) in distance_dict.items() if count >= 2}
 
         # take the top 3 elements from the dictionary with the smallest distance value
         similar_profiles = [key for key, value in sorted(distance_dict.items(), key=lambda entry:entry[1])][:3]
         return similar_profiles
-    
+
     @property
     def collection(self):
         """
@@ -148,14 +148,14 @@ class UserProfile(models.Model):
             if review.rating >= 7:
                 collection.append(review.album)
         return collection
-    
+
     @property
     def time_since_joined(self):
         """
         Returns a well-formatted string representing the time passed since the user joined
         """
         return formatted_difference(date_to_datetime(self.join_date))
-    
+
     def has_rated(self, album):
         """
         Returns true if the user has rated the album, false if the user hasn't rated the album
@@ -204,7 +204,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment_text
-    
+
     @property
     def time_since_posted(self):
         """

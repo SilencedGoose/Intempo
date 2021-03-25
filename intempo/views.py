@@ -21,7 +21,7 @@ def albums(request):
     form = AlbumForm()
     if request.method == 'GET':
         form = AlbumForm(request.GET)
-        
+
         if form.is_valid():
             if form.cleaned_data['sortby'] in [f.name for f in Album._meta.fields[1:4:]]:
                 album = Album.objects.order_by(form.cleaned_data['sortby'])
@@ -36,22 +36,22 @@ def albums(request):
                         filteredalbum.append(A)
             else:
                 filteredalbum = album
-            
-            
+
+
             context_dict["Albums"] = filteredalbum
             context_dict["form"] = form
             return render(request, 'intempo/albums.html', context=context_dict)
-    
+
     album = Album.objects.all()
     context_dict["Albums"] = album
     context_dict["form"] = form
     response = render(request, 'intempo/albums.html', context=context_dict)
-    return response   
+    return response
 
 
 def album_page(request, album_id):
     #cannot add comment yet
-    #review object must be passed in 
+    #review object must be passed in
 
     form = AddCommentForm()
     if request.method == 'POST':
@@ -63,13 +63,13 @@ def album_page(request, album_id):
             comment.review = review
             comment.save()
             return redirect(reverse("intempo:album_page"))
-    
+
     # album = Album.objects.get(id=album_id)
     try:
         album = Album.objects.all()[album_id-1]
     except IndexError:
         return redirect(reverse("intempo:albums"))
-            
+
     context_dict = {}
     context_dict["album"] = album
     context_dict["reviews"] = Review.for_album(album)
@@ -100,12 +100,13 @@ def add_album(request):
             return redirect(reverse("intempo:albums"))
         else:
             print(form.errors)
-            
+
     context_dict = {}
     context_dict["form"] = form
 
     response = render(request, 'intempo/add_album.html', context=context_dict)
     return response
+
 
 def add_review(request):
 
@@ -128,9 +129,7 @@ def add_review(request):
 
 
 def profile(request):
-
     if request.method == 'POST':
-
         u_form = UpdateUserForm(request.POST, instance = request.user)
         p_form = UpdateUserProfileForm(request.POST, request.FILES, instance = UserProfile.objects.all().get(user=request.user))
 
@@ -142,13 +141,37 @@ def profile(request):
         u_form = UpdateUserForm(instance = request.user)
         p_form = UpdateUserProfileForm(instance=UserProfile.objects.all().get(user=request.user))
 
+
+
+    #getting a list of albums which were reviewed by the user
+    current_user = UserProfile.objects.all().get(user = request.user)
+    album_names = Review.objects.values("album").filter(user=current_user)
+
+    albums = []
+    for a in album_names:
+        albums.append(Album.objects.all().get(name = a))
+
+    albums = sorted(albums, key=lambda a:a.avg_rating, reverse=True)
+
+
+
+    #getting a list of similar users
+    similar_users = []
+
+    #### PLACEHOLDER!! - need to add something to find similar users
+    similar_users.append(current_user)
+
+
+
     context_dict = {}
-    context_dict["username"] = "placeholder username"
-    context_dict["user_id"] = "0"
-    context_dict["join_date"] = "11/03/2021"
-    context_dict["profile_picture"] = "0.png"
+    context_dict["username"] = request.user.username
+    context_dict["user_id"] = request.user.id
+    context_dict["join_date"] = request.user.user_profile.join_date
+    context_dict["profile_picture"] = request.user.user_profile.profile_picture
     context_dict["u_form"] = u_form
     context_dict["p_form"] = p_form
+    context_dict["Albums"] = albums
+    context_dict["Similar"] = similar_users
 
     response = render(request, 'intempo/profile.html', context=context_dict)
     return response

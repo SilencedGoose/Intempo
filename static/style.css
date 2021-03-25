@@ -9,7 +9,7 @@ a {
 }
 
 #album-cover {
-    max-width: 10em; 
+    max-width: 10em;
 }
 
 .card {
@@ -26,4 +26,50 @@ a {
 
 span.rating {
     padding: .5rem;
+}
+
+/* profile */
+#profile-picture {
+    width: 100px;
+}
+
+#user-profile #user_form {
+    display: none;
+}
+
+
+
+#user-profile {
+    display: flex;
+}
+
+#user-profile #profile-left {
+    flex: 2;
+}
+
+#user-profile #profile-right {
+    border-left: 1px solid white;
+}
+
+
+#profile-header {
+    display: flex;
+    margin-right: 10px;
+}
+
+#profile-header #info {
+    flex: 1;
+}
+
+#edit-button {
+    width: 100px;
+}
+
+
+#profile-right #profile-picture {
+    width: 50px;
+}
+
+#profile-right #username {
+    float: right;
 }
