@@ -14,7 +14,7 @@
 			    <li> {{ form | crispy}}</li>
 			<input type="submit" name="submit" value="Submit" />
 	</form>
-    <li><a href="add_album"> Add Album +</li></a>
+    <li><a href="add_album"> Add Album +</a></li>
     <li>Search</li>
   </ul>
 		{% if Albums %}
@@ -22,10 +22,10 @@
 				 <div>
 					{% for album in Albums%}
 						<div style="float:left; width:400px; height:400px; padding: 50px;">
-						<a href="/albums/{{album.name}}">
+						<a href="{% url 'intempo:album_page' album.id %}">
 						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
 						<p>{{album.name}}<br><a/>
-						{{album.creation_date}}<br> 
+						{{album.creation_date}}<br>
 						{{album.artist}}<br>
 						average rating: {{album.avg_rating}}
 						</p>

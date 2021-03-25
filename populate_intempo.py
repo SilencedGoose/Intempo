@@ -26,19 +26,17 @@ def convert_to_date(list):
 
 
 def populate():
-        Album.objects.all().delete()
-        UserProfile.objects.all().delete()
-        Review.objects.all().delete()
-        Comment.objects.all().delete()
-        print("- Clearing pre-existing data")
-        
+    print("- Clearing pre-existing data")
+    Album.objects.all().delete()
+    UserProfile.objects.all().delete()
+    Review.objects.all().delete()
+    Comment.objects.all().delete()
     
     with open("population_data.json", encoding="utf-8") as f:
         data = load(f)
 
     print("- Adding albums")
     for myAlbum in data["albums"]:
-        print(myAlbum)
         add_album(myAlbum)
     
     print("- Adding users")
@@ -56,7 +54,7 @@ def populate():
     print("Finished without any errors!")
 
 def add_album(myAlbum):
-    A = Album.objects.get_or_create(
+    A = Album(
         name=myAlbum['name'],
         artist=myAlbum['artist'],
         creation_date = convert_to_date(myAlbum['creation_date']),

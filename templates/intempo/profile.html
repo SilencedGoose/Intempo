@@ -6,34 +6,84 @@
 {% endblock %}
 
 {% block body_block %}
-  <div id="user_profile">
-    <h1>Your Profile</h1><br>
-    <h5>{{ username }}</h5><br>
-    Joined: {{ join_date }}<br>
-    <br>
+    <div id="user-profile">
+      <div id="profile-left">
+        <div id="profile-header">
+          <div id="info">
+            <h1>Profile</h1>
+            <h5>{{ username }}</h5>
+            Joined: {{ join_date }}<br>
+            <br>
+          </div>
 
-    <img src="{{ MEDIA_URL }}/profile_pictures/{{ profile_picture }}" alt="Profile picture" /><br>
-    <br>
+          <div>
+            <img src="{{ MEDIA_URL }}/{{ profile_picture }}" id="profile-picture" alt="Profile picture" /><br>
+            <br>
+            <button id="edit-button" onclick="toggle_edit_profile()">Edit Profile</button><br><br>
+          </div>
+        </div>
 
-    <h3>Your Collection</h3><br>
-    ALBUMS<br>
-    <a href="{% url 'intempo:album_page' %}">Album Page</a>
-    <br><br>
+        <div>
+          <form id="user_form" method="post" action="{% url 'intempo:profile' username %}" enctype="multipart/form-data">
+            {% csrf_token %}
 
-    <div class="profile_sidebar">
-      <h3>Similar Users</h3>
+            {{ u_form.as_p }}
+            {{ p_form.as_p }}
+
+            <input type="submit" name="submit" value="Update">
+          </form>
+          <br>
+        </div>
+
+        <h3>Your Collection</h3>
+        {% if Albums %}
+					<ul>
+						 <div>
+							{% for album in Albums%}
+								<div style="float:left; width:400px; height:400px; padding: 50px;">
+								<a href="{% url 'intempo:album_page' album.id %}">
+								<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
+								</div>
+							{% endfor%}
+						</div>
+					</ul>
+				{% else %}
+						<strong>No albums reviewed.</strong>
+				{% endif %}
+      </div>
+
+      <div id="profile-right">
+        <h3>Similar Users</h3>
+				{% if Similar %}
+					<ul>
+						 <div>
+							{% for user in Similar %}
+								<div class="card">
+									<div class="card-body">
+										<a href="{% url 'intempo:profile' user.username %}">
+										<img src="{{ MEDIA_URL }}{{ user.profile_picture }}" id="profile-picture" class="img-thumbnail" alt="{{user.username}}">
+										<p id="username">{{user.username}}</p>
+									</div>
+								</div>
+							{% endfor%}
+						</div>
+					</ul>
+				{% else %}
+						<strong>No albums reviewed.</strong>
+				{% endif %}
+      </div>
     </div>
-  </div>
+  <!-- 
+    <div id="other-user-profile">
+      <p>hi</p>
+      <h1>{{ username }}</h1><br>
+      ALBUMS<br>
+      <a href="{% url 'intempo:album_page' 0 %}">Album Page</a><br>
 
-  <div id="other_user_profile">
-    <h1>{{ username }}</h1><br>
-    ALBUMS<br>
-    <a href="{% url 'intempo:album_page' %}">Album Page</a><br>
-
-    <div class="profile_sidebar">
-      <img src="{{ MEDIA_URL }}/profile_pictures/{{ profile_picture }}" alt="Profile picture" /><br><br>
-      <h3>Similar Users</h3>
+      <div class="profile_sidebar">
+        <img src="{{ MEDIA_URL }}/profile_pictures/{{ profile_picture }}" alt="Profile picture" /><br><br>
+        <h3>Similar Users</h3>
+      </div>
     </div>
-  </div>
-
+  -->
 {% endblock %}
