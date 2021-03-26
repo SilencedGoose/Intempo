@@ -21,9 +21,6 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('profile_picture',)
         
-        
-        
-        
 class AlbumForm(forms.ModelForm):
     filter = forms.CharField(required = False)
     DB_Fields = list((f.name,u""+(" ".join(f.name.split("_")))) for f in Album._meta.fields[1:4:])
@@ -33,9 +30,6 @@ class AlbumForm(forms.ModelForm):
     class Meta:
             model = Album
             fields = ()
-    
-    
-        
 
 #album form
 class AddAlbumForm(forms.ModelForm):
@@ -52,23 +46,23 @@ class AddAlbumForm(forms.ModelForm):
         model = Album
         fields = ('name', 'artist', 'creation_date', 'album_cover', 'description', 'tags')
         
-        
+def ValidateRating(rating):
+    possible_ratings = [i/10 for i in range(0, 101)]
+    if rating not in possible_ratings:
+        raise ValidationError(
+            _('%(value) must have at most 1 decimal place!'),
+            params={'value': rating},
+            )    
 
 #review form
 class AddReviewForm(forms.ModelForm):
-    # def validate_rating(self, x):
-    #     if (x > 10.0) or (x < 0.0):
-    #         raise ValidationError(
-    #         _('%(value) must be between 0 and 10 inclusive'),
-    #         params={'value': x},
-    #         )
     rating = forms.FloatField(
         label="Rating", 
         max_value=10, 
         min_value=0, 
         initial=5.0, 
         widget=NumberInput(attrs={'step': '0.1'}),
-        validators=[MaxValueValidator(10), MinValueValidator(0)]
+        validators=[MaxValueValidator(10), MinValueValidator(0), ValidateRating]
     )
     review_text = forms.CharField(
         label="Add a comment with your review (Optional)", 
@@ -81,7 +75,10 @@ class AddReviewForm(forms.ModelForm):
         fields = ('rating', 'review_text')
 
 class AddCommentForm(forms.ModelForm):
-    comment_text = forms.CharField(label = "Comment")
+    comment_text = forms.CharField(
+        label = "Comment",
+        widget = forms.Textarea(attrs={'rows': 2}), 
+    )
     class Meta:
         model = Comment
         fields = ('comment_text',)
