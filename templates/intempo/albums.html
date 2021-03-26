@@ -24,14 +24,14 @@
 						<div style="float:left; width:400px; height:400px; padding: 50px;">
 						<a href="{% url 'intempo:album_page' album.id %}">
 						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
-						<p>{{album.name}}<br><a/>
-						{{album.creation_date}}<br>
+						<p>{{album.name}}</a><br>
+						{{album.time_of_creation}}<br>
 						{{album.artist}}<br>
-						average rating: {{album.avg_rating}}
+						Average rating: {{album.avg_rating}}
 						</p>
 						</div>
 					{% endfor%}
-						</div>
+				</div>
 			</ul>
 		{% else %}
 				<strong>No pages currently in category.</strong>

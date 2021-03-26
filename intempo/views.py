@@ -64,36 +64,53 @@ def albums(request):
 #             return redirect(reverse("intempo:album_page"))
 
 def album_page(request, album_id):
-    # addCommentForm = AddCommentForm()
-    addReviewForm = AddReviewForm()
-
-    context_dict = {}
     try:
         album = Album.objects.get(id=album_id)
     except Album.DoesNotExist:
         return not_found(request)
     
-    if request.method == 'POST':
-        form = AddReviewForm(request.POST)
+    # addCommentForm = AddCommentForm()
+    commentForms = []
 
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.album = album
-            review.user = UserProfile.objects.all().get(user=request.user)
-            review.save()
-        return redirect(reverse("intempo:album_page", kwargs={'album_id': album_id}))
-            
+    reviews = Review.for_album(album)
+    context_dict = {}
+    if request.method == 'POST':
+        if 'review-rating' in request.POST:
+            review_form = AddReviewForm(request.POST, prefix="review")
+
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.album = album
+                review.user = UserProfile.objects.get(user=request.user)
+                review.save()
+            return redirect(reverse("intempo:album_page", kwargs={'album_id': album_id}))
+        else:
+            for i in range(0, len(reviews)):
+                if 'comment' + str(i) + '-comment_text' in request.POST:
+                    comment_form = AddCommentForm(request.POST, prefix="comment" + str(i))
+
+                    if comment_form.is_valid():
+                        comment = comment_form.save(commit=False)
+                        comment.user = UserProfile.objects.get(user=request.user)
+                        comment.review = reviews[i]
+                        comment.save()
+                    return redirect(reverse("intempo:album_page", kwargs={'album_id': album_id}))
+    
+    for i in range(0, len(reviews)):
+        commentForms.append({
+            'form': AddCommentForm(prefix="comment" + str(i)),
+            'reviewer': reviews[i].user.username
+        })
     
     context_dict["album"] = album
-    context_dict["reviews"] = Review.for_album(album)
-    # context_dict["form"] = form
+    context_dict["reviews"] = reviews
     if not request.user.is_anonymous:
         user = UserProfile.get_by_username(request.user.username)
         context_dict["rated"] = user.has_rated(album)
     else:
         context_dict["rated"] = True
-    # context_dict["add_comment"] = addCommentForm
-    context_dict["add_review"] = addReviewForm
+    context_dict["comment_forms"] = commentForms
+    context_dict["add_review"] = AddReviewForm(prefix='review')
 
     response = render(request, 'intempo/album_page.html', context=context_dict)
     return response

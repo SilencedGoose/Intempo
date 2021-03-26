@@ -109,59 +109,62 @@
       </div>
     </div>
   </div>
-
-  {% for review in reviews %}
-    {% if user.is_anonymous == False %}
-    <div class="modal fade" tabindex="-1" id="addComment{{ forloop.counter0 }}Modal"aria-labelledby="addComment{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add a comment to the review by {{ review.user.username }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form method="POST">
-            {% csrf_token %}
-            <div class="modal-body">
-                <div class="form-group">
-                  <label for="reviewForm">Comment</label>
-                  <textarea class="form-control" id="reviewForm" rows="2"></textarea>
-                </div>
+  {% if user.is_anonymous == False %}
+    {% for comment_form in comment_forms %}
+      <div class="modal fade" tabindex="-1" id="addComment{{ forloop.counter0 }}Modal"aria-labelledby="addComment{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add a comment to the review by {{ comment_form.reviewer }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Add comment</button>
+            <form method="POST">
+              <div class="modal-body">
+                {% csrf_token %}
+                {{ comment_form.form |crispy }}
+                  <!-- <div class="form-group">
+                    <label for="reviewForm">Comment</label>
+                    <textarea class="form-control" id="reviewForm" rows="2"></textarea>
+                  </div> -->
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Add comment</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% for review in reviews %}  
+    {% if review.comments|length > 0 %}
+      <div class="modal fade" tabindex="-1" id="comments{{ forloop.counter0 }}Modal"aria-labelledby="comments{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Comments to the review by {{ review.user.username }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              {% for comment in review.comments %}
+                <div class="card">
+                  <div class="card-body">
+                    <h5><a href="{% url 'intempo:profile' comment.user.username %}" class="card-title">{{ comment.user.username }}</a></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ comment.time_since_posted }}</h6>
+                    <p class="card-text">{{ comment.comment_text }}</p>
+                  </div>
+                </div>  
+              {% endfor %}
+              <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
     {% endif %}
-  
-  {% if review.comments|length > 0 %}
-    <div class="modal fade" tabindex="-1" id="comments{{ forloop.counter0 }}Modal"aria-labelledby="comments{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Comments to the review by {{ review.user.username }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            {% for comment in review.comments %}
-              <div class="card">
-                <div class="card-body">
-                  <h5><a href="{% url 'intempo:profile' comment.user.username %}" class="card-title">{{ comment.user.username }}</a></h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{{ comment.time_since_posted }}</h6>
-                  <p class="card-text">{{ comment.comment_text }}</p>
-                </div>
-              </div>  
-            {% endfor %}
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  {% endif %}
   {% endfor %}
 </div>
 {% endblock %}
