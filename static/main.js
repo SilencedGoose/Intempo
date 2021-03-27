@@ -16,13 +16,6 @@ window.onload = function() {
     });
 };
 
-// keeps track of the value that the user has selected when sliding the range
-function onRatingChange(form) {
-    $("#rating-value").html($(form).val())
-}
-
-
-
 //// profile view
 // showing/hiding the forms to edit profile
 function toggle_edit_profile() {

@@ -10,10 +10,20 @@
   <div id="trending">
     Check out what everyone is listening to right now.<br>
     SLIDESHOWS<br>
+    <ul>
+      {% for trending_album in trending %}
+      <li>{{ trending_album.name }}</li>
+      {% endfor %}
+    </ul>
   </div>
 
   <div id="top_rated">
     Certified classics and GOATs -- according to our members.<br>
     ALBUMS<br>
+    <ul>
+      {% for top_album in top %}
+      <li>{{ top_album.name }}</li>
+      {% endfor %}
+    </ul>
   </div>
 {% endblock %}

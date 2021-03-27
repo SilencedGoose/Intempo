@@ -10,8 +10,10 @@ from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm
 
 
 def index(request):
-    context_dict = {}
-    context_dict[""] = ""
+    context_dict = {
+        "trending": Album.trending(),
+        "top": Album.top_rated()
+    }
 
     response = render(request, 'intempo/index.html', context=context_dict)
     return response
