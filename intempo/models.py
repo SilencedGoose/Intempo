@@ -58,12 +58,12 @@ class Album(models.Model):
         Returns at max 5 albums which have gotten the most reviews in the last 4 weeks
         """
         recent_review_count = {}
-        time_now = datetime.now()
+        time_now = timezone.now()
         # keep track of the number of reviews an album has received in the last 4 weeks
         for review in Review.objects.all():
             # review.time_posted is a date, but can only operate on a datetime
-            posted_time = datetime.combine(review.time_posted, datetime.min.time())
-            if posted_time < time_now - timedelta(weeks=4):
+            posted_time = review.time_posted
+            if posted_time > time_now - timedelta(weeks=4):
                 count = recent_review_count.get(review.album, 0)
                 recent_review_count[review.album] = count + 1
 
@@ -146,12 +146,12 @@ class UserProfile(models.Model):
     @property
     def collection(self):
         """
-        Returns all the albums that the user has rated above 7
+        Returns all the albums that the user has rated above 5
         """
         collection = []
         for review in Review.objects.filter(user=self):
             # assumes a user could have only given one rating to an album
-            if review.rating >= 7:
+            if review.rating >= 5:
                 collection.append(review.album)
         return sorted(collection, key=lambda album:album.avg_rating)
 
