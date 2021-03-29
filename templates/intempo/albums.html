@@ -10,12 +10,13 @@
   <h1>All Albums</h1><br>
 
   <ul>
+	Current Tags: {% for tag in tags %} {{tag}} | {% endfor %}<br>
 	<form id="form" method="GET" action="{% url 'intempo:albums' %}" class = "bootstrap4">
-			    <li> {{ form | crispy}}</li>
+			     {{ form | crispy}}
 			<input type="submit" name="submit" value="Submit" />
 	</form>
-    <li><a href="add_album"> Add Album +</a></li>
-    <li>Search</li>
+    <a href="add_album"> Add Album +</a><br>
+
   </ul>
 		{% if Albums %}
 			<ul>
@@ -34,6 +35,6 @@
 				</div>
 			</ul>
 		{% else %}
-				<strong>No pages currently in category.</strong>
+				<strong>No Albums Found</strong>
 		{% endif %}
 {% endblock %}

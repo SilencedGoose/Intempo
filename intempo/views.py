@@ -22,26 +22,44 @@ def index(request):
 def albums(request):
     context_dict = {}
     form = AlbumForm()
+    
     if request.method == 'GET':
         form = AlbumForm(request.GET)
 
         if form.is_valid():
+        
+
             if form.cleaned_data['sort'] in [f.name for f in Album._meta.fields[1:4:]]:
                 album = Album.objects.order_by(form.cleaned_data['sort'])
             else:
                 album = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
+        
+            
+            
             filteredalbum = []
             user_tags = form.cleaned_data['filter'].split(',')
             user_tags = [i.strip().upper() for i in user_tags]
+            
+            
             if user_tags != ['']:
                 for A in album:
-                    if(set(user_tags).issubset(A.tags_as_list)):
-                        filteredalbum.append(A)
+                    for t in user_tags:
+                        if(t in A.tags_as_list):
+                            filteredalbum.append(A)
+            
             else:
                 filteredalbum = album
 
+            tags = []
+            for i in album:
+                for j in i.tags_as_list:
+                    if j.lower() not in tags:
+                        tags.append(j.lower())
+                
+
 
             context_dict["Albums"] = filteredalbum
+            context_dict["tags"] = tags
             context_dict["form"] = form
             return render(request, 'intempo/albums.html', context=context_dict)
 
