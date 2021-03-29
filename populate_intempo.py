@@ -2,6 +2,9 @@
 ## run using python manage.py migrate --run-syncdb
 ## instead of python manage.py migrate
 
+##Album images and information taking from RollingStone, and Google.
+
+
 
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'intempo_project.settings')
@@ -96,8 +99,7 @@ def add_review(myReview):
     return R
 
 def add_comment(myComment):
-    try:
-        C = Comment(
+    C = Comment(
         time_posted=convert_to_date(myComment['time_posted']),
         user=UserProfile.get_by_username(username=myComment['username']),
         review=Review.objects.get(
@@ -106,9 +108,7 @@ def add_comment(myComment):
         ),
         comment_text=myComment['comment_text']
     )
-        C.save()
-    except:
-        print(myComment['review'])
+    C.save()
     return C
 
 if __name__ == '__main__':
