@@ -22,10 +22,26 @@ class UserProfileForm(forms.ModelForm):
         fields = ('profile_picture',)
         
 class AlbumForm(forms.ModelForm):
-    filter = forms.CharField(required = False)
+    def get_tags():
+        tags = []
+        tag_str = ""
+        album = Album.objects.all()
+        for i in album:
+            for j in i.tags_as_list:
+                if j.lower() not in tags:
+                    tags.append(j.lower())
+                    tag_str = tag_str + j.lower() + " | "
+                    
+        tag_str = tag_str[0:len(tag_str)-2:]
+        return tag_str
+        
+        
+    filter = forms.CharField(required = False, help_text = get_tags() )
     DB_Fields = list((f.name,u""+(" ".join(f.name.split("_")))) for f in Album._meta.fields[1:4:])
     DB_Fields.append(("avg_rev","Average Review"))
     sort = forms.ChoiceField(choices=DB_Fields, required = False)
+
+
     
     class Meta:
             model = Album

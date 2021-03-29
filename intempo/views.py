@@ -50,16 +50,7 @@ def albums(request):
             else:
                 filteredalbum = album
 
-            tags = []
-            for i in album:
-                for j in i.tags_as_list:
-                    if j.lower() not in tags:
-                        tags.append(j.lower())
-                
-
-
             context_dict["Albums"] = filteredalbum
-            context_dict["tags"] = tags
             context_dict["form"] = form
             return render(request, 'intempo/albums.html', context=context_dict)
 
