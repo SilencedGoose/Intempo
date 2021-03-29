@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from intempo.models import Album, UserProfile, Review
 from django.contrib.auth.models import User
 from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
-
+from django.contrib import messages
 
 
 
@@ -159,6 +159,7 @@ def add_album(request):
             Album = form.save(commit=False)
             Album.album_cover = request.FILES['album_cover']
             Album.save()
+            messages.success(request, f"New album has been added")
             return redirect(reverse("intempo:albums"))
         else:
             print(form.errors)
@@ -183,6 +184,7 @@ def add_review(request):
             Review.album = album
             Review.user = UserProfile.objects.all().get(user=request.user)
             Review.save()
+            messages.success(request, f"You have added a review")
             return redirect(reverse("intempo:home"))
         else:
             print(form.errors)
@@ -272,7 +274,8 @@ def signup(request):
 
             profile.save()
             registered = True
-            return redirect(reverse("intempo:home"))
+            messages.success(request, f"your account has been created")
+            return redirect(reverse("intempo:login"))
         else:
             print(user_form.errors, profile_form.errors)
     else:
