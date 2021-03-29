@@ -89,7 +89,8 @@ def add_review(myReview):
     return R
     
 def add_comment(myComment):
-    C = Comment(
+    try:
+        C = Comment(
         time_posted=convert_to_date(myComment['time_posted']),
         user=UserProfile.get_by_username(username=myComment['username']),
         review=Review.objects.get(
@@ -98,7 +99,9 @@ def add_comment(myComment):
         ),
         comment_text=myComment['comment_text']
     )
-    C.save()
+        C.save()
+    except:
+        print(myComment['review'])
     return C
     
 if __name__ == '__main__':
