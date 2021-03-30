@@ -1,11 +1,15 @@
 from django import forms
 from django.contrib.auth.models import User
-from intempo.models import UserProfile, Album, Review, Comment
+from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms.widgets import NumberInput
+from django.utils import timezone
 
+from datetime import datetime
+
+from intempo.models import UserProfile, Album, Review, Comment
 
 ## USER REGISTRATION
 class UserForm(forms.ModelForm):
@@ -21,48 +25,41 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('profile_picture',)
         
-class AlbumForm(forms.ModelForm):
-    def get_tags():
-        tags = []
-        tag_str = ""
-        album = Album.objects.all()
-        for i in album:
-            for j in i.tags_as_list:
-                if j.lower() not in tags:
-                    tags.append(j.lower())
-                    tag_str = tag_str + j.lower() + " | "
-                    
-        tag_str = tag_str[0:len(tag_str)-2:]
-        return tag_str
-        
-        
-    filter = forms.CharField(required = False, help_text = get_tags() )
-    DB_Fields = list((f.name,u""+(" ".join(f.name.split("_")))) for f in Album._meta.fields[1:4:])
-    DB_Fields.append(("avg_rev","Average Review"))
-    sort = forms.ChoiceField(choices=DB_Fields, required = False)
-    search = forms.CharField(required = False)
+def get_tags():
+    tags = []
+    album = Album.objects.all()
+    for i in album:
+        for j in i.tags_as_list:
+            if j.lower() not in tags:
+                tags.append(j.lower())
+                
+    return " | ".join(tags)
 
+class AlbumForm(forms.Form):
+    fltr = forms.CharField(label="Filter by Tags:", required = False, help_text = "Available Tags: " + get_tags())
+    search = forms.CharField(label="Search Album:", required = False, help_text = "Search by album name or title")
 
-    
     class Meta:
-            model = Album
-            fields = ()
+        fields = ('fltr', 'search')
 
 #album form
 class AddAlbumForm(forms.ModelForm):
-    
-    name = forms.CharField(label = "name", max_length = 30)
-    artist = forms.CharField(label = "artist", max_length = 30)
-    creation_date = forms.DateField(label="creation date")
-    creation_date.clean
-    album_cover = forms.ImageField(label="add album cover", max_length = 60)
-    description = forms.CharField(label="add description", widget = forms.Textarea)
-    tags = forms.Field(label="add tags")
+    name = forms.CharField(label = "Name", max_length = 30)
+    artist = forms.CharField(label = "Artist", max_length = 30)
+    creation_date = forms.DateField(
+        label="Creation Date",
+        widget=forms.TextInput(
+            attrs={'type': 'date'}
+        ),
+    )
+    album_cover = forms.ImageField(label="Add Album Cover", max_length = 60, required = False)
+    description = forms.CharField(label="Add Description")
+    tags = forms.Field(label="Add Tags")
 
     class Meta:
         model = Album
         fields = ('name', 'artist', 'creation_date', 'album_cover', 'description', 'tags')
-        
+
 def ValidateRating(rating):
     possible_ratings = [i/10 for i in range(0, 101)]
     if rating not in possible_ratings:

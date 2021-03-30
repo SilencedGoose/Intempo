@@ -148,17 +148,6 @@ class AlbumTestCase(TestCase):
             tags = ["tag"+str(j) for j in range(i)]
             self.assertEqual(album.tags, "" if len(tags) == 0 else ", ".join(tags), "The tags aren't correctly stored!")
             
-
-    def test_filter_by_tags(self):
-        """
-        Tests the static method filter_by_tags
-        """
-        for i in range(10):
-            albums_filtered = Album.filter_by_tag("TAG" + str(i))
-            albums_expected = [Album.objects.get(name="album"+str(j)) for j in range(i+1, 10)]
-            self.assertEqual(albums_filtered, albums_expected, "The filter_by_tags static method isn't working!")
-
-    
 class UserProfileTestCase(TestCase):
     def setUp(self):
         setup_albums()

@@ -3,15 +3,14 @@ import os
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 from datetime import datetime, timedelta
 
 class Album(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30)
     artist = models.CharField(max_length=30)
     creation_date = models.DateField()
-    album_cover = models.ImageField(upload_to="cover_art", default=os.path.join(os.path.dirname(__file__), "cover_art/default_cover.png"))
+    album_cover = models.ImageField(upload_to="cover_art", default="Cover_Art/default_cover.png")
     description = models.TextField()
     tags = models.TextField()
 
@@ -79,11 +78,31 @@ class Album(models.Model):
         return sorted(Album.objects.all(), key=lambda album:album.avg_rating, reverse=True)[:5]
 
     @staticmethod
-    def filter_by_tag(tag):
+    def filter_by_tags(tags):
         """
-        Returns all the albums which have the tag provided
+        Returns all the albums which have one of the tags provided
         """
-        return [album for album in Album.objects.all() if tag in album.tags_as_list]
+        tags = [tag.strip().upper() for tag in tags.split(',')]
+        if len(tags) == 1 and tags[0] == '':
+            return Album.objects.all()
+        
+        albums = []
+        for album in Album.objects.all():
+            for tag in tags:
+                if tag in album.tags_as_list:
+                    albums.append(album)
+        return albums
+
+    def by_filter(self, keywords):
+        """
+        Returns true if this album satisfies the keywords
+        """
+        keywords = keywords.split(" ")
+        for keyword in keywords:
+            if keyword.upper() in self.name.upper() or keyword.upper() in self.artist.upper():
+                return True
+        return False
+    
 
 # finds/creates the "deleted_user" (also implies that this isn't a valid username?)
 def get_sentinel_user():
@@ -92,7 +111,7 @@ def get_sentinel_user():
 class UserProfile(models.Model):
     # when the user gets deleted, we assign their reviews as get_sentinel_user
     user = models.OneToOneField(User, on_delete=models.SET(get_sentinel_user), related_name="user_profile")
-    profile_picture = models.ImageField(upload_to="profile_pictures", default=os.path.join(os.path.dirname(__file__), "profile_pictures/default_pic"))
+    profile_picture = models.ImageField(upload_to="profile_pictures", default="profile_pictures/default_pic.png")
     join_date = models.DateTimeField(default=timezone.now)
 
     @staticmethod
@@ -174,7 +193,7 @@ class UserProfile(models.Model):
 class Review(models.Model):
     time_posted = models.DateTimeField(default=timezone.now)
     review_text = models.TextField(blank=True)
-    rating = models.FloatField(validators=[MaxValueValidator(10), MinValueValidator(0)])
+    rating = models.FloatField()
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
 
@@ -191,9 +210,10 @@ class Review(models.Model):
     @staticmethod
     def for_album(album):
         """
-        Returns all the reviews for an album in chronological order
+        Returns all the reviews (with non-empty review_text) for an album in chronological order
         """
-        return Review.objects.filter(album=album).order_by('-time_posted')
+        reviews = Review.objects.filter(album=album).order_by('-time_posted')
+        return [review for review in reviews if len(review.review_text) > 0]
 
     @property
     def comments(self):
@@ -217,10 +237,6 @@ class Comment(models.Model):
         Returns a well-formatted string representing the time passed since the comment was posted
         """
         return formatted_difference(self.time_posted)
-
-# def date_to_datetime(time):
-#     return datetime.combine(time, datetime.min.time())
-
 
 def formatted_difference(time):
     """

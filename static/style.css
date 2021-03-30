@@ -34,12 +34,12 @@ a {
 
 .triggers-modal {
     cursor: pointer;
+    color: #007bff !important;
 }
 
 span.rating {
     padding: .5rem;
 }
-
 
 span#album-rating {
     float: right;
@@ -47,6 +47,18 @@ span#album-rating {
 
 .no-comment.comments-count {
     display: none;
+}
+
+#toast-container {
+    position: relative;
+}
+
+.toast {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: black;
+    z-index: 5;
 }
 
 /* profile */

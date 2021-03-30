@@ -4,8 +4,6 @@
 
 ##Album images and information taking from RollingStone, and Google.
 
-
-
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'intempo_project.settings')
 
@@ -27,7 +25,7 @@ def convert_to_date(list):
     """
     Converts a list of [day, month, year] into a datetime object
     """
-    return make_aware(datetime(day=list[0], month=list[1], year=list[2]))
+    return datetime(day=list[0], month=list[1], year=list[2])
 
 
 def populate():
@@ -79,7 +77,7 @@ def add_user(myUser):
     # M.set_password(myUser['password'])
     # M.save()
     U = UserProfile(
-        join_date=convert_to_date(myUser['join_date']),
+        join_date=make_aware(convert_to_date(myUser['join_date'])),
         user=M,
         profile_picture=myUser['profile_picture'],
     )
@@ -92,7 +90,7 @@ def add_review(myReview):
         user=UserProfile.get_by_username(username=myReview['username']),
         album=Album.objects.get(name=myReview['album']),
         rating=myReview['rating'],
-        time_posted=convert_to_date(myReview['time_posted']),
+        time_posted=make_aware(convert_to_date(myReview['time_posted'])),
         review_text=myReview['review_text']
     )
     R.save()
@@ -100,7 +98,7 @@ def add_review(myReview):
 
 def add_comment(myComment):
     C = Comment(
-        time_posted=convert_to_date(myComment['time_posted']),
+        time_posted=make_aware(convert_to_date(myComment['time_posted'])),
         user=UserProfile.get_by_username(username=myComment['username']),
         review=Review.objects.get(
             user=UserProfile.get_by_username(username=myComment['review'][0]),

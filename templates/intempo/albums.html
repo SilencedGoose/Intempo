@@ -9,50 +9,80 @@
 {% load crispy_forms_tags %}
     <div>
         <h1>Albums</h1>
-        <form id="form" method="GET" action="{% url 'intempo:albums' %}">
+        <form id="filter-by-tags-form">
             {% csrf_token %}
             <div class="row">
-                {{ form|crispy }}
+                {{ tags_form|crispy }}
                 <div class="float-end">
                     <button type="submit" class="btn btn-primary float-end">Filter</button>
                 </div>
             </div>
-        </form>
+        </form>    
+        <div class="row">
+            <span>Sort by:</span>
+            <div class="btn-group" role="group" aria-label="Sort Albums">
+                <button type="button" id="avg_rating_btn" class="btn col btn-primary active set-album-sorting" onclick="setAlbumSortType('avg_rating')">Rating</button>
+                <button type="button" class="btn col btn-primary set-album-sorting" onclick="setAlbumSortType('name')">Name</button>
+                <button type="button" class="btn col btn-primary set-album-sorting" onclick="setAlbumSortType('artist')">Artist</button>
+            </div>    
+        </div>
+        <div class="row">
+            <h2 id="number-of-albums" class="col-12">
+                {% if albums|length == 0 %}  
+                    No albums found
+                {% elif albums|length == 1%}
+                    1 Album
+                {% else %}
+                    {{ albums|length }} Albums
+                {% endif %}
+            </h2>
+            {% if user.is_anonymous == False %}
+              <p id="add-album" class="col-12">
+                {% if albums|length == 0 %}
+                  Be the first to add an album!
+                {% endif %}
+                <a data-bs-toggle="modal" data-bs-target="#addAlbumModal" class="triggers-modal">Add an album</a>
+              </p>
+            {% endif %}
+        </div>
+        <div class="row" id="albums">
+            {% for album in albums%}
+            <!-- <div style="float:left; width:400px; height:400px; padding: 50px;"> -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <a href="{% url 'intempo:album_page' album.id %}">
+                        <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
+                    </a>
+                    <p>
+                        <a href="{% url 'intempo:album_page' album.id %}">{{album.name}}</a><br>
+                        {{album.time_of_creation}}<br>
+                        {{album.artist}}<br>
+                        Average rating: {{album.avg_rating}}
+                    </p>
+                </div>
+            {% endfor%}
+        </div>    
     </div>
 
-    <div class="row">
-        <h2 id="number-of-albums" class="col-12">
-            {% if albums|length == 0 %}  
-                No albums found
-            {% elif albums|length == 1%}
-                1 Album
-            {% else %}
-                {{ albums|length }} Albums
-            {% endif %}
-        </h2>
-        {% if user.is_anonymous == False %}
-        <p id="add-album" class="col-12">
-            {% if albums|length == 0 %}
-                Be the first to add an album!
-            {% endif %}
-            <a href="{% url 'intempo:add_album' %}"> Add Album +</a>
-        </p>
-        {% endif %}
-    </div>
-
-    <div class="row">
-        {% for album in albums%}
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="{% url 'intempo:album_page' album.id %}">
-                    <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
-                </a>
-                <p>
-                    <a href="{% url 'intempo:album_page' album.id %}">{{album.name}}</a><br>
-                    {{album.time_of_creation}}<br>
-                    {{album.artist}}<br>
-                    Average rating: {{album.avg_rating}}
-                </p>
+    {% if user.is_anonymous == False %}
+      <div class="modal fade" tabindex="-1" id="addAlbumModal" aria-labelledby="addAlbumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add an album</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        {% endfor%}
-    </div>
+            <form id="add-album-form">
+              <div class="modal-body">
+                {% csrf_token %}
+                {{ add_album_form|crispy }}
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Add album</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
 {% endblock %}
