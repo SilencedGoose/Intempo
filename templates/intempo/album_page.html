@@ -7,125 +7,116 @@
 {% endblock %}
 
 {% block body_block %}
-  <div class="row">
-    <div class="col-sm align-self-start">
-      <h1 class="col-sm">
+  <div>
+    <div>
+      <h1 class="col">
         <span>{{ album.name }}</span>
-        <span class="rating rounded-circle border border-secondary float-end">{{ album.avg_rating }}</span>
+        <span class="rating rounded-circle border border-secondary float-end" id="album-rating">{{ album.avg_rating }}</span>
       </h1>
-      <h3>
+      <h3 class="col">
         {% for tag in album.tags_as_list %}
           <span class="badge bg-primary">{{ tag }}</span>
         {% endfor %}
       </h3>
-      <div class="col-sm">
+      <div class="col">
         <p>{{ album.description }}</p>
       </div>
     </div>
     <!-- <img class="col-sm align-self-end" id="profile-picture" style="max-width: 40em; max-height: 50em;" src="{{ MEDIA_URL }}/{{ album.album_cover }}" alt="Profile picture" /> -->
   </div>
   
-  <div id="reviews">
-    <h2>
-      {% if reviews|length == 1%}
-        1 Review
-      {% else %}
-        {{ reviews|length }} Reviews
-      {% endif %}
-    </h2>
-    {% if rated == False %}
-      <p>
-        {% if reviews|length == 0 %}
-          Be the first to review this album!
+  <div>
+    <div class="row">
+      <h2 id="number-of-reviews" class="col-12">
+        {% if reviews|length == 1%}
+          1 Review
         {% else %}
-          You haven't reviewed this album. 
+          {{ reviews|length }} Reviews
         {% endif %}
-        <a data-bs-toggle="modal" data-bs-target="#addReviewModal" class="triggers-modal">Add a review</a>
-      </p>
-    {% endif %}
-
-    {% for review in reviews %}
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <h5><a href="{% url 'intempo:profile' review.user.username %}" class="card-title">{{ review.user.username }}</a></h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ review.time_since_posted }}</h6>
-            </div>
-            <div class="col-auto">
-              <h4><span class="rating rounded-circle border border-secondary float-end">{{ review.rating }}</span></h4>
-            </div>
-          </div>
-          <p class="card-text">{{ review.review_text }}</p>
-          {% if review.comments|length > 0 %}
-          <a data-bs-toggle="modal" data-bs-target="#comments{{ forloop.counter0 }}Modal" class="card-link triggers-modal">
-            {% if review.comments|length == 1%} 
-              1 Comment
-            {% else %}
-             {{ review.comments|length }} Comments
-             {% endif %}
-          </a>
+      </h2>
+      {% if rated == False %}
+        <p id="add-review" class="col-12">
+          {% if reviews|length == 0 %}
+            Be the first to review this album!
+          {% else %}
+            You haven't reviewed this album. 
           {% endif %}
-          {% if user.is_anonymous == False %}
-            <a data-bs-toggle="modal" data-bs-target="#addComment{{ forloop.counter0 }}Modal" class="card-link triggers-modal">Add a Comment</a>
-          {% endif %}
-        </div>
-      </div>      
-    {% endfor %}
-  </div>
-
-  <!-- <div>
-      <form id="form" method="post" action="{% url 'intempo:album_page' album.id %}">
-        {% csrf_token %}
-
-        {{ form.as_p }}
-
-        <input type="submit" name="submit" value="Add Comment">
-      </form>
-    </div> -->
-<div>
-    <div class="modal fade" tabindex="-1" id="addReviewModal"aria-labelledby="addReviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add a review</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form method="POST" action="{% url 'intempo:album_page' album.id %}">
-          <div class="modal-body">
-            {% csrf_token %}
-            {{ add_review|crispy }}
-            <!-- <div class="form-group">
-              <label for="formControlRange">Rating:</label>
-              <span id="rating-value">5.0</span>
-              <input type="range" class="form-range" min="0" max="10" step="0.1" id="formControlRange" oninput="onRatingChange(this)">
-            </div> -->
+          <a data-bs-toggle="modal" data-bs-target="#addReviewModal" class="triggers-modal">Add a review</a>
+        </p>
+      {% endif %}
+    </div>
+    
+    <div id="reviews">
+      {% for review in reviews %}
+        <div class="card" id="review-{{ review.id }}">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5><a href="{% url 'intempo:profile' review.user.username %}" class="card-title">{{ review.user.username }}</a></h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ review.time_since_posted }}</h6>
+              </div>
+              <div class="col-auto">
+                <h4><span class="rating rounded-circle border border-secondary float-end">{{ review.rating }}</span></h4>
+              </div>
+            </div>
+            <div onclick="setReviewId({{ review.id }})">
+              <p class="card-text">{{ review.review_text }}</p>
+              <a data-bs-toggle="modal" data-bs-target="#comments{{ review.id }}Modal" class="card-link triggers-modal comments-count
+              {% if review.comments|length == 0%} 
+                no-comment 
+              {% endif %}">
+                {% if review.comments|length == 1 %} 
+                  1 Comment
+                {% else %}
+                {{ review.comments|length }} Comments
+                {% endif %}
+              </a>
+              {% if user.is_anonymous == False %}
+                <a data-bs-toggle="modal" data-bs-target="#addCommentModal" class="card-link triggers-modal">Add a Comment</a>
+              {% endif %}
+            </div>
           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Add review</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </form>
-      </div>
+        </div>      
+      {% endfor %}
     </div>
   </div>
-  {% if user.is_anonymous == False %}
-    {% for comment_form in comment_forms %}
-      <div class="modal fade" tabindex="-1" id="addComment{{ forloop.counter0 }}Modal"aria-labelledby="addComment{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
+
+  <div id="modals">
+    {% if rated == False %}
+      <div class="modal fade" tabindex="-1" id="addReviewModal"aria-labelledby="addReviewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Add a comment to the review by {{ comment_form.reviewer }}</h5>
+              <h5 class="modal-title">Add a review</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST">
+            <form id="add-review-form">
               <div class="modal-body">
                 {% csrf_token %}
-                {{ comment_form.form |crispy }}
-                  <!-- <div class="form-group">
-                    <label for="reviewForm">Comment</label>
-                    <textarea class="form-control" id="reviewForm" rows="2"></textarea>
-                  </div> -->
+                {{ add_review|crispy }}
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Add review</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if user.is_anonymous == False %}
+      <div class="modal fade" tabindex="-1" id="addCommentModal" aria-labelledby="addCommentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add a comment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="add-comment-form">
+              <div class="modal-body">
+                {% csrf_token %}
+                {{ add_comment |crispy }}
               </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Add comment</button>
@@ -135,12 +126,10 @@
           </div>
         </div>
       </div>
-    {% endfor %}
-  {% endif %}
+    {% endif %}
 
-  {% for review in reviews %}  
-    {% if review.comments|length > 0 %}
-      <div class="modal fade" tabindex="-1" id="comments{{ forloop.counter0 }}Modal"aria-labelledby="comments{{ forloop.counter0 }}ModalLabel" aria-hidden="true">
+    {% for review in reviews %}  
+      <div class="modal fade comments-modal" tabindex="-1" id="comments{{ review.id }}Modal" aria-labelledby="comments{{ review.id }}ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
@@ -148,23 +137,24 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              {% for comment in review.comments %}
-                <div class="card">
-                  <div class="card-body">
-                    <h5><a href="{% url 'intempo:profile' comment.user.username %}" class="card-title">{{ comment.user.username }}</a></h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ comment.time_since_posted }}</h6>
-                    <p class="card-text">{{ comment.comment_text }}</p>
+              <div class="comments">
+                {% for comment in review.comments %}
+                  <div class="card">
+                    <div class="card-body">
+                      <h5><a href="{% url 'intempo:profile' comment.user.username %}" class="card-title">{{ comment.user.username }}</a></h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{ comment.time_since_posted }}</h6>
+                      <p class="card-text">{{ comment.comment_text }}</p>
+                    </div>
                   </div>
-                </div>  
-              {% endfor %}
+                {% endfor %}
+              </div>
               <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    {% endif %}
-  {% endfor %}
-</div>
+    {% endfor %}
+  </div>
 {% endblock %}
