@@ -40,6 +40,7 @@ class AlbumForm(forms.ModelForm):
     DB_Fields = list((f.name,u""+(" ".join(f.name.split("_")))) for f in Album._meta.fields[1:4:])
     DB_Fields.append(("avg_rev","Average Review"))
     sort = forms.ChoiceField(choices=DB_Fields, required = False)
+    search = forms.CharField(required = False)
 
 
     
