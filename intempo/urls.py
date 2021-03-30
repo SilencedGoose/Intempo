@@ -8,6 +8,7 @@ urlpatterns = [
     path("albums/", views.albums, name="albums"),
     path("albums/<int:album_id>/", views.album_page, name="album_page"),
     path("albums/add_album/", views.add_album, name="add_album"),
+    path("albums/filter_by/<str:sort_type>/", views.sort_albums, name="sort_albums"),
     path("user/<str:username>/", views.profile, name="profile"),
     path("sign-up/", views.signup, name="signup"),
     path("albums/<int:album_id>/add_review/", views.add_review, name="add_review"),

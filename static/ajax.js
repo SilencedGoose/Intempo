@@ -86,10 +86,16 @@ $(function () {
                     $("#reviews").prepend(reviewDiv);
                 }
     
-                console.log("Successfully add the review!", true);
+                console.log("Successfully add the review!");
+                // showToast("Successfully add the review!", true);
             },
             error: function (request) {
-                console.log(request["error"])
+                if (request["responseJSON"]) {
+                    unpackError((request["responseJSON"]["error"]));
+                    // showErrorToast(request["responseJSON"]["error"])
+                } else {
+                    console.log("Unexpected error!");
+                }
             }
         });
     });
@@ -128,10 +134,147 @@ $(function () {
                 $("#comments" + review_id + "Modal .comments").prepend(commentDiv);
 
                 console.log("Successfully added comment!");
+                // showToast("Successfully added comment!", true);
             },
             error: function (request) {
-                console.log(request["error"])
+                if (request["responseJSON"]) {
+                    unpackError((request["responseJSON"]["error"]));
+                    // showErrorToast(request["responseJSON"]["error"])
+                } else {
+                    console.log("Unexpected error!");
+                }
             }
         });
     });
+
+    $("#add-album-form").submit(function (e) {
+        e.preventDefault();
+        var form = $(this).serialize();
+        var node = $(this);
+
+        $.ajax({
+            type: 'POST',
+            url: `./add_album/`,
+            data: form,
+            success: function (response) {
+                // sorting goes to default- average rating
+                $(".set-album-sorting").removeClass("active");
+                $("#avg_rating_btn").addClass("active");
+
+                // stop any filtering
+                $("#filter-by-tags-form").trigger('reset');
+            
+                // close the modal
+                $("#addAlbumModal").modal('hide');
+                // reset the form
+                node.trigger('reset');
+
+                updateAlbums(response);
+                console.log("Successfully added album!");
+                // showToast("Successfully added album!", true);
+            },
+            error: function (request) {
+                if (request["responseJSON"]) {
+                    unpackError((request["responseJSON"]["error"]));
+                    // showErrorToast(request["responseJSON"]["error"])
+                } else {
+                    console.log("Unexpected error!");
+                }
+            }
+        });
+    });
+
+    $(".set-album-sorting").click(function (e) {
+        e.preventDefault();
+        var form = $("#filter-by-tags-form").serialize();
+        btn = $(this);
+
+        $.ajax({
+            type: 'POST',
+            url: `./filter_by/${album_sort_type}/`,
+            data: form,
+            success: function (response) {
+                // change which type of sorting we have => make only this type of sorting active
+                $(".set-album-sorting").removeClass("active");
+                btn.addClass("active");
+                updateAlbums(response)
+
+                console.log("Sorted albums");
+            },
+            error: function (request) {
+                if (request["responseJSON"]) {
+                    unpackError((request["responseJSON"]["error"]));
+                    // showErrorToast(request["responseJSON"]["error"])
+                } else {
+                    console.log("Unexpected error!");
+                }
+            }
+        });
+    });
+
+    $("#filter-by-tags-form").submit(function (e) {
+        e.preventDefault();
+        var form = $(this).serialize();
+        
+        $.ajax({
+            type: 'POST',
+            url: `./filter_by/${album_sort_type}/`,
+            data: form,
+            success: function (response) {
+                updateAlbums(response);
+
+                console.log("Filtered by tags")
+            },
+            error: function (request) {
+                if (request["responseJSON"]) {
+                    unpackError((request["responseJSON"]["error"]));
+                    // showErrorToast(request["responseJSON"]["error"])
+                } else {
+                    console.log("Unexpected error!");
+                }
+            }
+        });  
+    });
 })
+
+function updateAlbums(response) {
+    var no_of_albums = response["albums"].length;
+    // update the number of albums
+    if (no_of_albums == 1) {
+        $("#number-of-albums").text("1 Album");
+    } else {
+        $("#number-of-albums").text(`${no_of_albums} Albums`);
+    }
+
+    // replace the albums
+    var albumsDiv = `<div class="row" id="albums">`;
+    response["albums"].forEach(album =>{
+        albumsDiv += `
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="${album["url"]}">
+                <img src="${album["cover"]}" class="img-thumbnail" alt="${album["name"]}">
+            </a>
+            <p>
+                <a href="${album["url"]}">${album["name"]}</a><br>
+                ${album["time_of_creation"]}<br>
+                ${album["artist"]}<br>
+                Average rating: ${album["avg_rating"].toFixed(1)}
+            </p>
+        </div>
+        `;
+    })
+    albumsDiv += `</div>`;
+    $("#albums").replaceWith(albumsDiv);
+}
+
+function unpackError(error) {
+    var errors = []
+    error = JSON.parse(error);
+    for (field in error) {
+        console.log(error[field]);
+        error[field].forEach(obj => {
+            errors.push(obj.message);
+        })
+    }
+    console.log("Errors: ", errors.join(", "));
+}

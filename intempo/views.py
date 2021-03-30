@@ -5,13 +5,7 @@ from django.contrib.auth.decorators import login_required
 from intempo.models import Album, UserProfile, Review
 from django.contrib.auth.models import User
 from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
-from django.contrib import messages
 from django.http import JsonResponse
-
-def get_album_info_as_list(album):
-    string = album.name + " " + album.artist + " " + album.description + " " + str(album.creation_date).replace("-", " ")
-    list = string.upper().split(" ")
-    return list
 
 def index(request):
     context_dict = {
@@ -22,50 +16,83 @@ def index(request):
     response = render(request, 'intempo/index.html', context=context_dict)
     return response
 
+def format_albums(albums, sort_type):
+    """
+    Given a list of albums and the sort type, sorts the albums by the sort type, 
+    and then returns a JSON response unpacking the albums
+    """
+    if sort_type == 'name':
+        albums = sorted(albums, key=lambda a:a.name)
+    elif sort_type == 'artist':
+        albums = sorted(albums, key=lambda a:a.artist)
+    elif sort_type == 'avg_rating':
+        albums = sorted(albums, key=lambda a:a.avg_rating, reverse=True)
+    else:
+        raise ValueError("Unexpected sort type!")
+
+    return JsonResponse({
+        'albums': [{
+            'url': reverse("intempo:album_page", kwargs={'album_id': album.id}),
+            'cover': '/media/' + str(album.album_cover),
+            'name': album.name,
+            'time_of_creation': album.time_of_creation,
+            'artist': album.artist,
+            'avg_rating': album.avg_rating,
+        } for album in albums]
+    }, status=200)
+
+def add_album(request):
+    if not request.is_ajax or request.method != 'POST':
+        return not_found(request)
+    
+    if request.user.is_anonymous:
+        return JsonResponse({'error': "You aren't authenticated! Please log in to add an album."}, status=400)
+    
+    form = AddAlbumForm(request.POST, request.FILES)
+    if form.is_valid():
+        album = form.save(commit=False)
+        if 'album_cover' in request.FILES:
+            album.album_cover = request.FILES['album_cover']
+        album.save()
+        albums = Album.objects.all()
+        try:
+            return format_albums(albums, 'avg_rating')
+        except ValueError:
+            print("Unexpected sort type!")
+            return JsonResponse({'error': 'Unexpected error! Please try again!'}, status=400)
+    else:
+        return JsonResponse({'error': form.errors.as_json()}, status=400)
+
+def sort_albums(request, sort_type):
+    if not request.is_ajax or request.method != 'POST':
+        return not_found(request)
+    
+    form = AlbumForm(request.POST)
+
+    if form.is_valid():
+        # filter by the tags
+        albums = Album.filter_by_tags(form.cleaned_data["fltr"])
+
+        # search albums 
+        if form.cleaned_data["search"]:
+            search = form.cleaned_data["search"]
+            albums = [album for album in albums if album.by_filter(search)]
+
+        try:
+            return format_albums(albums, sort_type)
+        except ValueError:
+            print("Unexpected sort type!")
+            return JsonResponse({'error': 'Unexpected error! Please try again!'}, status=400)
+    else:
+        return JsonResponse({'error': form.errors.as_json()}, status=400)
 
 def albums(request):
     context_dict = {}
-    form = AlbumForm()
     
-    if request.method == 'GET':
-        form = AlbumForm(request.GET)
-        if form.is_valid():
-            if form.cleaned_data['sort'] in [f.name for f in Album._meta.fields[1:4:]]:
-                album = Album.objects.order_by(form.cleaned_data['sort'])
-            else:
-                album = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
-
-            filteredalbum = []
-            user_tags = form.cleaned_data['filter'].split(',')
-            user_tags = [i.strip().upper() for i in user_tags]
-            
-            if user_tags != ['']:
-                for A in album:
-                    for t in user_tags:
-                        if(t in A.tags_as_list):
-                            filteredalbum.append(A)
-            else:
-                filteredalbum = album
-                
-            search = form.cleaned_data['search']
-            if search != '': 
-                new_filtered_album = [i for i in filteredalbum]
-                filteredalbum = []
-                search = search.split(" ")
-                
-                for A in new_filtered_album:
-                    for s in search:
-                        if s.upper() in get_album_info_as_list(A):
-                            filteredalbum.append(A)
-                            break
-
-            context_dict["albums"] = filteredalbum
-            context_dict["form"] = form
-            return render(request, 'intempo/albums.html', context=context_dict)
-
-    album = Album.objects.all()
-    context_dict["Albums"] = album
-    context_dict["form"] = form
+    context_dict["albums"] = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
+    context_dict["tags_form"] = AlbumForm()
+    context_dict["add_album_form"] = AddAlbumForm()
+    
     response = render(request, 'intempo/albums.html', context=context_dict)
     return response
 
@@ -113,7 +140,6 @@ def add_review(request, album_id):
         review.album = album
         review.user = user
         review.save()
-        messages.success(request, f"The review has been added!")
 
         return JsonResponse({
             'avg_rating': album.avg_rating, 
@@ -125,8 +151,7 @@ def add_review(request, album_id):
             'no_of_reviews': len(Review.for_album(album))
         }, status=200)
     else:
-        print(form.errors)
-        return JsonResponse({'error': "The form wasn't valid!"}, status=400)
+        return JsonResponse({'error': form.errors.as_json()}, status=400)
 
 def add_comment(request, review_id):
     if not request.is_ajax or request.method != 'POST':
@@ -148,7 +173,6 @@ def add_comment(request, review_id):
         user = UserProfile.objects.get(user=request.user)
         comment.user = user
         comment.save()
-        messages.success(request, f"The comment has been added!")
 
         return JsonResponse({
             'comment_text': comment.comment_text,
@@ -157,29 +181,7 @@ def add_comment(request, review_id):
             'no_of_comments': len(review.comments),
         }, status=200)
     else:
-        print(form.errors)
-        return JsonResponse({'error': "The form wasn't valid!"}, status=400)
-
-def add_album(request):
-    form = AddAlbumForm()
-    if request.method == 'POST':
-        form = AddAlbumForm(request.POST, request.FILES)
-
-        if form.is_valid():
-
-            Album = form.save(commit=False)
-            Album.album_cover = request.FILES['album_cover']
-            Album.save()
-            messages.success(request, f"New album has been added")
-            return redirect(reverse("intempo:albums"))
-        else:
-            print(form.errors)
-
-    context_dict = {}
-    context_dict["form"] = form
-
-    response = render(request, 'intempo/add_album.html', context=context_dict)
-    return response
+        return JsonResponse({'error': form.errors.as_json()}, status=400)
 
 def profile(request, username):
     try:
@@ -216,35 +218,14 @@ def profile(request, username):
     response = render(request, 'intempo/profile.html', context=context_dict)
     return response
 
-
-def signup(request):
-    context_dict = {}
-    context_dict[""] = ""
-
-    response = render(request, 'intempo/signup.html', context=context_dict)
-    return response
-
-
-def login(request):
-    context_dict = {}
-    context_dict[""] = ""
-
-    response = render(request, 'intempo/login.html', context=context_dict)
-    return response
-
-
 def not_found(request):
-    context_dict = {}
-    context_dict[""] = ""
-
-    response = render(request, '404.html', context=context_dict)
+    response = render(request, '404.html', context={})
     return response
-
-
 
 ### USER AUTHENTICATION
 def signup(request):
     registered = False
+    context_dict = {}
 
     if request.method == "POST":
         user_form = UserForm(request.POST)
@@ -264,7 +245,6 @@ def signup(request):
 
             profile.save()
             registered = True
-            messages.success(request, f"your account has been created")
             return redirect(reverse("intempo:login"))
         else:
             print(user_form.errors, profile_form.errors)
@@ -272,4 +252,7 @@ def signup(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render(request, "intempo/signup.html", context = {"user_form": user_form, "profile_form": profile_form, "registered": registered})
+    context_dict["user_form"] = user_form
+    context_dict["profile_form"] = profile_form
+    context_dict["registered"] = registered
+    return render(request, "intempo/signup.html", context=context_dict)
