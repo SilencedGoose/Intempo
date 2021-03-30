@@ -7,6 +7,11 @@ from django.contrib.auth.models import User
 from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 from django.contrib import messages
 
+def get_album_info_as_list(album):
+    string = album.name + " " + album.artist + " " + album.description + " " + str(album.creation_date).replace("-", " ")
+    list = string.upper().split(" ")
+    return list
+
 
 
 def index(request):
@@ -22,6 +27,9 @@ def index(request):
 def albums(request):
     context_dict = {}
     form = AlbumForm()
+    
+
+    
     
     if request.method == 'GET':
         form = AlbumForm(request.GET)
@@ -46,9 +54,21 @@ def albums(request):
                     for t in user_tags:
                         if(t in A.tags_as_list):
                             filteredalbum.append(A)
-            
             else:
                 filteredalbum = album
+                
+                
+            search = form.cleaned_data['search']
+            if search != '': 
+                new_filtered_album = [i for i in filteredalbum]
+                filteredalbum = []
+                search = search.split(" ")
+                
+                for A in new_filtered_album:
+                    for s in search:
+                        if s.upper() in get_album_info_as_list(A):
+                            filteredalbum.append(A)
+                            break
 
             context_dict["Albums"] = filteredalbum
             context_dict["form"] = form
