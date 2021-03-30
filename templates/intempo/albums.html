@@ -2,38 +2,57 @@
 {% load staticfiles %}
 
 {% block title_block %}
-  Albums
+    Albums
 {% endblock %}
 
 {% block body_block %}
 {% load crispy_forms_tags %}
-  <h1>All Albums</h1><br>
+    <div>
+        <h1>Albums</h1>
+        <form id="form" method="GET" action="{% url 'intempo:albums' %}">
+            {% csrf_token %}
+            <div class="row">
+                {{ form|crispy }}
+                <div class="float-end">
+                    <button type="submit" class="btn btn-primary float-end">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-  <ul>
-	<form id="form" method="GET" action="{% url 'intempo:albums' %}" class = "bootstrap4">
-			     {{ form | crispy}}
-			<input type="submit" name="submit" value="Submit" />
-	</form>
-    <a href="add_album"> Add Album +</a><br>
+    <div class="row">
+        <h2 id="number-of-albums" class="col-12">
+            {% if albums|length == 0 %}  
+                No albums found
+            {% elif albums|length == 1%}
+                1 Album
+            {% else %}
+                {{ albums|length }} Albums
+            {% endif %}
+        </h2>
+        {% if user.is_anonymous == False %}
+        <p id="add-album" class="col-12">
+            {% if albums|length == 0 %}
+                Be the first to add an album!
+            {% endif %}
+            <a href="{% url 'intempo:add_album' %}"> Add Album +</a>
+        </p>
+        {% endif %}
+    </div>
 
-  </ul>
-		{% if Albums %}
-			<ul>
-				 <div>
-					{% for album in Albums%}
-						<div style="float:left; width:400px; height:400px; padding: 50px;">
-						<a href="{% url 'intempo:album_page' album.id %}">
-						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
-						<p>{{album.name}}</a><br>
-						{{album.time_of_creation}}<br>
-						{{album.artist}}<br>
-						Average rating: {{album.avg_rating}}
-						</p>
-						</div>
-					{% endfor%}
-				</div>
-			</ul>
-		{% else %}
-				<strong>No Albums Found</strong>
-		{% endif %}
+    <div class="row">
+        {% for album in albums%}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <a href="{% url 'intempo:album_page' album.id %}">
+                    <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
+                </a>
+                <p>
+                    <a href="{% url 'intempo:album_page' album.id %}">{{album.name}}</a><br>
+                    {{album.time_of_creation}}<br>
+                    {{album.artist}}<br>
+                    Average rating: {{album.avg_rating}}
+                </p>
+            </div>
+        {% endfor%}
+    </div>
 {% endblock %}

@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 class Album(models.Model):
     name = models.CharField(max_length=30, unique=True)
     artist = models.CharField(max_length=30)
-    creation_date = models.DateTimeField()
+    creation_date = models.DateField()
     album_cover = models.ImageField(upload_to="cover_art", default=os.path.join(os.path.dirname(__file__), "cover_art/default_cover.png"))
     description = models.TextField()
     tags = models.TextField()

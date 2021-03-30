@@ -4,6 +4,14 @@ body {
     color: white;
 }
 
+img {
+    max-width: -webkit-fill-available;
+}
+
+#albums span{
+    display: block;
+}
+
 a {
     text-decoration: none;
 }
@@ -20,12 +28,25 @@ a {
     color: black;
 }
 
+.card-link.no-comment.comments-count+.card-link{
+    margin-left: 0;
+}
+
 .triggers-modal {
     cursor: pointer;
 }
 
 span.rating {
     padding: .5rem;
+}
+
+
+span#album-rating {
+    float: right;
+}
+
+.no-comment.comments-count {
+    display: none;
 }
 
 /* profile */

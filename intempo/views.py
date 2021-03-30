@@ -6,13 +6,12 @@ from intempo.models import Album, UserProfile, Review
 from django.contrib.auth.models import User
 from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 from django.contrib import messages
+from django.http import JsonResponse
 
 def get_album_info_as_list(album):
     string = album.name + " " + album.artist + " " + album.description + " " + str(album.creation_date).replace("-", " ")
     list = string.upper().split(" ")
     return list
-
-
 
 def index(request):
     context_dict = {
@@ -28,26 +27,17 @@ def albums(request):
     context_dict = {}
     form = AlbumForm()
     
-
-    
-    
     if request.method == 'GET':
         form = AlbumForm(request.GET)
-
         if form.is_valid():
-        
-
             if form.cleaned_data['sort'] in [f.name for f in Album._meta.fields[1:4:]]:
                 album = Album.objects.order_by(form.cleaned_data['sort'])
             else:
                 album = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
-        
-            
-            
+
             filteredalbum = []
             user_tags = form.cleaned_data['filter'].split(',')
             user_tags = [i.strip().upper() for i in user_tags]
-            
             
             if user_tags != ['']:
                 for A in album:
@@ -56,7 +46,6 @@ def albums(request):
                             filteredalbum.append(A)
             else:
                 filteredalbum = album
-                
                 
             search = form.cleaned_data['search']
             if search != '': 
@@ -70,7 +59,7 @@ def albums(request):
                             filteredalbum.append(A)
                             break
 
-            context_dict["Albums"] = filteredalbum
+            context_dict["albums"] = filteredalbum
             context_dict["form"] = form
             return render(request, 'intempo/albums.html', context=context_dict)
 
@@ -80,85 +69,96 @@ def albums(request):
     response = render(request, 'intempo/albums.html', context=context_dict)
     return response
 
-
-# def album_page(request, album_id):
-
-#     form = AddCommentForm()
-#     if request.method == 'POST':
-#         current_user_profile = UserProfile.objects.all().get(user = request.user)
-#         form = AddCommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.user = current_user_profile
-#             comment.review = review
-#             comment.save()
-#             return redirect(reverse("intempo:album_page"))
-
 def album_page(request, album_id):
     try:
         album = Album.objects.get(id=album_id)
     except Album.DoesNotExist:
         return not_found(request)
     
-    # addCommentForm = AddCommentForm()
-    commentForms = []
-
     reviews = Review.for_album(album)
     context_dict = {}
-    if request.method == 'POST':
-        if 'review-rating' in request.POST:
-            review_form = AddReviewForm(request.POST, prefix="review")
-
-            if review_form.is_valid():
-                review = review_form.save(commit=False)
-                review.album = album
-                review.user = UserProfile.objects.get(user=request.user)
-                review.save()
-            return redirect(reverse("intempo:album_page", kwargs={'album_id': album_id}))
-        else:
-            for i in range(0, len(reviews)):
-                if 'comment' + str(i) + '-comment_text' in request.POST:
-                    comment_form = AddCommentForm(request.POST, prefix="comment" + str(i))
-
-                    if comment_form.is_valid():
-                        comment = comment_form.save(commit=False)
-                        comment.user = UserProfile.objects.get(user=request.user)
-                        comment.review = reviews[i]
-                        comment.save()
-                    return redirect(reverse("intempo:album_page", kwargs={'album_id': album_id}))
-    
-    for i in range(0, len(reviews)):
-        commentForms.append({
-            'form': AddCommentForm(prefix="comment" + str(i)),
-            'reviewer': reviews[i].user.username
-        })
     
     context_dict["album"] = album
     context_dict["reviews"] = reviews
-    if not request.user.is_anonymous:
+    if request.user.is_anonymous:
+        context_dict["rated"] = True
+    else:
         user = UserProfile.get_by_username(request.user.username)
         context_dict["rated"] = user.has_rated(album)
+    context_dict["add_comment"] = AddCommentForm()
+    context_dict["add_review"] = AddReviewForm()
+
+    return render(request, 'intempo/album_page.html', context=context_dict)
+
+def add_review(request, album_id):
+    if not request.is_ajax or request.method != 'POST':
+        return not_found(request)
+    
+    if request.user.is_anonymous:
+        return JsonResponse({'error': "You aren't authenticated! Please log in to add a review."}, status=400)
+    
+    user = UserProfile.objects.get(user=request.user)
+    try:
+        album = Album.objects.get(id=album_id)
+    except Album.DoesNotExist:
+        print("Album doesn't exist!")
+        return JsonResponse({'error': 'Unexpected error! Please try again!'}, status=400)
+    
+    if user.has_rated(album):
+        return JsonResponse({'error': "You have already rated this album!"}, status=400)
+
+    form = AddReviewForm(request.POST)
+    if form.is_valid():
+        review = form.save(commit=False)
+        review.album = album
+        review.user = user
+        review.save()
+        messages.success(request, f"The review has been added!")
+
+        return JsonResponse({
+            'avg_rating': album.avg_rating, 
+            'user_rating': review.rating, 
+            'review_text': review.review_text,
+            'profile_picture': str(user.profile_picture),
+            'username': user.username,
+            'review_id': review.id,
+            'no_of_reviews': len(Review.for_album(album))
+        }, status=200)
     else:
-        context_dict["rated"] = True
-    context_dict["comment_forms"] = commentForms
-    context_dict["add_review"] = AddReviewForm(prefix='review')
+        print(form.errors)
+        return JsonResponse({'error': "The form wasn't valid!"}, status=400)
 
-    response = render(request, 'intempo/album_page.html', context=context_dict)
-    return response
+def add_comment(request, review_id):
+    if not request.is_ajax or request.method != 'POST':
+        return not_found(request)
+    
+    if request.user.is_anonymous:
+        return JsonResponse({'error': "You aren't authenticated! Please log in to add a comment."}, status=400)
+    
+    try:
+        review = Review.objects.get(id=review_id)
+    except Review.DoesNotExist:
+        print("Review doesn't exist!")
+        return JsonResponse({'error': 'Unexpected error! Please try again!'}, status=400)
+        
+    form = AddCommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.review = review
+        user = UserProfile.objects.get(user=request.user)
+        comment.user = user
+        comment.save()
+        messages.success(request, f"The comment has been added!")
 
-# def add_comment(request, review_id):
-#     form = AddCommentForm()
-#     if request.method == 'POST':
-#         form = AddCommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             review = Review.objects.get(id=review_id)
-#             comment.review = review
-#             comment.user = UserProfile.objects.get(user=request.user)
-#             comment.save()
-#             return redirect("intempo:add_album", kwargs={'album_id': review.album.id})
-#     else:
-#         return not_found(request)
+        return JsonResponse({
+            'comment_text': comment.comment_text,
+            'profile_picture': str(user.profile_picture),
+            'username': user.username,
+            'no_of_comments': len(review.comments),
+        }, status=200)
+    else:
+        print(form.errors)
+        return JsonResponse({'error': "The form wasn't valid!"}, status=400)
 
 def add_album(request):
     form = AddAlbumForm()
@@ -180,27 +180,6 @@ def add_album(request):
 
     response = render(request, 'intempo/add_album.html', context=context_dict)
     return response
-
-def add_review(request):
-
-    #album must be defined
-    form = AddReviewForm()
-    if request.method == 'POST':
-
-        form = AddReviewForm(request.POST)
-
-        if form.is_valid():
-            review = form.save(commit=False)
-
-            Review.album = album
-            Review.user = UserProfile.objects.all().get(user=request.user)
-            Review.save()
-            messages.success(request, f"You have added a review")
-            return redirect(reverse("intempo:home"))
-        else:
-            print(form.errors)
-    return render(request, "intempo/add_review.html", {"form": form})
-
 
 def profile(request, username):
     try:
