@@ -268,6 +268,10 @@ function updateAlbums(response) {
 }
 
 function unpackError(error) {
+    if (error instanceof String) {
+        console.log(error);
+        return;
+    }
     var errors = []
     error = JSON.parse(error);
     for (field in error) {

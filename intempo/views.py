@@ -7,7 +7,21 @@ from django.contrib.auth.models import User
 from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 from django.http import JsonResponse
 
+def get_or_make_userprofile(request):
+    """
+    Returns the UserProfile with that username, if present. Otherwise, creates the UserProfile for that user.
+    """
+    if not request.user.is_anonymous:
+        try:
+            return UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            profile = UserProfile(user=request.user)
+            profile.save()
+            return profile
+    return None
+
 def index(request):
+    get_or_make_userprofile(request)
     context_dict = {
         "trending": Album.trending(),
         "top": Album.top_rated()
@@ -72,7 +86,7 @@ def sort_albums(request, sort_type):
     if form.is_valid():
         # filter by the tags
         albums = Album.filter_by_tags(form.cleaned_data["fltr"])
-
+        
         # search albums 
         if form.cleaned_data["search"]:
             search = form.cleaned_data["search"]
@@ -81,12 +95,12 @@ def sort_albums(request, sort_type):
         try:
             return format_albums(albums, sort_type)
         except ValueError:
-            print("Unexpected sort type!")
-            return JsonResponse({'error': 'Unexpected error! Please try again!'}, status=400)
+            return JsonResponse({'error': 'Unexpected sort type! Please try again!'}, status=400)
     else:
         return JsonResponse({'error': form.errors.as_json()}, status=400)
 
 def albums(request):
+    get_or_make_userprofile(request)
     context_dict = {}
     
     context_dict["albums"] = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
@@ -110,7 +124,7 @@ def album_page(request, album_id):
     if request.user.is_anonymous:
         context_dict["rated"] = True
     else:
-        user = UserProfile.get_by_username(request.user.username)
+        user = get_or_make_userprofile(request)
         context_dict["rated"] = user.has_rated(album)
     context_dict["add_comment"] = AddCommentForm()
     context_dict["add_review"] = AddReviewForm()
@@ -128,8 +142,7 @@ def add_review(request, album_id):
     try:
         album = Album.objects.get(id=album_id)
     except Album.DoesNotExist:
-        print("Album doesn't exist!")
-        return JsonResponse({'error': 'Unexpected error! Please try again!'}, status=400)
+        return JsonResponse({'error': "Album doesn't exist!"}, status=400)
     
     if user.has_rated(album):
         return JsonResponse({'error': "You have already rated this album!"}, status=400)
@@ -163,8 +176,7 @@ def add_comment(request, review_id):
     try:
         review = Review.objects.get(id=review_id)
     except Review.DoesNotExist:
-        print("Review doesn't exist!")
-        return JsonResponse({'error': 'Unexpected error! Please try again!'}, status=400)
+        return JsonResponse({'error': "Review doesn't exist!"}, status=400)
         
     form = AddCommentForm(request.POST)
     if form.is_valid():
@@ -184,6 +196,7 @@ def add_comment(request, review_id):
         return JsonResponse({'error': form.errors.as_json()}, status=400)
 
 def profile(request, username):
+    get_or_make_userprofile(request)
     try:
         profile = UserProfile.get_by_username(username)
     except UserProfile.DoesNotExist:
@@ -219,6 +232,7 @@ def profile(request, username):
     return response
 
 def not_found(request):
+    get_or_make_userprofile(request)
     response = render(request, '404.html', context={})
     return response
 
@@ -246,8 +260,6 @@ def signup(request):
             profile.save()
             registered = True
             return redirect(reverse("intempo:login"))
-        else:
-            print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()

@@ -17,13 +17,6 @@ class Album(models.Model):
     def __str__(self):
         return self.name
 
-    def set_tags(self, tags):
-        """
-        Sets the list of tags into the album
-        """
-        self.tags = ", ".join(tags)
-        self.save()
-
     @property
     def tags_as_list(self):
         """
@@ -31,7 +24,7 @@ class Album(models.Model):
         """
         if len(self.tags) == 0:
             return []
-        return self.tags.upper().split(", ")
+        return [tag.strip() for tag in self.tags.upper().split(",")]
 
     @property
     def avg_rating(self):
@@ -89,7 +82,7 @@ class Album(models.Model):
         albums = []
         for album in Album.objects.all():
             for tag in tags:
-                if tag in album.tags_as_list:
+                if tag in album.tags_as_list and album not in albums:
                     albums.append(album)
         return albums
 
