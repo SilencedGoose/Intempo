@@ -29,9 +29,9 @@
     <div class="row">
       <h2 id="number-of-reviews" class="col-12">
         {% if reviews|length == 1%}
-          1 Review
+          1 Review With Comment
         {% else %}
-          {{ reviews|length }} Reviews
+          {{ reviews|length }} Reviews With Comment
         {% endif %}
       </h2>
       {% if rated == False %}

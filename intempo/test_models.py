@@ -32,8 +32,8 @@ def setup_albums():
             artist="artist" + str(i),
             creation_date=make_aware(album_creation_time[i]),
             description="Album " + str(i),
+            tags=",".join(["tag" + str(j) for j in range(i)])
         )
-        album.set_tags(tags)
 
 def setup_users():
     """
@@ -146,8 +146,19 @@ class AlbumTestCase(TestCase):
         for i in range(10):
             album = Album.objects.get(name="album"+str(i))
             tags = ["tag"+str(j) for j in range(i)]
-            self.assertEqual(album.tags, "" if len(tags) == 0 else ", ".join(tags), "The tags aren't correctly stored!")
-            
+            self.assertEqual(album.tags, "" if len(tags) == 0 else ",".join(tags), "The tags aren't correctly stored!")
+    
+    def test_filter_by_tags(self):
+        """
+        Tests the static method filter_by_tags
+        """
+        for i in range(10):
+            tags = ["tag"+str(j) for j in range(i, 10)]
+            albums = Album.filter_by_tags(",".join(tags))
+            # only albums[i+1] to album9 have one of the tags {tag[i], tag[i+1], .., tag9}
+            expected = [Album.objects.get(name="album"+str(j)) for j in range(i+1, 10)]
+            self.assertEqual(albums, expected, "The static method filter_by_tags isn't working!")
+
 class UserProfileTestCase(TestCase):
     def setUp(self):
         setup_albums()

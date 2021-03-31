@@ -1,438 +1,1554 @@
 {
-    "albums":[
-        {
-            "name":"What's Going on", 
-            "artist":"Marvin Gaye", 
-            "creation_date":[20, 1, 1971], 
-            "album_cover":"Cover_Art/0.jpg",
-            "description":"Marvin Gaye’s masterpiece began as a reaction to police brutality. In May 1969, Renaldo “Obie” Benson, the Four Tops’ bass singer, watched TV coverage of hundreds of club-wielding cops breaking up the People’s Park, a protest hub in Berkeley. Aghast at the violence, Benson began to write a song with Motown lyricist Al Cleveland, trying to capture the confusion and pain of the times. He knew he had something big in his nascent version of “What’s Going On,” but the rest of the Four Tops weren’t interested, and Benson’s efforts to get Joan Baez to record it didn’t work out, either.",
-            "tags":["Motown", "soul", "R&B"]
-        },
-        {
-            "name":"Pet Sounds", 
-            "artist":"The Beach Boys", 
-            "creation_date":[16, 5, 1966], 
-            "album_cover":"Cover_Art/1.jpg",
-            "description":"“Who’s gonna hear this shit?” Beach Boys singer Mike Love asked the band’s resident genius, Brian Wilson, in 1966, as Wilson played him the new songs he was working on. “The ears of a dog?” Confronted with his bandmate’s contempt, Wilson made lemonade of lemons. “Ironically,” he observed, “Mike’s barb inspired the album’s title.”",
-            "tags" :["Pop", "Boy Band"]
-        },
-        {
-            "name":"Blue", 
-            "artist":"Joni Mitchell", 
-            "creation_date":[22, 6, 1971], 
-            "album_cover":"Cover_Art/2.jpg",
-            "description" :"In 1971, Joni Mitchell represented the West Coast feminine ideal — celebrated by Robert Plant as “a girl out there with love in her eyes and flowers in her hair” on Led Zeppelin’s “Goin’ to California.” It was a status that Mitchell hadn’t asked for and did not want:“I went, ‘Oh, my God, a lot of people are listening to me,’” she recalled in 2013. “’They better find out who they’re worshiping. Let’s see if they can take it. Let’s get real.’ So I wrote Blue.”",
-            "tags":["folk music", "pop", "contemporary"]
-        },
-        {
-            "name":"Songs in the Key of Life", 
-            "artist":"Stevie Wonder", 
-            "creation_date":[28, 9, 1976], 
-            "album_cover":"Cover_Art/3.jpg",
-            "description" :"Months before the recording sessions for Songs in the Key of Life ended, the musicians in Stevie Wonder’s band had T-shirts made up that proclaimed, “We’re almost finished.” It was the stock answer to casual fans and Motown executives and everybody who’d fallen in love with Wonder’s early-Seventies gems – 1972’s Talking Book, 1973’s Innervisions, and 1974’s Fulfillingness’ First Finale – and who had been waiting two years for the next chapter. “I believed there was a lot that needed to be said,” Wonder said. More, in fact, than he could fit onto a double album – also included was a bonus EP, a seven-inch single with four more songs from the sessions.",
-            "tags":["Motown", "soul"]
-        },
-        {
-            "name":"Abbey Road", 
-            "artist":"The Beatles", 
-            "creation_date":[26, 9, 1969], 
-            "album_cover":"Cover_Art/4.jpg",
-            "description":"Abbey Road is the eleventh studio album by the English rock band the Beatles, released on 26 September 1969 by Apple Records.",
-            "tags":["boy band", "rock", "pop"]
-        },
-        {
-            "name":"Nevermind", 
-            "artist":"Nirvana", 
-            "creation_date":[24, 9, 1991], 
-            "album_cover":"Cover_Art/5.jpg",
-            "description":"Nevermind is the second studio album by American rock band Nirvana, released on September 24, 1991 by DGC Records. Produced by Butch Vig, it was Nirvana's first release on the DGC label, as well as the first to feature drummer Dave Grohl.",
-            "tags" :["rock", "90s", "masterpiece"]
-        },
-        {
-            "name":"Rumours", 
-            "artist":"Fleetwood Mac", 
-            "creation_date":[4, 2, 1977], 
-            "album_cover":"Cover_Art/6.jpg",
-            "description":"Rumours is the eleventh studio album by British-American rock band Fleetwood Mac, released on 4 February 1977 by Warner Bros. Records. Largely recorded in California in 1976, it was produced by the band with Ken Caillat and Richard Dashut.",
-            "tags":["rock", "70s", "masterpiece"]
-        },
-		{
-            "name":"Purple Rain", 
-            "artist":"Prince and the Revolution", 
-            "creation_date":[27, 7, 1984], 
-            "album_cover":"Cover_Art/7.jpg",
-            "description":"“I think Purple Rain is the most avant-garde, ‘purple’ thing I’ve ever done,” Prince told Ebony in 1986. He was still a rising star with only a couple of hits when he got the audacious idea to make a movie based on his life, and make his next LP the movie’s soundtrack. When it was released in 1984, he became the first artist to have the Number One song, album, and movie in North America.",
-			"tags":["rock", "80s", "masterpiece"]
-        },
-		{
-            "name":"Blood on the Tracks", 
-            "artist":"Bob Dylan", 
-            "creation_date":[20, 1, 1975], 
-            "album_cover":"Cover_Art/8.jpg",
-            "description":"Bob Dylan once introduced this album’s opening song, “Tangled Up in Blue,” onstage as taking him 10 years to live and two years to write. It was, for him, a pointed reference to the personal crisis — the collapse of his marriage to Sara Lowndes — that at least partly inspired this album, Dylan’s best of the 1970s.",
-			"tags":["rock", "70s", "Folk"]
-        },
-		{
-            "name":"The Miseducation of Lauryn Hill", 
-            "artist":"Lauryn Hill", 
-            "creation_date":[25, 8, 1998], 
-            "album_cover":"Cover_Art/9.jpg",
-            "description":"“This is a very sexist industry,” Lauryn Hill told Essence magazine in 1998. “They’ll never throw the ‘genius’ title to a sister.” Though already a star as co-leader of the Fugees, with Wyclef Jean, she was hungry to express her own vision. “[I wanted to] write songs that lyrically move me and have the integrity of reggae and the knock of hip-hop and the instrumentation of classic soul,” the singer said of her debut album.",
-			"tags":["R&B", "Reggae", "Soul"]
-        },
-		{
-            "name":"Revolver", 
-            "artist":"The Beatles", 
-            "creation_date":[5, 8, 1966], 
-            "album_cover":"Cover_Art/10.jpg",
-            "description":"Revolver was the sound of the Beatles fully embracing the recording studio as a sonic canvas, free to pursue musical ideas and possibilities that would reshape rock forever. It speaks volumes that the first song the band worked on upon entering Abbey Road studios in April 1966 would have been impossible to replicate live — a swirl of hazy guitar, backward tape loops, kaleidoscopic drum tumble, and John Lennon’s voice recorded to sound like “the Dalai Lama singing from the highest mountaintop.” They titled it “The Void” and later renamed it “Tomorrow Never Knows.” “I was wondering how George Martin would take it,” Paul McCartney later recalled. Martin’s response: “Jolly interesting.”",
-			"tags":["rock", "pop", "psychedelic"]
-        },
-		{
-            "name":"Thriller", 
-            "artist":"Michael Jackson", 
-            "creation_date":[1, 12, 1982], 
-            "album_cover":"Cover_Art/11.jpg",
-            "description":"Michael Jackson towered over the Eighties the way no superstar before or since has dominated an era — not even Elvis or the Beatles. And Thriller is the reason why. Still in his early twenties, the R&B child star of the 1970s had ripened into a Technicolor soul man: a singer, dancer, and songwriter with incomparable crossover instincts.",
-			"tags":["pop", "rock", "funk"]
-        },
-		{
-            "name":"I Never Loved a Man the Way I Love You", 
-            "artist":"Aretha Franklin", 
-            "creation_date":[10, 3, 1967], 
-            "album_cover":"Cover_Art/12.jpg",
-            "description":"Aretha Franklin’s Atlantic debut is the place where gospel music collided with R&B and rock & roll and became soul. The Detroit-born preacher’s daughter was about $80,000 in debt to her previous label, Columbia, when Atlantic producer Jerry Wexler signed her in 1966. “I took her to church,” Wexler said, “sat her down at the piano, and let her be herself.”",
-			"tags":["soul", "60s", "R&B"]
-        },
-		{
-            "name":"Exile on Main Street", 
-            "artist":"The Rolling Stones", 
-            "creation_date":[12, 5, 1972], 
-            "album_cover":"Cover_Art/13.jpg",
-            "description":"A dirty whirl of basement blues and punk boogie, the Rolling Stones’ 1972 double LP was, according to Keith Richards, “maybe the best thing we did.” Indeed, inside its deliberately dense squall — Richards’ and Mick Taylor’s dogﬁght riffing, the lusty jump of the Bill Wyman–Charlie Watts rhythm engine, Mick Jagger’s caged-animal bark and burned-soul croon — is the Stones’ greatest album and Jagger and Richards’ deﬁnitive songwriting statement of outlaw pride and dedication to grit and cold-morning redemption.",
-			"tags":["rock", "70s", "blues"]
-        }
-		
-		
-		
+    "albums": [
+      {
+        "name": "What's Going on",
+        "artist": "Marvin Gaye",
+        "creation_date": [
+          20,
+          1,
+          1971
+        ],
+        "album_cover": "Cover_Art/0.jpg",
+        "description": "Marvin Gaye’s masterpiece began as a reaction to police brutality. In May 1969, Renaldo “Obie” Benson, the Four Tops’ bass singer, watched TV coverage of hundreds of club-wielding cops breaking up the People’s Park, a protest hub in Berkeley. Aghast at the violence, Benson began to write a song with Motown lyricist Al Cleveland, trying to capture the confusion and pain of the times. He knew he had something big in his nascent version of “What’s Going On,” but the rest of the Four Tops weren’t interested, and Benson’s efforts to get Joan Baez to record it didn’t work out, either.",
+        "tags": [
+          "Motown",
+          "soul",
+          "R&B"
+        ]
+      },
+      {
+        "name": "Pet Sounds",
+        "artist": "The Beach Boys",
+        "creation_date": [
+          16,
+          5,
+          1966
+        ],
+        "album_cover": "Cover_Art/1.jpg",
+        "description": "“Who’s gonna hear this shit?” Beach Boys singer Mike Love asked the band’s resident genius, Brian Wilson, in 1966, as Wilson played him the new songs he was working on. “The ears of a dog?” Confronted with his bandmate’s contempt, Wilson made lemonade of lemons. “Ironically,” he observed, “Mike’s barb inspired the album’s title.”",
+        "tags": [
+          "Pop",
+          "Boy Band"
+        ]
+      },
+      {
+        "name": "Blue",
+        "artist": "Joni Mitchell",
+        "creation_date": [
+          22,
+          6,
+          1971
+        ],
+        "album_cover": "Cover_Art/2.jpg",
+        "description": "In 1971, Joni Mitchell represented the West Coast feminine ideal — celebrated by Robert Plant as “a girl out there with love in her eyes and flowers in her hair” on Led Zeppelin’s “Goin’ to California.” It was a status that Mitchell hadn’t asked for and did not want:“I went, ‘Oh, my God, a lot of people are listening to me,’” she recalled in 2013. “’They better find out who they’re worshiping. Let’s see if they can take it. Let’s get real.’ So I wrote Blue.”",
+        "tags": [
+          "folk music",
+          "pop",
+          "contemporary"
+        ]
+      },
+      {
+        "name": "Songs in the Key of Life",
+        "artist": "Stevie Wonder",
+        "creation_date": [
+          28,
+          9,
+          1976
+        ],
+        "album_cover": "Cover_Art/3.jpg",
+        "description": "Months before the recording sessions for Songs in the Key of Life ended, the musicians in Stevie Wonder’s band had T-shirts made up that proclaimed, “We’re almost finished.” It was the stock answer to casual fans and Motown executives and everybody who’d fallen in love with Wonder’s early-Seventies gems – 1972’s Talking Book, 1973’s Innervisions, and 1974’s Fulfillingness’ First Finale – and who had been waiting two years for the next chapter. “I believed there was a lot that needed to be said,” Wonder said. More, in fact, than he could fit onto a double album – also included was a bonus EP, a seven-inch single with four more songs from the sessions.",
+        "tags": [
+          "Motown",
+          "soul"
+        ]
+      },
+      {
+        "name": "Abbey Road",
+        "artist": "The Beatles",
+        "creation_date": [
+          26,
+          9,
+          1969
+        ],
+        "album_cover": "Cover_Art/4.jpg",
+        "description": "Abbey Road is the eleventh studio album by the English rock band the Beatles, released on 26 September 1969 by Apple Records.",
+        "tags": [
+          "boy band",
+          "rock",
+          "pop"
+        ]
+      },
+      {
+        "name": "Nevermind",
+        "artist": "Nirvana",
+        "creation_date": [
+          24,
+          9,
+          1991
+        ],
+        "album_cover": "Cover_Art/5.jpg",
+        "description": "Nevermind is the second studio album by American rock band Nirvana, released on September 24, 1991 by DGC Records. Produced by Butch Vig, it was Nirvana's first release on the DGC label, as well as the first to feature drummer Dave Grohl.",
+        "tags": [
+          "rock",
+          "90s",
+          "masterpiece"
+        ]
+      },
+      {
+        "name": "Rumours",
+        "artist": "Fleetwood Mac",
+        "creation_date": [
+          4,
+          2,
+          1977
+        ],
+        "album_cover": "Cover_Art/6.jpg",
+        "description": "Rumours is the eleventh studio album by British-American rock band Fleetwood Mac, released on 4 February 1977 by Warner Bros. Records. Largely recorded in California in 1976, it was produced by the band with Ken Caillat and Richard Dashut.",
+        "tags": [
+          "rock",
+          "70s",
+          "masterpiece"
+        ]
+      },
+      {
+        "name": "Purple Rain",
+        "artist": "Prince and the Revolution",
+        "creation_date": [
+          27,
+          7,
+          1984
+        ],
+        "album_cover": "Cover_Art/7.jpg",
+        "description": "“I think Purple Rain is the most avant-garde, ‘purple’ thing I’ve ever done,” Prince told Ebony in 1986. He was still a rising star with only a couple of hits when he got the audacious idea to make a movie based on his life, and make his next LP the movie’s soundtrack. When it was released in 1984, he became the first artist to have the Number One song, album, and movie in North America.",
+        "tags": [
+          "rock",
+          "80s",
+          "masterpiece"
+        ]
+      },
+      {
+        "name": "Blood on the Tracks",
+        "artist": "Bob Dylan",
+        "creation_date": [
+          20,
+          1,
+          1975
+        ],
+        "album_cover": "Cover_Art/8.jpg",
+        "description": "Bob Dylan once introduced this album’s opening song, “Tangled Up in Blue,” onstage as taking him 10 years to live and two years to write. It was, for him, a pointed reference to the personal crisis — the collapse of his marriage to Sara Lowndes — that at least partly inspired this album, Dylan’s best of the 1970s.",
+        "tags": [
+          "rock",
+          "70s",
+          "Folk"
+        ]
+      },
+      {
+        "name": "The Miseducation of Lauryn Hill",
+        "artist": "Lauryn Hill",
+        "creation_date": [
+          25,
+          8,
+          1998
+        ],
+        "album_cover": "Cover_Art/9.jpg",
+        "description": "“This is a very sexist industry,” Lauryn Hill told Essence magazine in 1998. “They’ll never throw the ‘genius’ title to a sister.” Though already a star as co-leader of the Fugees, with Wyclef Jean, she was hungry to express her own vision. “[I wanted to] write songs that lyrically move me and have the integrity of reggae and the knock of hip-hop and the instrumentation of classic soul,” the singer said of her debut album.",
+        "tags": [
+          "R&B",
+          "Reggae",
+          "Soul"
+        ]
+      },
+      {
+        "name": "Revolver",
+        "artist": "The Beatles",
+        "creation_date": [
+          5,
+          8,
+          1966
+        ],
+        "album_cover": "Cover_Art/10.jpg",
+        "description": "Revolver was the sound of the Beatles fully embracing the recording studio as a sonic canvas, free to pursue musical ideas and possibilities that would reshape rock forever. It speaks volumes that the first song the band worked on upon entering Abbey Road studios in April 1966 would have been impossible to replicate live — a swirl of hazy guitar, backward tape loops, kaleidoscopic drum tumble, and John Lennon’s voice recorded to sound like “the Dalai Lama singing from the highest mountaintop.” They titled it “The Void” and later renamed it “Tomorrow Never Knows.” “I was wondering how George Martin would take it,” Paul McCartney later recalled. Martin’s response: “Jolly interesting.”",
+        "tags": [
+          "rock",
+          "pop",
+          "psychedelic"
+        ]
+      },
+      {
+        "name": "Thriller",
+        "artist": "Michael Jackson",
+        "creation_date": [
+          1,
+          12,
+          1982
+        ],
+        "album_cover": "Cover_Art/11.jpg",
+        "description": "Michael Jackson towered over the Eighties the way no superstar before or since has dominated an era — not even Elvis or the Beatles. And Thriller is the reason why. Still in his early twenties, the R&B child star of the 1970s had ripened into a Technicolor soul man: a singer, dancer, and songwriter with incomparable crossover instincts.",
+        "tags": [
+          "pop",
+          "rock",
+          "funk"
+        ]
+      },
+      {
+        "name": "I Never Loved a Man the Way I Love You",
+        "artist": "Aretha Franklin",
+        "creation_date": [
+          10,
+          3,
+          1967
+        ],
+        "album_cover": "Cover_Art/12.jpg",
+        "description": "Aretha Franklin’s Atlantic debut is the place where gospel music collided with R&B and rock & roll and became soul. The Detroit-born preacher’s daughter was about $80,000 in debt to her previous label, Columbia, when Atlantic producer Jerry Wexler signed her in 1966. “I took her to church,” Wexler said, “sat her down at the piano, and let her be herself.”",
+        "tags": [
+          "soul",
+          "60s",
+          "R&B"
+        ]
+      },
+      {
+        "name": "Exile on Main Street",
+        "artist": "The Rolling Stones",
+        "creation_date": [
+          12,
+          5,
+          1972
+        ],
+        "album_cover": "Cover_Art/13.jpg",
+        "description": "A dirty whirl of basement blues and punk boogie, the Rolling Stones’ 1972 double LP was, according to Keith Richards, “maybe the best thing we did.” Indeed, inside its deliberately dense squall — Richards’ and Mick Taylor’s dogﬁght riffing, the lusty jump of the Bill Wyman–Charlie Watts rhythm engine, Mick Jagger’s caged-animal bark and burned-soul croon — is the Stones’ greatest album and Jagger and Richards’ deﬁnitive songwriting statement of outlaw pride and dedication to grit and cold-morning redemption.",
+        "tags": [
+          "rock",
+          "70s",
+          "blues"
+        ]
+      }
     ],
-    "users":[
-        {
-            "username":"MusicLover101", 
-            "password":"password", 
-            "profile_picture":"profile_pictures/0.png",
-            "join_date":[24, 1, 2021]
-        },
-        {
-            "username":"PeterTheCritic", 
-            "password":"password", 
-            "profile_picture":"profile_pictures/1.jpg", 
-            "join_date":[8, 2, 2021]
-        },
-        {
-            "username":"LauraLovesMusic", 
-            "password":"password", 
-            "profile_picture":"profile_pictures/2.jpg", 
-            "join_date":[15, 3, 2021]
-        },
-        {
-            "username":"Steve", 
-            "password":"password", 
-            "profile_picture":"profile_pictures/3.jpg", 
-            "join_date":[12, 2, 2021]
-        },
-        {
-            "username":"Roger", 
-            "password":"password", 
-            "profile_picture":"profile_pictures/4.png", 
-            "join_date":[15, 3, 2021]
-        },
-        {
-            "username":"Rockandroll1982", 
-            "password":"password", 
-            "profile_picture":"profile_pictures/5.jpg", 
-            "join_date":[15, 3, 2021]
-        } 
-		
+    "users": [
+      {
+        "username": "MusicLover101",
+        "password": "password",
+        "profile_picture": "profile_pictures/0.png",
+        "join_date": [
+          24,
+          1,
+          2021
+        ]
+      },
+      {
+        "username": "PeterTheCritic",
+        "password": "password",
+        "profile_picture": "profile_pictures/1.jpg",
+        "join_date": [
+          8,
+          2,
+          2021
+        ]
+      },
+      {
+        "username": "LauraLovesMusic",
+        "password": "password",
+        "profile_picture": "profile_pictures/2.jpg",
+        "join_date": [
+          15,
+          3,
+          2021
+        ]
+      },
+      {
+        "username": "Steve",
+        "password": "password",
+        "profile_picture": "profile_pictures/3.jpg",
+        "join_date": [
+          12,
+          2,
+          2021
+        ]
+      },
+      {
+        "username": "Roger",
+        "password": "password",
+        "profile_picture": "profile_pictures/4.png",
+        "join_date": [
+          15,
+          3,
+          2021
+        ]
+      },
+      {
+        "username": "Rockandroll1982",
+        "password": "password",
+        "profile_picture": "profile_pictures/5.jpg",
+        "join_date": [
+          15,
+          3,
+          2021
+        ]
+      }
     ],
-    "reviews":[
-        {
-            "time_posted":[1, 2, 2021],
-            "review_text":"Amazing my favourite album", 
-            "rating":10.0,
-            "username":"MusicLover101",
-            "album":"Blue"
-        },
-        {
-            "time_posted":[15, 2, 2021],
-            "review_text":"Terrible album from a terrible band.AVOID!!!", 
-            "rating":1.0,
-            "username":"PeterTheCritic",
-            "album":"Pet Sounds"
-        },
-        {
-            "time_posted":[16, 3, 2021],
-            "review_text":"Enjoyed this album quite a bit.",
-            "rating":5.0,
-            "username":"LauraLovesMusic",
-            "album":"Pet Sounds"
-        },
-        {
-            "time_posted":[15, 2, 2021],
-            "review_text":"Without a doubt the best album ever... if your and idiot!!", 
-            "rating":2.0,
-            "username":"PeterTheCritic",
-            "album":"Rumours"
-        },
-        {
-            "time_posted":[16, 3, 2021],
-            "review_text":"Nice album, will listen to again.", 
-            "rating":7.5,
-            "username":"LauraLovesMusic",
-            "album":"Nevermind"
-        },
-        {
-            "time_posted":[25, 12, 2020],
-            "review_text":"Rock and roll Dude!", 
-            "rating":9.0,
-            "username":"Rockandroll1982",
-            "album":"Exile on Main Street"
-        },
-        {
-            "time_posted":[24, 12, 2020],
-            "review_text":"This album made me who I am!!!", 
-            "rating":5.0,
-            "username":"Roger",
-            "album":"Thriller"
-        },
-        {
-            "time_posted":[22, 3, 2021],
-            "review_text":"Prefer minecraft music.", 
-            "rating":2.0,
-            "username":"Steve",
-            "album":"Revolver"
-        },
-        {
-            "time_posted":[22, 3, 2021],
-            "review_text":"It's good, still not as good as minecraft parody:Mine All Night.", 
-            "rating":6.0,
-            "username":"Steve",
-            "album":"I Never Loved a Man the Way I Love You"
-        },
-        {
-            "time_posted":[22, 3, 2021],
-            "review_text":"Minecraft but with ears.", 
-            "rating":10.0,
-            "username":"Steve",
-            "album":"Purple Rain"
-        },
-        {
-            "time_posted":[22, 3, 2021],
-            "review_text":"LauraLovesMusic and this is one of the reasons why!", 
-            "rating":10.0,
-            "username":"LauraLovesMusic",
-            "album":"Purple Rain"
-        },
-        {
-            "time_posted":[20, 2, 2021],
-            "review_text":"Trash.", 
-            "rating":1.0,
-            "username":"MusicLover101",
-            "album":"Thriller"
-        },
-        {
-            "time_posted":[19, 2, 2021],
-            "review_text":"This is what's going on!", 
-            "rating":10.0,
-            "username":"MusicLover101",
-            "album":"What's Going on"
-        },
-        {
-            "time_posted":[1, 3, 2021],
-            "review_text":"Splendid Album.", 
-            "rating":7.0,
-            "username":"PeterTheCritic",
-            "album":"Songs in the Key of Life"
-        },
-        {
-            "time_posted":[1, 3, 2021],
-            "review_text":"Nice.", 
-            "rating":5.0,
-            "username":"PeterTheCritic",
-            "album":"Abbey Road"
-        },
-        {
-            "time_posted":[1, 3, 2021],
-            "review_text":"Simply Breathtaking work from Dylan on this one. The music hits just right.", 
-            "rating":9.0,
-            "username":"PeterTheCritic",
-            "album":"Blood on the Tracks"
-        },
-        {
-            "time_posted":[1, 3, 2021],
-            "review_text":"Maybe if she was educated she could make better music!!", 
-            "rating":3.0,
-            "username":"Roger",
-            "album":"The Miseducation of Lauryn Hill"
-        }
-		
+    "reviews": [
+      {
+        "time_posted": [
+          1,
+          2,
+          2021
+        ],
+        "review_text": "Amazing my favourite album",
+        "rating": 10,
+        "username": "MusicLover101",
+        "album": "Blue"
+      },
+      {
+        "time_posted": [
+          15,
+          2,
+          2021
+        ],
+        "review_text": "Terrible album from a terrible band.AVOID!!!",
+        "rating": 1,
+        "username": "PeterTheCritic",
+        "album": "Pet Sounds"
+      },
+      {
+        "time_posted": [
+          16,
+          3,
+          2021
+        ],
+        "review_text": "Enjoyed this album quite a bit.",
+        "rating": 5,
+        "username": "LauraLovesMusic",
+        "album": "Pet Sounds"
+      },
+      {
+        "time_posted": [
+          15,
+          2,
+          2021
+        ],
+        "review_text": "Without a doubt the best album ever... if your and idiot!!",
+        "rating": 2,
+        "username": "PeterTheCritic",
+        "album": "Rumours"
+      },
+      {
+        "time_posted": [
+          16,
+          3,
+          2021
+        ],
+        "review_text": "Nice album, will listen to again.",
+        "rating": 7.5,
+        "username": "LauraLovesMusic",
+        "album": "Nevermind"
+      },
+      {
+        "time_posted": [
+          25,
+          12,
+          2020
+        ],
+        "review_text": "Rock and roll Dude!",
+        "rating": 9,
+        "username": "Rockandroll1982",
+        "album": "Exile on Main Street"
+      },
+      {
+        "time_posted": [
+          24,
+          12,
+          2020
+        ],
+        "review_text": "This album made me who I am!!!",
+        "rating": 5,
+        "username": "Roger",
+        "album": "Thriller"
+      },
+      {
+        "time_posted": [
+          22,
+          3,
+          2021
+        ],
+        "review_text": "Prefer minecraft music.",
+        "rating": 2,
+        "username": "Steve",
+        "album": "Revolver"
+      },
+      {
+        "time_posted": [
+          22,
+          3,
+          2021
+        ],
+        "review_text": "It's good, still not as good as minecraft parody:Mine All Night.",
+        "rating": 6,
+        "username": "Steve",
+        "album": "I Never Loved a Man the Way I Love You"
+      },
+      {
+        "time_posted": [
+          22,
+          3,
+          2021
+        ],
+        "review_text": "Minecraft but with ears.",
+        "rating": 10,
+        "username": "Steve",
+        "album": "Purple Rain"
+      },
+      {
+        "time_posted": [
+          22,
+          3,
+          2021
+        ],
+        "review_text": "LauraLovesMusic and this is one of the reasons why!",
+        "rating": 10,
+        "username": "LauraLovesMusic",
+        "album": "Purple Rain"
+      },
+      {
+        "time_posted": [
+          20,
+          2,
+          2021
+        ],
+        "review_text": "Trash.",
+        "rating": 1,
+        "username": "MusicLover101",
+        "album": "Thriller"
+      },
+      {
+        "time_posted": [
+          19,
+          2,
+          2021
+        ],
+        "review_text": "This is what's going on!",
+        "rating": 10,
+        "username": "MusicLover101",
+        "album": "What's Going on"
+      },
+      {
+        "time_posted": [
+          1,
+          3,
+          2021
+        ],
+        "review_text": "Splendid Album.",
+        "rating": 7,
+        "username": "PeterTheCritic",
+        "album": "Songs in the Key of Life"
+      },
+      {
+        "time_posted": [
+          1,
+          3,
+          2021
+        ],
+        "review_text": "Nice.",
+        "rating": 5,
+        "username": "PeterTheCritic",
+        "album": "Abbey Road"
+      },
+      {
+        "time_posted": [
+          1,
+          3,
+          2021
+        ],
+        "review_text": "Simply Breathtaking work from Dylan on this one. The music hits just right.",
+        "rating": 9,
+        "username": "PeterTheCritic",
+        "album": "Blood on the Tracks"
+      },
+      {
+        "time_posted": [
+          1,
+          3,
+          2021
+        ],
+        "review_text": "Maybe if she was educated she could make better music!!",
+        "rating": 3,
+        "username": "Roger",
+        "album": "The Miseducation of Lauryn Hill"
+      },
+      {
+        "time_posted": [
+          27,
+          1,
+          2021
+        ],
+        "rating": 8.3,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Pet Sounds"
+      },
+      {
+        "time_posted": [
+          12,
+          3,
+          2021
+        ],
+        "rating": 2.2,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Songs in the Key of Life"
+      },
+      {
+        "time_posted": [
+          18,
+          1,
+          2021
+        ],
+        "rating": 4.7,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Abbey Road"
+      },
+      {
+        "time_posted": [
+          11,
+          1,
+          2021
+        ],
+        "rating": 1.1,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Nevermind"
+      },
+      {
+        "time_posted": [
+          3,
+          3,
+          2021
+        ],
+        "rating": 4.2,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Rumours"
+      },
+      {
+        "time_posted": [
+          13,
+          1,
+          2021
+        ],
+        "rating": 1.4,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Purple Rain"
+      },
+      {
+        "time_posted": [
+          3,
+          3,
+          2021
+        ],
+        "rating": 10,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Blood on the Tracks"
+      },
+      {
+        "time_posted": [
+          28,
+          2,
+          2021
+        ],
+        "rating": 8.2,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "The Miseducation of Lauryn Hill"
+      },
+      {
+        "time_posted": [
+          22,
+          1,
+          2021
+        ],
+        "rating": 6.1,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Revolver"
+      },
+      {
+        "time_posted": [
+          28,
+          3,
+          2021
+        ],
+        "rating": 8.3,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "I Never Loved a Man the Way I Love You"
+      },
+      {
+        "time_posted": [
+          26,
+          2,
+          2021
+        ],
+        "rating": 4.8,
+        "review_text": "",
+        "username": "MusicLover101",
+        "album": "Exile on Main Street"
+      },
+      {
+        "time_posted": [
+          19,
+          3,
+          2021
+        ],
+        "rating": 5.6,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "What's Going on"
+      },
+      {
+        "time_posted": [
+          21,
+          3,
+          2021
+        ],
+        "rating": 1.7,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "Blue"
+      },
+      {
+        "time_posted": [
+          25,
+          3,
+          2021
+        ],
+        "rating": 6.9,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "Nevermind"
+      },
+      {
+        "time_posted": [
+          27,
+          1,
+          2021
+        ],
+        "rating": 0.5,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "Purple Rain"
+      },
+      {
+        "time_posted": [
+          17,
+          1,
+          2021
+        ],
+        "rating": 1.4,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "The Miseducation of Lauryn Hill"
+      },
+      {
+        "time_posted": [
+          27,
+          2,
+          2021
+        ],
+        "rating": 9.7,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "Revolver"
+      },
+      {
+        "time_posted": [
+          24,
+          1,
+          2021
+        ],
+        "rating": 10,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "Thriller"
+      },
+      {
+        "time_posted": [
+          18,
+          2,
+          2021
+        ],
+        "rating": 8.9,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "I Never Loved a Man the Way I Love You"
+      },
+      {
+        "time_posted": [
+          1,
+          1,
+          2021
+        ],
+        "rating": 1.4,
+        "review_text": "",
+        "username": "PeterTheCritic",
+        "album": "Exile on Main Street"
+      },
+      {
+        "time_posted": [
+          11,
+          2,
+          2021
+        ],
+        "rating": 2.8,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "What's Going on"
+      },
+      {
+        "time_posted": [
+          12,
+          1,
+          2021
+        ],
+        "rating": 4.9,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Blue"
+      },
+      {
+        "time_posted": [
+          12,
+          1,
+          2021
+        ],
+        "rating": 2.9,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Songs in the Key of Life"
+      },
+      {
+        "time_posted": [
+          28,
+          1,
+          2021
+        ],
+        "rating": 8,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Abbey Road"
+      },
+      {
+        "time_posted": [
+          27,
+          2,
+          2021
+        ],
+        "rating": 4.2,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Rumours"
+      },
+      {
+        "time_posted": [
+          1,
+          2,
+          2021
+        ],
+        "rating": 4.1,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Blood on the Tracks"
+      },
+      {
+        "time_posted": [
+          24,
+          1,
+          2021
+        ],
+        "rating": 6.2,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "The Miseducation of Lauryn Hill"
+      },
+      {
+        "time_posted": [
+          24,
+          1,
+          2021
+        ],
+        "rating": 4.1,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Revolver"
+      },
+      {
+        "time_posted": [
+          2,
+          1,
+          2021
+        ],
+        "rating": 5.7,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Thriller"
+      },
+      {
+        "time_posted": [
+          19,
+          2,
+          2021
+        ],
+        "rating": 3.1,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "I Never Loved a Man the Way I Love You"
+      },
+      {
+        "time_posted": [
+          18,
+          3,
+          2021
+        ],
+        "rating": 9.7,
+        "review_text": "",
+        "username": "LauraLovesMusic",
+        "album": "Exile on Main Street"
+      },
+      {
+        "time_posted": [
+          27,
+          1,
+          2021
+        ],
+        "rating": 3.8,
+        "review_text": "",
+        "username": "Steve",
+        "album": "What's Going on"
+      },
+      {
+        "time_posted": [
+          27,
+          2,
+          2021
+        ],
+        "rating": 5.2,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Pet Sounds"
+      },
+      {
+        "time_posted": [
+          19,
+          2,
+          2021
+        ],
+        "rating": 9.3,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Blue"
+      },
+      {
+        "time_posted": [
+          11,
+          1,
+          2021
+        ],
+        "rating": 5.5,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Songs in the Key of Life"
+      },
+      {
+        "time_posted": [
+          25,
+          3,
+          2021
+        ],
+        "rating": 4.4,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Abbey Road"
+      },
+      {
+        "time_posted": [
+          13,
+          2,
+          2021
+        ],
+        "rating": 5.7,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Nevermind"
+      },
+      {
+        "time_posted": [
+          17,
+          2,
+          2021
+        ],
+        "rating": 1.5,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Rumours"
+      },
+      {
+        "time_posted": [
+          5,
+          1,
+          2021
+        ],
+        "rating": 0.5,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Blood on the Tracks"
+      },
+      {
+        "time_posted": [
+          18,
+          2,
+          2021
+        ],
+        "rating": 4.9,
+        "review_text": "",
+        "username": "Steve",
+        "album": "The Miseducation of Lauryn Hill"
+      },
+      {
+        "time_posted": [
+          10,
+          1,
+          2021
+        ],
+        "rating": 2.8,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Thriller"
+      },
+      {
+        "time_posted": [
+          9,
+          1,
+          2021
+        ],
+        "rating": 8.1,
+        "review_text": "",
+        "username": "Steve",
+        "album": "Exile on Main Street"
+      },
+      {
+        "time_posted": [
+          2,
+          2,
+          2021
+        ],
+        "rating": 2.5,
+        "review_text": "",
+        "username": "Roger",
+        "album": "What's Going on"
+      },
+      {
+        "time_posted": [
+          4,
+          1,
+          2021
+        ],
+        "rating": 1.3,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Pet Sounds"
+      },
+      {
+        "time_posted": [
+          25,
+          2,
+          2021
+        ],
+        "rating": 4.3,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Blue"
+      },
+      {
+        "time_posted": [
+          28,
+          2,
+          2021
+        ],
+        "rating": 9.4,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Songs in the Key of Life"
+      },
+      {
+        "time_posted": [
+          19,
+          2,
+          2021
+        ],
+        "rating": 0.9,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Abbey Road"
+      },
+      {
+        "time_posted": [
+          28,
+          2,
+          2021
+        ],
+        "rating": 6.2,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Nevermind"
+      },
+      {
+        "time_posted": [
+          15,
+          3,
+          2021
+        ],
+        "rating": 9.4,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Rumours"
+      },
+      {
+        "time_posted": [
+          7,
+          1,
+          2021
+        ],
+        "rating": 1.7,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Purple Rain"
+      },
+      {
+        "time_posted": [
+          27,
+          3,
+          2021
+        ],
+        "rating": 2.8,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Blood on the Tracks"
+      },
+      {
+        "time_posted": [
+          4,
+          3,
+          2021
+        ],
+        "rating": 1.6,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Revolver"
+      },
+      {
+        "time_posted": [
+          28,
+          3,
+          2021
+        ],
+        "rating": 0.3,
+        "review_text": "",
+        "username": "Roger",
+        "album": "I Never Loved a Man the Way I Love You"
+      },
+      {
+        "time_posted": [
+          8,
+          2,
+          2021
+        ],
+        "rating": 6.6,
+        "review_text": "",
+        "username": "Roger",
+        "album": "Exile on Main Street"
+      },
+      {
+        "time_posted": [
+          3,
+          2,
+          2021
+        ],
+        "rating": 5.5,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "What's Going on"
+      },
+      {
+        "time_posted": [
+          21,
+          1,
+          2021
+        ],
+        "rating": 3.2,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Pet Sounds"
+      },
+      {
+        "time_posted": [
+          24,
+          1,
+          2021
+        ],
+        "rating": 1.7,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Blue"
+      },
+      {
+        "time_posted": [
+          12,
+          1,
+          2021
+        ],
+        "rating": 4.2,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Songs in the Key of Life"
+      },
+      {
+        "time_posted": [
+          3,
+          3,
+          2021
+        ],
+        "rating": 6.5,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Abbey Road"
+      },
+      {
+        "time_posted": [
+          12,
+          2,
+          2021
+        ],
+        "rating": 5.6,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Nevermind"
+      },
+      {
+        "time_posted": [
+          8,
+          3,
+          2021
+        ],
+        "rating": 9.7,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Rumours"
+      },
+      {
+        "time_posted": [
+          3,
+          1,
+          2021
+        ],
+        "rating": 3,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Purple Rain"
+      },
+      {
+        "time_posted": [
+          26,
+          1,
+          2021
+        ],
+        "rating": 5.1,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Blood on the Tracks"
+      },
+      {
+        "time_posted": [
+          7,
+          1,
+          2021
+        ],
+        "rating": 2.6,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "The Miseducation of Lauryn Hill"
+      },
+      {
+        "time_posted": [
+          20,
+          1,
+          2021
+        ],
+        "rating": 5,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Revolver"
+      },
+      {
+        "time_posted": [
+          18,
+          3,
+          2021
+        ],
+        "rating": 7.9,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "Thriller"
+      },
+      {
+        "time_posted": [
+          16,
+          3,
+          2021
+        ],
+        "rating": 4.4,
+        "review_text": "",
+        "username": "Rockandroll1982",
+        "album": "I Never Loved a Man the Way I Love You"
+      }
     ],
-    "comments":[
-        {
-            "time_posted":[16, 2, 2021],
-            "comment_text":"Wrong!! I am very smart and you are wrong!!",
-            "username":"MusicLover101",
-            "review":["PeterTheCritic", "Pet Sounds"]
-        },
-        {
-            "time_posted":[16, 2, 2021],
-            "comment_text":"I love this album as well",
-            "username":"LauraLovesMusic",
-            "review":["PeterTheCritic", "Rumours"]
-        },
-        {
-            "time_posted":[17, 3, 2021],
-            "comment_text":"Sounds good. Will have a listen.",
-            "username":"PeterTheCritic",
-            "review":["LauraLovesMusic", "Nevermind"]
-        },
-        {
-            "time_posted":[20, 2, 2021],
-            "comment_text":"You hit it out of the park with this one.",
-            "username":"MusicLover101",
-            "review":["PeterTheCritic", "Pet Sounds"]
-        },
-        {
-            "time_posted":[1, 2, 2021],
-            "comment_text":"Yawn.XD",
-            "username":"PeterTheCritic",
-            "review":["MusicLover101", "Blue"]
-        },
-		{
-            "time_posted":[4, 4, 2021],
-            "comment_text":"Stop comparing everything to minecraft.",
-            "username":"MusicLover101",
-            "review":["Steve", "Revolver"]
-        },
-        {
-            "time_posted":[16, 3, 2021],
-            "comment_text":"Same",
-            "username":"LauraLovesMusic",
-            "review":["PeterTheCritic", "Rumours"]
-        },
-        {
-            "time_posted":[1, 4, 2021],
-            "comment_text":"OK",
-            "username":"PeterTheCritic",
-            "review":["LauraLovesMusic", "Nevermind"]
-        },
-        {
-            "time_posted":[12, 3, 2020],
-            "comment_text":"Meh.",
-            "username":"LauraLovesMusic",
-            "review":["PeterTheCritic", "Pet Sounds"]
-        },
-        {
-            "time_posted":[1, 2, 2021],
-            "comment_text":"Is this like minecraft?",
-            "username":"Steve",
-            "review":["MusicLover101", "Blue"]
-        },
-		{
-            "time_posted":[21, 3, 2021],
-            "comment_text":"if you insist. xD",
-            "username":"Rockandroll1982",
-            "review":["LauraLovesMusic", "Pet Sounds"]
-        },
-		{
-            "time_posted":[1, 2, 2021],
-            "comment_text":"I... disagree.",
-            "username":"Roger",
-            "review":["Rockandroll1982", "Exile on Main Street"]
-        },
-		{
-            "time_posted":[1, 1, 2021],
-            "comment_text":"I like minecraft.",
-            "username":"Steve",
-            "review":["Rockandroll1982", "Exile on Main Street"]
-        },
-		{
-            "time_posted":[1, 1, 2021],
-            "comment_text":"It made you who you are and you gave it 5/10, you must be a very average person. Ha Ha!",
-            "username":"PeterTheCritic",
-            "review":["Roger", "Thriller"]
-        },
-		{
-            "time_posted":[1, 3, 2021],
-            "comment_text":"No way.",
-            "username":"MusicLover101",
-            "review":["Roger", "Thriller"]
-        },
-		{
-            "time_posted":[1, 1, 2021],
-            "comment_text":"No way.",
-            "username":"MusicLover101",
-            "review":["Roger", "Thriller"]
-        },
-		{
-            "time_posted":[1, 4, 2021],
-            "comment_text":"I have no words.",
-            "username":"Rockandroll1982",
-            "review":["Steve", "Revolver"]
-        },
-		{
-            "time_posted":[1, 4, 2021],
-            "comment_text":"Minecraft. Bit weird.",
-            "username":"LauraLovesMusic",
-            "review":["Steve", "Revolver"]
-        },
-		{
-            "time_posted":[1, 4, 2021],
-            "comment_text":"Minecraft. Again.",
-            "username":"LauraLovesMusic",
-            "review":["Steve", "I Never Loved a Man the Way I Love You"]
-        },
-		{
-            "time_posted":[29, 3, 2021],
-            "comment_text":"Oh I think I get it now.",
-            "username":"LauraLovesMusic",
-            "review":["Steve", "Purple Rain"]
-        },
-		{
-            "time_posted":[28, 3, 2021],
-            "comment_text":"The irony is only dead people would enjoy this garbage.",
-            "username":"PeterTheCritic",
-            "review":["MusicLover101", "Thriller"]
-        },
-		{
-            "time_posted":[30, 3, 2021],
-            "comment_text":"What?",
-            "username":"PeterTheCritic",
-            "review":["MusicLover101", "What's Going on"]
-        },
-		{
-            "time_posted":[31, 3, 2021],
-            "comment_text":"K.",
-            "username":"LauraLovesMusic",
-            "review":["PeterTheCritic", "Songs in the Key of Life"]
-        },
-		{
-            "time_posted":[31, 3, 2021],
-            "comment_text":"if minecraft existed back then they would have made great parodies.",
-            "username":"Steve",
-            "review":["PeterTheCritic", "Abbey Road"]
-        },
-		{
-            "time_posted":[31, 3, 2021],
-            "comment_text":"Well said.",
-            "username":"Roger",
-            "review":["PeterTheCritic", "Blood on the Tracks"]
-        },
-		{
-            "time_posted":[31, 3, 2021],
-            "comment_text":"Lol xD.",
-            "username":"PeterTheCritic",
-            "review":["Roger", "The Miseducation of Lauryn Hill"]
-        }
+    "comments": [
+      {
+        "time_posted": [
+          16,
+          2,
+          2021
+        ],
+        "comment_text": "Wrong!! I am very smart and you are wrong!!",
+        "username": "MusicLover101",
+        "review": [
+          "PeterTheCritic",
+          "Pet Sounds"
+        ]
+      },
+      {
+        "time_posted": [
+          16,
+          2,
+          2021
+        ],
+        "comment_text": "I love this album as well",
+        "username": "LauraLovesMusic",
+        "review": [
+          "PeterTheCritic",
+          "Rumours"
+        ]
+      },
+      {
+        "time_posted": [
+          17,
+          3,
+          2021
+        ],
+        "comment_text": "Sounds good. Will have a listen.",
+        "username": "PeterTheCritic",
+        "review": [
+          "LauraLovesMusic",
+          "Nevermind"
+        ]
+      },
+      {
+        "time_posted": [
+          20,
+          2,
+          2021
+        ],
+        "comment_text": "You hit it out of the park with this one.",
+        "username": "MusicLover101",
+        "review": [
+          "PeterTheCritic",
+          "Pet Sounds"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          2,
+          2021
+        ],
+        "comment_text": "Yawn.XD",
+        "username": "PeterTheCritic",
+        "review": [
+          "MusicLover101",
+          "Blue"
+        ]
+      },
+      {
+        "time_posted": [
+          4,
+          4,
+          2021
+        ],
+        "comment_text": "Stop comparing everything to minecraft.",
+        "username": "MusicLover101",
+        "review": [
+          "Steve",
+          "Revolver"
+        ]
+      },
+      {
+        "time_posted": [
+          16,
+          3,
+          2021
+        ],
+        "comment_text": "Same",
+        "username": "LauraLovesMusic",
+        "review": [
+          "PeterTheCritic",
+          "Rumours"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          4,
+          2021
+        ],
+        "comment_text": "OK",
+        "username": "PeterTheCritic",
+        "review": [
+          "LauraLovesMusic",
+          "Nevermind"
+        ]
+      },
+      {
+        "time_posted": [
+          12,
+          3,
+          2020
+        ],
+        "comment_text": "Meh.",
+        "username": "LauraLovesMusic",
+        "review": [
+          "PeterTheCritic",
+          "Pet Sounds"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          2,
+          2021
+        ],
+        "comment_text": "Is this like minecraft?",
+        "username": "Steve",
+        "review": [
+          "MusicLover101",
+          "Blue"
+        ]
+      },
+      {
+        "time_posted": [
+          21,
+          3,
+          2021
+        ],
+        "comment_text": "if you insist. xD",
+        "username": "Rockandroll1982",
+        "review": [
+          "LauraLovesMusic",
+          "Pet Sounds"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          2,
+          2021
+        ],
+        "comment_text": "I... disagree.",
+        "username": "Roger",
+        "review": [
+          "Rockandroll1982",
+          "Exile on Main Street"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          1,
+          2021
+        ],
+        "comment_text": "I like minecraft.",
+        "username": "Steve",
+        "review": [
+          "Rockandroll1982",
+          "Exile on Main Street"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          1,
+          2021
+        ],
+        "comment_text": "It made you who you are and you gave it 5/10, you must be a very average person. Ha Ha!",
+        "username": "PeterTheCritic",
+        "review": [
+          "Roger",
+          "Thriller"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          3,
+          2021
+        ],
+        "comment_text": "No way.",
+        "username": "MusicLover101",
+        "review": [
+          "Roger",
+          "Thriller"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          1,
+          2021
+        ],
+        "comment_text": "No way.",
+        "username": "MusicLover101",
+        "review": [
+          "Roger",
+          "Thriller"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          4,
+          2021
+        ],
+        "comment_text": "I have no words.",
+        "username": "Rockandroll1982",
+        "review": [
+          "Steve",
+          "Revolver"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          4,
+          2021
+        ],
+        "comment_text": "Minecraft. Bit weird.",
+        "username": "LauraLovesMusic",
+        "review": [
+          "Steve",
+          "Revolver"
+        ]
+      },
+      {
+        "time_posted": [
+          1,
+          4,
+          2021
+        ],
+        "comment_text": "Minecraft. Again.",
+        "username": "LauraLovesMusic",
+        "review": [
+          "Steve",
+          "I Never Loved a Man the Way I Love You"
+        ]
+      },
+      {
+        "time_posted": [
+          29,
+          3,
+          2021
+        ],
+        "comment_text": "Oh I think I get it now.",
+        "username": "LauraLovesMusic",
+        "review": [
+          "Steve",
+          "Purple Rain"
+        ]
+      },
+      {
+        "time_posted": [
+          28,
+          3,
+          2021
+        ],
+        "comment_text": "The irony is only dead people would enjoy this garbage.",
+        "username": "PeterTheCritic",
+        "review": [
+          "MusicLover101",
+          "Thriller"
+        ]
+      },
+      {
+        "time_posted": [
+          30,
+          3,
+          2021
+        ],
+        "comment_text": "What?",
+        "username": "PeterTheCritic",
+        "review": [
+          "MusicLover101",
+          "What's Going on"
+        ]
+      },
+      {
+        "time_posted": [
+          31,
+          3,
+          2021
+        ],
+        "comment_text": "K.",
+        "username": "LauraLovesMusic",
+        "review": [
+          "PeterTheCritic",
+          "Songs in the Key of Life"
+        ]
+      },
+      {
+        "time_posted": [
+          31,
+          3,
+          2021
+        ],
+        "comment_text": "if minecraft existed back then they would have made great parodies.",
+        "username": "Steve",
+        "review": [
+          "PeterTheCritic",
+          "Abbey Road"
+        ]
+      },
+      {
+        "time_posted": [
+          31,
+          3,
+          2021
+        ],
+        "comment_text": "Well said.",
+        "username": "Roger",
+        "review": [
+          "PeterTheCritic",
+          "Blood on the Tracks"
+        ]
+      },
+      {
+        "time_posted": [
+          31,
+          3,
+          2021
+        ],
+        "comment_text": "Lol xD.",
+        "username": "PeterTheCritic",
+        "review": [
+          "Roger",
+          "The Miseducation of Lauryn Hill"
+        ]
+      }
     ]
-}
+  }

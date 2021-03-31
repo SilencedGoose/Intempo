@@ -62,10 +62,10 @@ def add_album(myAlbum):
         artist=myAlbum['artist'],
         creation_date = convert_to_date(myAlbum['creation_date']),
         album_cover = myAlbum['album_cover'],
-        description = myAlbum['description']
+        description = myAlbum['description'],
+        tags = ",".join(myAlbum['tags'])
     )
     A.save()
-    A.set_tags(myAlbum['tags'])
     return A
 
 def add_user(myUser):
