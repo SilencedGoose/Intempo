@@ -28,9 +28,9 @@ $(function () {
     
                 // update the number of reviews
                 if (response["no_of_reviews"] == 1) { 
-                    $("#number-of-reviews").text("1 Review");
+                    $("#number-of-reviews").text("1 Review With Comment");
                 } else {
-                    $("#number-of-reviews").text(`${response["no_of_reviews"]} Reviews`);
+                    $("#number-of-reviews").text(`${response["no_of_reviews"]} Reviews With Comment`);
                 }
     
                 // close addReviewModal
@@ -85,18 +85,8 @@ $(function () {
                     </div>`;
                     $("#reviews").prepend(reviewDiv);
                 }
-    
-                console.log("Successfully add the review!");
-                // showToast("Successfully add the review!", true);
             },
-            error: function (request) {
-                if (request["responseJSON"]) {
-                    unpackError((request["responseJSON"]["error"]));
-                    // showErrorToast(request["responseJSON"]["error"])
-                } else {
-                    console.log("Unexpected error!");
-                }
-            }
+            error: onAJAXError
         });
     });
     
@@ -132,30 +122,25 @@ $(function () {
                     </div>
                 </div>`;
                 $("#comments" + review_id + "Modal .comments").prepend(commentDiv);
-
-                console.log("Successfully added comment!");
-                // showToast("Successfully added comment!", true);
             },
-            error: function (request) {
-                if (request["responseJSON"]) {
-                    unpackError((request["responseJSON"]["error"]));
-                    // showErrorToast(request["responseJSON"]["error"])
-                } else {
-                    console.log("Unexpected error!");
-                }
-            }
+            error: onAJAXError
         });
     });
 
     $("#add-album-form").submit(function (e) {
         e.preventDefault();
-        var form = $(this).serialize();
+        var form = new FormData($(this)[0]);
+
         var node = $(this);
+        // to the form add the img url
 
         $.ajax({
             type: 'POST',
             url: `./add_album/`,
             data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
             success: function (response) {
                 // sorting goes to default- average rating
                 $(".set-album-sorting").removeClass("active");
@@ -170,17 +155,8 @@ $(function () {
                 node.trigger('reset');
 
                 updateAlbums(response);
-                console.log("Successfully added album!");
-                // showToast("Successfully added album!", true);
             },
-            error: function (request) {
-                if (request["responseJSON"]) {
-                    unpackError((request["responseJSON"]["error"]));
-                    // showErrorToast(request["responseJSON"]["error"])
-                } else {
-                    console.log("Unexpected error!");
-                }
-            }
+            error: onAJAXError
         });
     });
 
@@ -198,17 +174,8 @@ $(function () {
                 $(".set-album-sorting").removeClass("active");
                 btn.addClass("active");
                 updateAlbums(response)
-
-                console.log("Sorted albums");
             },
-            error: function (request) {
-                if (request["responseJSON"]) {
-                    unpackError((request["responseJSON"]["error"]));
-                    // showErrorToast(request["responseJSON"]["error"])
-                } else {
-                    console.log("Unexpected error!");
-                }
-            }
+            error: onAJAXError
         });
     });
 
@@ -220,24 +187,69 @@ $(function () {
             type: 'POST',
             url: `./filter_by/${album_sort_type}/`,
             data: form,
-            success: function (response) {
-                updateAlbums(response);
-
-                console.log("Filtered by tags")
-            },
-            error: function (request) {
-                if (request["responseJSON"]) {
-                    unpackError((request["responseJSON"]["error"]));
-                    // showErrorToast(request["responseJSON"]["error"])
-                } else {
-                    console.log("Unexpected error!");
-                }
-            }
+            success: updateAlbums,
+            error: onAJAXError
         });  
     });
-})
+
+    $("#update-profile-picture").submit(function (e) {
+        e.preventDefault();
+        var form = new FormData($(this)[0]);
+        var formDiv = $(this);
+        
+        $.ajax({
+            type: 'POST',
+            url: `./update_profile/`,
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                // close the modal
+                $("#updateProfileModal").modal('hide');
+
+                // reset the form 
+                formDiv.trigger('reset');
+                // update the profile picture
+                $("#profile-picture").attr('src', "/media/" + response["profile_picture"]);
+                
+                // change the current album link/innerHTML in the form
+                $("#div_id_profile_picture a").attr('href', "/media/" + response["profile_picture"]);
+                $("#div_id_profile_picture a").text(response["profile_picture"]);
+            },
+            error: onAJAXError
+        });
+    });
+});
+
+function onAJAXError(response) {
+    if (response["responseJSON"]) {
+        error = response["responseJSON"]["error"];
+        if (error instanceof String) {
+            alert(error);
+        } else {
+            var errors = []
+            error = JSON.parse(error);
+            for (field in error) {
+                error[field].forEach(obj => {
+                    errors.push(obj.message);
+                })
+            }
+            if (errors.length == 1) {
+                alert("Error: " + errors[0]);
+            } else {
+                alert("Errors: ", errors.join(", "));
+            }
+        }
+    } else {
+        alert("Unexpected error! Please try again!");
+    }   
+}
 
 function updateAlbums(response) {
+    // update the value of tags
+    $("#hint_id_fltr").text("Separate the tags by a comma. Available Tags: " + response["tags"].join(", "))
+
     var no_of_albums = response["albums"].length;
     // update the number of albums
     if (no_of_albums == 1) {
@@ -265,20 +277,4 @@ function updateAlbums(response) {
     })
     albumsDiv += `</div>`;
     $("#albums").replaceWith(albumsDiv);
-}
-
-function unpackError(error) {
-    if (error instanceof String) {
-        console.log(error);
-        return;
-    }
-    var errors = []
-    error = JSON.parse(error);
-    for (field in error) {
-        console.log(error[field]);
-        error[field].forEach(obj => {
-            errors.push(obj.message);
-        })
-    }
-    console.log("Errors: ", errors.join(", "));
 }

@@ -6,53 +6,77 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms.widgets import NumberInput
 from django.utils import timezone
+from django.core.files.images import get_image_dimensions
 
 from datetime import datetime
 
-from intempo.models import UserProfile, Album, Review, Comment
+from intempo.models import UserProfile, Album, Review, Comment, get_all_tags
 
 ## USER REGISTRATION
 class UserForm(forms.ModelForm):
-    password = forms.CharField(max_length=30, widget=forms.PasswordInput())
     username = forms.CharField(max_length=30)
+    password = forms.CharField(
+        max_length=30, 
+        widget=forms.PasswordInput()
+    )
+    
     class Meta:
         model = User
-        fields = ('username', 'email', 'password',)
+        fields = ('username', 'password',)
 
+def CheckPicture(picture):
+    if picture:
+        width, height = get_image_dimensions(picture)
+        if width != height:
+            raise ValidationError(_("The image isn't a square!"))
 
 class UserProfileForm(forms.ModelForm):
+    profile_picture = forms.ImageField(
+        label="Add Profile Picture (Optional)", 
+        required = False,
+        validators=[CheckPicture]
+    )
+
     class Meta:
         model = UserProfile
         fields = ('profile_picture',)
-        
-def get_tags():
-    tags = []
-    album = Album.objects.all()
-    for i in album:
-        for j in i.tags_as_list:
-            if j.lower() not in tags:
-                tags.append(j.lower())
-                
-    return " | ".join(tags)
 
 class AlbumForm(forms.Form):
-    fltr = forms.CharField(label="Filter by Tags:", required = False, help_text = "Available Tags: " + get_tags())
-    search = forms.CharField(label="Search Album:", required = False, help_text = "Search by album name or title")
+    fltr = forms.CharField(
+        label="Filter by Tags:",
+        required = False, 
+        help_text = "Separate the tags by a comma. Available Tags: " + ", ".join(get_all_tags())
+    )
+    search = forms.CharField(
+        label="Search Album:", 
+        required = False, 
+        help_text = "Search by album name or title"
+    )
 
     class Meta:
         fields = ('fltr', 'search')
 
 #album form
 class AddAlbumForm(forms.ModelForm):
-    name = forms.CharField(label = "Name", max_length = 30)
-    artist = forms.CharField(label = "Artist", max_length = 30)
+    name = forms.CharField(
+        label = "Name", 
+        max_length = 30
+    )
+    artist = forms.CharField(
+        label = "Artist", 
+        max_length = 30
+    )
     creation_date = forms.DateField(
         label="Creation Date",
         widget=forms.TextInput(
             attrs={'type': 'date'}
         ),
     )
-    album_cover = forms.ImageField(label="Add Album Cover", max_length = 60, required = False)
+    album_cover = forms.ImageField(
+        label="Add Album Cover (Optional)", 
+        required = False,
+        validators=[CheckPicture]
+    )
     description = forms.CharField(label="Add Description")
     tags = forms.Field(label="Add Tags")
 
@@ -97,14 +121,12 @@ class AddCommentForm(forms.ModelForm):
         model = Comment
         fields = ('comment_text',)
 
-class UpdateUserForm(forms.ModelForm):
-
-    class Meta:
-        model = User
-        fields = ('username', 'email')
-
 class UpdateUserProfileForm(forms.ModelForm):
-    
+    profile_picture = forms.ImageField(
+        label="Update Profile Picture", 
+        validators=[CheckPicture]
+    )
+
     class Meta:
         model = UserProfile
         fields = ('profile_picture',)

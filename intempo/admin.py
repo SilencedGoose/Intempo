@@ -1,7 +1,6 @@
-
-
 from django.contrib import admin
-from intempo.models import UserProfile,Album,Review,Comment
+
+from intempo.models import UserProfile, Album, Review, Comment
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'user', 'profile_picture','join_date')
@@ -15,7 +14,6 @@ class ReviewAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id','time_posted', 'comment_text','user','review')
 
-# Register your models here.
 admin.site.register(UserProfile,UserProfileAdmin)
 admin.site.register(Album,AlbumAdmin)
 admin.site.register(Review, ReviewAdmin)

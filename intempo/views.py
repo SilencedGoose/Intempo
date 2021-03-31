@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from intempo.models import Album, UserProfile, Review
 from django.contrib.auth.models import User
-from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 from django.http import JsonResponse
+
+from intempo.models import Album, UserProfile, Review, get_all_tags
+from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserProfileForm, AddCommentForm
 
 def get_or_make_userprofile(request):
     """
@@ -19,16 +20,6 @@ def get_or_make_userprofile(request):
             profile.save()
             return profile
     return None
-
-def index(request):
-    get_or_make_userprofile(request)
-    context_dict = {
-        "trending": Album.trending(),
-        "top": Album.top_rated()
-    }
-
-    response = render(request, 'intempo/index.html', context=context_dict)
-    return response
 
 def format_albums(albums, sort_type):
     """
@@ -52,8 +43,17 @@ def format_albums(albums, sort_type):
             'time_of_creation': album.time_of_creation,
             'artist': album.artist,
             'avg_rating': album.avg_rating,
-        } for album in albums]
+        } for album in albums],
+        'tags': get_all_tags()
     }, status=200)
+
+def index(request):
+    get_or_make_userprofile(request)
+    context_dict = {}
+    context_dict["trending"] = Album.trending()
+    context_dict["top"] = Album.top_rated()
+
+    return render(request, 'intempo/index.html', context=context_dict)
 
 def add_album(request):
     if not request.is_ajax or request.method != 'POST':
@@ -107,8 +107,7 @@ def albums(request):
     context_dict["tags_form"] = AlbumForm()
     context_dict["add_album_form"] = AddAlbumForm()
     
-    response = render(request, 'intempo/albums.html', context=context_dict)
-    return response
+    return render(request, 'intempo/albums.html', context=context_dict)
 
 def album_page(request, album_id):
     try:
@@ -202,34 +201,42 @@ def profile(request, username):
     except UserProfile.DoesNotExist:
         return not_found(request)
 
-    if request.method == 'POST':
-        u_form = UpdateUserForm(request.POST, instance = request.user)
-        p_form = UpdateUserProfileForm(request.POST, request.FILES, instance = UserProfile.objects.all().get(user=request.user))
-
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            return redirect(reverse("intempo:profile"))
-    elif request.user == User.objects.get(username=username):
-        u_form = UpdateUserForm(instance = request.user)
-        p_form = UpdateUserProfileForm(instance=UserProfile.objects.all().get(user=request.user))
+    if request.user == profile.user:
+        form = UpdateUserProfileForm(instance=profile)
     else:
-        u_form = None
-        p_form = None
+        form = None
 
     context_dict = {}
-    context_dict["username"] = username
-    context_dict["user_id"] = profile.id
-    context_dict["join_date"] = profile.time_since_joined
-    context_dict["profile_picture"] = profile.profile_picture
-    context_dict["u_form"] = u_form
-    context_dict["p_form"] = p_form
-    context_dict["Albums"] = profile.collection
-    context_dict["Similar"] = profile.similar_profiles
-    context_dict["this_user"] = request.user == User.objects.get(username=username)
+    context_dict["profile"] = profile
+    context_dict["form"] = form
+    context_dict["this_user"] = request.user == profile.user
 
-    response = render(request, 'intempo/profile.html', context=context_dict)
-    return response
+    return render(request, 'intempo/profile.html', context=context_dict)
+
+def update_profile(request, username):
+    if not request.is_ajax or request.method != 'POST':
+        return not_found(request)
+    
+    if request.user.is_anonymous:
+        return JsonResponse({'error': "You aren't authenticated! Please log in to update your profile."}, status=400)
+    
+    try:
+        user = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        get_or_make_userprofile(request)
+        return JsonResponse({'error': "You don't have a profile! Please refresh and try again!"}, status=400)
+    
+    if username != user.username:
+        return JsonResponse({'error': "You are trying to update someone else's profile! Please go to your profile and update that!"}, status=400)
+        
+    form = UpdateUserProfileForm(request.POST, request.FILES)
+    if form.is_valid():
+        user.profile_picture = request.FILES["profile_picture"]
+        user.save()
+        # user.profile_picture might not be the same as request.FILES["profile_picture"] if the file gets renamed!
+        return JsonResponse({'profile_picture': str(user.profile_picture)}, status=200)
+    else:
+        return JsonResponse({'error': form.errors.as_json()}, status=400)
 
 def not_found(request):
     get_or_make_userprofile(request)
