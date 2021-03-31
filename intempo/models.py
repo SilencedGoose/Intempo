@@ -24,7 +24,7 @@ class Album(models.Model):
         """
         if len(self.tags) == 0:
             return []
-        return [tag.strip() for tag in self.tags.upper().split(",")]
+        return [tag.strip() for tag in self.tags.lower().split(",")]
 
     @property
     def avg_rating(self):
@@ -73,10 +73,11 @@ class Album(models.Model):
     @staticmethod
     def filter_by_tags(tags):
         """
-        Returns all the albums which have one of the tags provided
+        Returns all the albums which have one of the tags provided. 
+        The values aren't case sensitive.
         """
-        tags = [tag.strip().upper() for tag in tags.split(',')]
-        if len(tags) == 1 and tags[0] == '':
+        tags = [tag.strip().lower() for tag in tags.split(',')]
+        if tags == [""]:
             return Album.objects.all()
         
         albums = []
@@ -95,15 +96,21 @@ class Album(models.Model):
             if keyword.upper() in self.name.upper() or keyword.upper() in self.artist.upper():
                 return True
         return False
-    
 
-# finds/creates the "deleted_user" (also implies that this isn't a valid username?)
-def get_sentinel_user():
-    return User.objects.get_or_create(username='deleted_user')[0]
+def get_all_tags():
+    """
+    Returns all the tags in all the albums
+    """
+    tags = []
+    albums = Album.objects.all()
+    for album in albums:
+        for tag in album.tags_as_list:
+            if tag.lower() not in tags:
+                tags.append(tag.lower())
+    return tags
 
 class UserProfile(models.Model):
-    # when the user gets deleted, we assign their reviews as get_sentinel_user
-    user = models.OneToOneField(User, on_delete=models.SET(get_sentinel_user), related_name="user_profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
     profile_picture = models.ImageField(upload_to="profile_pictures", default="profile_pictures/default_pic.png")
     join_date = models.DateTimeField(default=timezone.now)
 

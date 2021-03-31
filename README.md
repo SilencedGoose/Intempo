@@ -12,7 +12,7 @@ Created for Web App Development course.
 
 
 ## PythonAnywhere:
-[Link to PythonAnywhere](www.example.com)
+[Link to PythonAnywhere](https://www.example.com)
 
 
 ## External Sources:

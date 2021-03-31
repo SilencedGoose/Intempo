@@ -1,78 +1,89 @@
 {% extends 'intempo/base.html' %}
+{% load crispy_forms_tags %}
 {% load staticfiles %}
 
 {% block title_block %}
-  {{ username }}
+    {{ profile.username }}
 {% endblock %}
 
 {% block body_block %}
     <div id="user-profile">
-      <div id="profile-left">
-        <div id="profile-header">
-          <div id="info">
-            <h1>Profile</h1>
-            <h5>{{ username }}</h5>
-            Joined: {{ join_date }}<br>
-            <br>
-          </div>
-
-          <div>
-            <img src="{{ MEDIA_URL }}{{ profile_picture }}" id="profile-picture" alt="Profile picture" /><br>
-            <br>
-						{% if this_user == True %}
-            	<button id="edit-button" onclick="toggle_edit_profile()">Edit Profile</button><br><br>
-						{% endif %}
-          </div>
+        <div id="profile-left">
+            <div id="profile-header">
+                <div id="info">
+                    <h1>Profile</h1>
+                    <h5>{{ profile.username }}</h5>
+                    Joined: {{ profile.time_since_joined }}<br><br>
+                </div>
+            </div>
+            <div>
+                <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" id="profile-picture" alt="Profile picture"><br><br>
+                {% if this_user == True %}
+                    <a data-bs-toggle="modal" data-bs-target="#updateProfileModal" class="triggers-modal">Edit Profile</a>
+                {% endif %}
+            </div>
         </div>
-
-        <div>
-          <form id="user_form" method="post" action="{% url 'intempo:profile' username %}" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            {{ u_form.as_p }}
-            {{ p_form.as_p }}
-
-            <input type="submit" name="submit" value="Update">
-          </form>
-          <br>
-        </div>
+        
+        {% if this_user == True %}
+            <div class="modal fade" tabindex="-1" id="updateProfileModal" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Add an album</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="update-profile-picture">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Update Profile Picture</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        {% endif %}
 
         <h3>Your Collection</h3>
-        {% if Albums %}
-					<ul>
-						 <div>
-							{% for album in Albums%}
-								<div style="float:left; width:400px; height:400px; padding: 50px;">
-								<a href="{% url 'intempo:album_page' album.id %}">
-								<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
-								</div>
-							{% endfor%}
-						</div>
-					</ul>
-				{% else %}
-						<strong>No albums reviewed.</strong>
-				{% endif %}
-      </div>
+            {% if profile.collection %}
+            <ul>
+                <div>
+                    {% for album in profile.collection %}
+                        <div style="float:left; width:400px; height:400px; padding: 50px;">
+                            <a href="{% url 'intempo:album_page' album.id %}">
+                                <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
+                            </a>
+                        </div>
+                    {% endfor%}
+                </div>
+            </ul>
+        {% else %}
+            <strong>No albums reviewed.</strong>
+        {% endif %}
+    </div>
 
-      <div id="profile-right">
+    <div id="profile-right">
         <h3>Similar Users</h3>
-				{% if Similar %}
-					<ul>
-						 <div>
-							{% for user in Similar %}
-								<div class="card">
-									<div class="card-body">
-										<a href="{% url 'intempo:profile' user.username %}">
-										<img src="{{ MEDIA_URL }}{{ user.profile_picture }}" id="profile-picture" class="img-thumbnail" alt="{{user.username}}">
-										<p id="username">{{user.username}}</p>
-									</div>
-								</div>
-							{% endfor%}
-						</div>
-					</ul>
-				{% else %}
-						<strong>No similar users.</strong>
-				{% endif %}
-      </div>
+        {% if profile.similar_profiles %}
+            <ul>
+                <div>
+                    {% for user in profile.similar_profiles %}
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="{% url 'intempo:profile' user.username %}">
+                                    <img src="{{ MEDIA_URL }}{{ user.profile_picture }}" id="profile-picture" class="img-thumbnail" alt="{{user.username}}">
+                                    <p id="username">{{user.username}}</p>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor%}
+                </div>
+            </ul>
+        {% else %}
+            <strong>No similar users.</strong>
+        {% endif %}
     </div>
 {% endblock %}

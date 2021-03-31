@@ -293,7 +293,7 @@
           2021
         ],
         "review_text": "Amazing my favourite album",
-        "rating": 10,
+        "rating": 10.0,
         "username": "MusicLover101",
         "album": "Blue"
       },
@@ -304,7 +304,7 @@
           2021
         ],
         "review_text": "Terrible album from a terrible band.AVOID!!!",
-        "rating": 1,
+        "rating": 1.0,
         "username": "PeterTheCritic",
         "album": "Pet Sounds"
       },
@@ -315,7 +315,7 @@
           2021
         ],
         "review_text": "Enjoyed this album quite a bit.",
-        "rating": 5,
+        "rating": 5.0,
         "username": "LauraLovesMusic",
         "album": "Pet Sounds"
       },
@@ -326,7 +326,7 @@
           2021
         ],
         "review_text": "Without a doubt the best album ever... if your and idiot!!",
-        "rating": 2,
+        "rating": 2.0,
         "username": "PeterTheCritic",
         "album": "Rumours"
       },
@@ -348,7 +348,7 @@
           2020
         ],
         "review_text": "Rock and roll Dude!",
-        "rating": 9,
+        "rating": 9.0,
         "username": "Rockandroll1982",
         "album": "Exile on Main Street"
       },
@@ -359,7 +359,7 @@
           2020
         ],
         "review_text": "This album made me who I am!!!",
-        "rating": 5,
+        "rating": 5.0,
         "username": "Roger",
         "album": "Thriller"
       },
@@ -370,7 +370,7 @@
           2021
         ],
         "review_text": "Prefer minecraft music.",
-        "rating": 2,
+        "rating": 2.0,
         "username": "Steve",
         "album": "Revolver"
       },
@@ -381,7 +381,7 @@
           2021
         ],
         "review_text": "It's good, still not as good as minecraft parody:Mine All Night.",
-        "rating": 6,
+        "rating": 6.0,
         "username": "Steve",
         "album": "I Never Loved a Man the Way I Love You"
       },
@@ -392,7 +392,7 @@
           2021
         ],
         "review_text": "Minecraft but with ears.",
-        "rating": 10,
+        "rating": 10.0,
         "username": "Steve",
         "album": "Purple Rain"
       },
@@ -403,7 +403,7 @@
           2021
         ],
         "review_text": "LauraLovesMusic and this is one of the reasons why!",
-        "rating": 10,
+        "rating": 10.0,
         "username": "LauraLovesMusic",
         "album": "Purple Rain"
       },
@@ -414,7 +414,7 @@
           2021
         ],
         "review_text": "Trash.",
-        "rating": 1,
+        "rating": 1.0,
         "username": "MusicLover101",
         "album": "Thriller"
       },
@@ -425,7 +425,7 @@
           2021
         ],
         "review_text": "This is what's going on!",
-        "rating": 10,
+        "rating": 10.0,
         "username": "MusicLover101",
         "album": "What's Going on"
       },
@@ -436,7 +436,7 @@
           2021
         ],
         "review_text": "Splendid Album.",
-        "rating": 7,
+        "rating": 7.0,
         "username": "PeterTheCritic",
         "album": "Songs in the Key of Life"
       },
@@ -447,7 +447,7 @@
           2021
         ],
         "review_text": "Nice.",
-        "rating": 5,
+        "rating": 5.0,
         "username": "PeterTheCritic",
         "album": "Abbey Road"
       },
@@ -458,7 +458,7 @@
           2021
         ],
         "review_text": "Simply Breathtaking work from Dylan on this one. The music hits just right.",
-        "rating": 9,
+        "rating": 9.0,
         "username": "PeterTheCritic",
         "album": "Blood on the Tracks"
       },
@@ -469,7 +469,7 @@
           2021
         ],
         "review_text": "Maybe if she was educated she could make better music!!",
-        "rating": 3,
+        "rating": 3.0,
         "username": "Roger",
         "album": "The Miseducation of Lauryn Hill"
       },
@@ -545,7 +545,7 @@
           3,
           2021
         ],
-        "rating": 10,
+        "rating": 10.0,
         "review_text": "",
         "username": "MusicLover101",
         "album": "Blood on the Tracks"
@@ -666,7 +666,7 @@
           1,
           2021
         ],
-        "rating": 10,
+        "rating": 10.0,
         "review_text": "",
         "username": "PeterTheCritic",
         "album": "Thriller"
@@ -732,7 +732,7 @@
           1,
           2021
         ],
-        "rating": 8,
+        "rating": 8.0,
         "review_text": "",
         "username": "LauraLovesMusic",
         "album": "Abbey Road"
@@ -1150,7 +1150,7 @@
           1,
           2021
         ],
-        "rating": 3,
+        "rating": 3.0,
         "review_text": "",
         "username": "Rockandroll1982",
         "album": "Purple Rain"
@@ -1183,7 +1183,7 @@
           1,
           2021
         ],
-        "rating": 5,
+        "rating": 5.0,
         "review_text": "",
         "username": "Rockandroll1982",
         "album": "Revolver"

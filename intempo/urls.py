@@ -10,6 +10,7 @@ urlpatterns = [
     path("albums/add_album/", views.add_album, name="add_album"),
     path("albums/filter_by/<str:sort_type>/", views.sort_albums, name="sort_albums"),
     path("user/<str:username>/", views.profile, name="profile"),
+    path("user/<str:username>/update_profile/", views.update_profile, name="update_profile"),
     path("sign-up/", views.signup, name="signup"),
     path("albums/<int:album_id>/add_review/", views.add_review, name="add_review"),
     path("albums/<int:review_id>/add_comment/", views.add_comment, name="add_comment"),
