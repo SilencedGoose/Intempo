@@ -369,18 +369,18 @@ class CommentFormTestCase(TestCase):
         data['username'] = 'user'
         self.assertEqual(content, data, 'The returned JSON has incorrect values!')
 
-toList = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+names = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
 
 def setup_albums():
     for i in range(10):
         tags = ['tag' + str(j) for j in range(i)]
-        album = Album(name=toList[i], description="", artist=toList[9-i], tags=",".join(tags), creation_date=date(2018, 4, 12))
+        album = Album(name=names[i], description="", artist=names[9-i], tags=",".join(tags), creation_date=date(2018, 4, 12))
         album.save()
 
 def setup_reviews():
     profile = UserProfile.objects.get()
     for i in range(10):
-        album = Album.objects.get(name=toList[i])
+        album = Album.objects.get(name=names[i])
         review = Review(user=profile, album=album, rating=i+1)
         review.save()
 
@@ -400,7 +400,7 @@ class SortingAndSearchingAlbumsTestCase(TestCase):
         
         content = loads(res.content)
         recv_albums = [album["name"] for album in content["albums"]]
-        self.assertEqual(recv_albums, toList, "The albums haven't been sorted correctly!")
+        self.assertEqual(recv_albums, names, "The albums haven't been sorted correctly!")
     
     def test_album_search_works(self):
         """
@@ -430,6 +430,6 @@ class SortingAndSearchingAlbumsTestCase(TestCase):
             recv_albums = [album["name"] for album in content["albums"]]
             
             # expect albums from i+1 to 10 since those have the tag
-            expected_albums = [toList[j] for j in range(i+1, 10)]
+            expected_albums = [names[j] for j in range(i+1, 10)]
 
             self.assertEqual(recv_albums, expected_albums,  "The albums weren't filtered/sorted correctly!")
