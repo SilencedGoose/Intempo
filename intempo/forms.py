@@ -35,13 +35,11 @@ class AlbumForm(forms.ModelForm):
         tag_str = tag_str[0:len(tag_str)-2:]
         return tag_str
         
-        
-    filter = forms.CharField(required = False, help_text = get_tags() )
-    DB_Fields = list((f.name,u""+(" ".join(f.name.split("_")))) for f in Album._meta.fields[1:4:])
-    DB_Fields.append(("avg_rev","Average Review"))
-    sort = forms.ChoiceField(choices=DB_Fields, required = False)
     search = forms.CharField(required = False)
-
+    DB_Fields = list((f.name,u""+(" ".join(f.name.split("_")))) for f in Album._meta.fields[1:4:])
+    DB_Fields.append(("avg_rev","review score"))
+    sort = forms.ChoiceField(choices=DB_Fields, required = False)
+    filter = forms.CharField(required = False, help_text = get_tags() )
 
     
     class Meta:

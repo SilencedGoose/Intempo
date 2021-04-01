@@ -12,23 +12,24 @@
   <ul>
 	<form id="form" method="GET" action="{% url 'intempo:albums' %}" class = "bootstrap4">
 			     {{ form | crispy}}
-			<input type="submit" name="submit" value="Submit" />
+			<input class="btn btn-outline-info col-12" type="submit" name="submit" value="Submit" style="float:center"/>
 	</form>
-    <a href="add_album"> Add Album +</a><br>
-
+	<span title ="Add an Album">
+	<h1><a href="{% url 'intempo:add_album' %}" style="float:right" >+</a></h1><br>
+	</span>
   </ul>
 		{% if Albums %}
 			<ul>
 				 <div>
+					
 					{% for album in Albums%}
-						<div style="float:left; width:400px; height:400px; padding: 50px;">
+						<div style="float:left; width:400px; height:400px; padding: 40px;">
+						
 						<a href="{% url 'intempo:album_page' album.id %}">
 						<img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
-						<p>{{album.name}}</a><br>
-						{{album.time_of_creation}}<br>
+						<strong>{{album.name}}</strong></a><br>
+						{{album.time_of_creation}} <span class="rating rounded-circle border border-secondary float-end">{{ album.avg_rating }}</span><br>
 						{{album.artist}}<br>
-						Average rating: {{album.avg_rating}}
-						</p>
 						</div>
 					{% endfor%}
 				</div>

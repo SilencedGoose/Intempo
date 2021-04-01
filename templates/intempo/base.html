@@ -26,8 +26,8 @@
   <body>
 
     <div id="nav">
-      <img src="{% static 'images/logo.png' %}" alt="Intempo logo" />
-
+      <a href= "{% url 'intempo:home' %}"><img src="{% static 'images/logo.png' %}" alt="Intempo logo" />
+	  </a>
       <nav>
         <ul>
           <li><a href="{% url 'intempo:home' %}">Home</a></li>

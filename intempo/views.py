@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserForm, UpdateUserProfileForm, AddCommentForm
 
 
+
+##returns a list which contains each word in name, artist and description
 def get_album_info_as_list(album):
     string = album.name + " " + album.artist + " " + album.description + " " + str(album.creation_date).replace("-", " ")
     list = string.upper().split(" ")
@@ -22,13 +24,11 @@ def index(request):
 
     response = render(request, 'intempo/index.html', context=context_dict)
     return response
-
-
+    
+    
 def albums(request):
     context_dict = {}
     form = AlbumForm()
-    
-
     
     
     if request.method == 'GET':
@@ -36,63 +36,56 @@ def albums(request):
 
         if form.is_valid():
         
-
+            ## where a sort parameter matching that of a field is given
+            ## sort by that field name
             if form.cleaned_data['sort'] in [f.name for f in Album._meta.fields[1:4:]]:
                 album = Album.objects.order_by(form.cleaned_data['sort'])
             else:
+                ##else sort by average rating
                 album = sorted(Album.objects.all(), key=lambda a:a.avg_rating, reverse=True)
         
             
-            
+            ##gets all the tags given by the user and splits
+            ##them into a list
             filteredalbum = []
             user_tags = form.cleaned_data['filter'].split(',')
             user_tags = [i.strip().upper() for i in user_tags]
             
             
+            ##adds all the albums which contain at least 1 tag to the
+            ##filteredalbum list
             if user_tags != ['']:
                 for A in album:
                     for t in user_tags:
-                        if(t in A.tags_as_list):
+                        if(t in A.tags_as_list) and (A not in filteredalbum):
                             filteredalbum.append(A)
+                            
             else:
                 filteredalbum = album
                 
-                
+            ##gets search value    
             search = form.cleaned_data['search']
             if search != '': 
+                
+                ##copies the filtered albums to a new list
                 new_filtered_album = [i for i in filteredalbum]
                 filteredalbum = []
+                
+                ##splits search term into words in a list
                 search = search.split(" ")
                 
+                ##checks if one search term is in the album info list
                 for A in new_filtered_album:
                     for s in search:
-                        if s.upper() in get_album_info_as_list(A):
+                        if s.upper() in get_album_info_as_list(A) and A not in filteredalbum:
+                            ##adds to filtered album if so
                             filteredalbum.append(A)
-                            break
-
-            context_dict["Albums"] = filteredalbum
-            context_dict["form"] = form
-            return render(request, 'intempo/albums.html', context=context_dict)
-
-    album = Album.objects.all()
-    context_dict["Albums"] = album
+    else:
+        filteredalbum = Album.objects.all()
+    context_dict["Albums"] = filteredalbum
     context_dict["form"] = form
-    response = render(request, 'intempo/albums.html', context=context_dict)
-    return response
+    return render(request, 'intempo/albums.html', context=context_dict)
 
-
-# def album_page(request, album_id):
-
-#     form = AddCommentForm()
-#     if request.method == 'POST':
-#         current_user_profile = UserProfile.objects.all().get(user = request.user)
-#         form = AddCommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.user = current_user_profile
-#             comment.review = review
-#             comment.save()
-#             return redirect(reverse("intempo:album_page"))
 
 def album_page(request, album_id):
     try:
@@ -146,19 +139,6 @@ def album_page(request, album_id):
     response = render(request, 'intempo/album_page.html', context=context_dict)
     return response
 
-# def add_comment(request, review_id):
-#     form = AddCommentForm()
-#     if request.method == 'POST':
-#         form = AddCommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             review = Review.objects.get(id=review_id)
-#             comment.review = review
-#             comment.user = UserProfile.objects.get(user=request.user)
-#             comment.save()
-#             return redirect("intempo:add_album", kwargs={'album_id': review.album.id})
-#     else:
-#         return not_found(request)
 
 def add_album(request):
     form = AddAlbumForm()
