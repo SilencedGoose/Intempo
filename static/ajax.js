@@ -187,10 +187,27 @@ $(function () {
             type: 'POST',
             url: `./filter_by/${album_sort_type}/`,
             data: form,
-            success: updateAlbums,
+            success: function (response) {
+                var form = new FormData($("#filter-by-tags-form")[0]);
+                // if both the fields are empty, to clear button addClass disabled
+                if (form.get("fltr") === "" && form.get("search") === "") {
+                    $("#clear-button").addClass("disabled");
+                } else {
+                    $("#clear-button").removeClass("disabled");
+                }
+                updateAlbums(response);
+            },
             error: onAJAXError
         });  
     });
+
+    $("#clear-button").click(function (e) {
+        e.preventDefault();
+        
+        // clear and submit the form
+        $("#filter-by-tags-form").trigger('reset');
+        $("#filter-by-tags-form").submit();
+    })
 
     $("#update-profile-picture").submit(function (e) {
         e.preventDefault();

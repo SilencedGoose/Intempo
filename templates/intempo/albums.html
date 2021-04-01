@@ -13,8 +13,13 @@
             {% csrf_token %}
             <div class="row">
                 {{ tags_form|crispy }}
-                <div class="float-end">
-                    <button type="submit" class="btn btn-primary float-end">Filter</button>
+                <div>
+                  <div class="float-start">
+                    <button type="submit" class="btn btn-primary float-end disabled" id="clear-button">Clear</button>
+                  </div>
+                  <div class="float-end">
+                    <button type="submit" class="btn btn-primary float-end" id="filter-button">Filter</button>
+                  </div>
                 </div>
             </div>
         </form>    

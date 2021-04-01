@@ -28,6 +28,14 @@
     <div id="nav">
       <img src="{% static 'images/logo.png' %}" alt="Intempo logo" />
 
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <p class="message {{ message.tags }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       <nav>
         <ul>
           <li><a href="{% url 'home' %}">Home</a></li>
@@ -49,6 +57,6 @@
     </div>
   </body>
 
-  <script src="{% static 'main.js' %}"></script>
   <script src="{% static 'ajax.js' %}"></script>
+  <script src="{% static 'toast.js' %}"></script>
 </html>
