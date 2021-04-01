@@ -81,9 +81,11 @@ class Album(models.Model):
             return Album.objects.all()
         
         albums = []
+        ##checks if one search term is in the album info list
         for album in Album.objects.all():
             for tag in tags:
                 if tag in album.tags_as_list and album not in albums:
+                    ##adds to filtered album if so
                     albums.append(album)
         return albums
 
