@@ -34,7 +34,8 @@ class UserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(
         label="Add Profile Picture (Optional)", 
         required = False,
-        validators=[CheckPicture]
+        validators=[CheckPicture],
+        help_text = "The image must be a square."
     )
 
     class Meta:
@@ -75,7 +76,8 @@ class AddAlbumForm(forms.ModelForm):
     album_cover = forms.ImageField(
         label="Add Album Cover (Optional)", 
         required = False,
-        validators=[CheckPicture]
+        validators=[CheckPicture],
+        help_text = "The image must be a square."
     )
     description = forms.CharField(label="Add Description")
     tags = forms.Field(label="Add Tags")
@@ -124,7 +126,8 @@ class AddCommentForm(forms.ModelForm):
 class UpdateUserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(
         label="Update Profile Picture", 
-        validators=[CheckPicture]
+        validators=[CheckPicture],
+        help_text = "The image must be a square."
     )
 
     class Meta:

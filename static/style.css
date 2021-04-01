@@ -49,16 +49,8 @@ span#album-rating {
     display: none;
 }
 
-#toast-container {
-    position: relative;
-}
-
-.toast {
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: black;
-    z-index: 5;
+#filter-button {
+    padding-right: 10px;
 }
 
 /* profile */
@@ -106,3 +98,25 @@ span#album-rating {
 #profile-right #username {
     float: right;
 }
+
+/* toast */
+.message {
+    position: fixed;
+    left: 0;
+    right: 0;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    text-align: center;
+    width: 30%;
+    opacity: 0.9;
+}
+  
+.message.success {
+    background-color: #00F2FF;
+} 
