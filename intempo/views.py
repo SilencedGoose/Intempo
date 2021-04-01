@@ -85,10 +85,11 @@ def sort_albums(request, sort_type):
     form = AlbumForm(request.POST)
 
     if form.is_valid():
-        # filter by the tags
+        ## where a sort parameter matching that of a field is given
+        ## sort by that field name/property
         albums = Album.filter_by_tags(form.cleaned_data["fltr"])
         
-        # search albums 
+        ##gets search value  
         if form.cleaned_data["search"]:
             search = form.cleaned_data["search"]
             albums = [album for album in albums if album.by_filter(search)]

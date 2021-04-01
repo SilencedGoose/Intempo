@@ -26,8 +26,7 @@
 
   <body>
     <div id="nav">
-      <img src="{% static 'images/logo.png' %}" alt="Intempo logo" />
-
+      <a href= "{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="Intempo logo"></a>
       {% if messages %}
         <div class="messages">
           {% for message in messages %}

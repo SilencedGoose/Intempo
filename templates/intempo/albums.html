@@ -58,10 +58,10 @@
                         <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
                     </a>
                     <p>
-                        <a href="{% url 'intempo:album_page' album.id %}">{{album.name}}</a><br>
-                        {{album.time_of_creation}}<br>
+                        <a href="{% url 'intempo:album_page' album.id %}"><strong>{{ album.name }}</strong></a><br>
+                        {{album.time_of_creation}}
+                        <span class="rating rounded-circle border border-secondary float-end">{{ album.avg_rating }}</span><br>
                         {{album.artist}}<br>
-                        Average rating: {{album.avg_rating}}
                     </p>
                 </div>
             {% endfor%}

@@ -284,10 +284,10 @@ function updateAlbums(response) {
                 <img src="${album["cover"]}" class="img-thumbnail" alt="${album["name"]}">
             </a>
             <p>
-                <a href="${album["url"]}">${album["name"]}</a><br>
-                ${album["time_of_creation"]}<br>
+                <a href="${album["url"]}"><strong>${album["name"]}</strong></a><br>
+                ${album["time_of_creation"]}
+                <span class="rating rounded-circle border border-secondary float-end">${album["avg_rating"].toFixed(1)}</span><br>
                 ${album["artist"]}<br>
-                Average rating: ${album["avg_rating"].toFixed(1)}
             </p>
         </div>
         `;
