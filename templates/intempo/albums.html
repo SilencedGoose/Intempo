@@ -12,7 +12,7 @@
   <ul>
 	<form id="form" method="GET" action="{% url 'intempo:albums' %}" class = "bootstrap4">
 			     {{ form | crispy}}
-			<input class="btn btn-outline-info col-12" type="submit" name="submit" value="Submit" style="float:center"/>
+			<input class="btn btn-outline-info col-12" type="submit" name="submit" value="Submit"/>
 	</form>
 	<span title ="Add an Album">
 	<h1><a href="{% url 'intempo:add_album' %}" style="float:right" >+</a></h1><br>
