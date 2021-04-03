@@ -34,8 +34,6 @@ class UserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(
         label="Add Profile Picture (Optional)", 
         required = False,
-        validators=[CheckPicture],
-        help_text = "The image must be a square."
     )
 
     class Meta:
@@ -126,8 +124,6 @@ class AddCommentForm(forms.ModelForm):
 class UpdateUserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(
         label="Update Profile Picture", 
-        validators=[CheckPicture],
-        help_text = "The image must be a square."
     )
 
     class Meta:

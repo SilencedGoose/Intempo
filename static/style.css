@@ -1,23 +1,7 @@
 body {
     font-family: Roboto;
-    background-color: rgb(0, 0, 56);
+    background-color: rgb(0, 0, 50);
     color: white;
-}
-
-img {
-    max-width: -webkit-fill-available;
-}
-
-#albums span{
-    display: block;
-}
-
-a {
-    text-decoration: none;
-}
-
-#album-cover {
-    max-width: 10em;
 }
 
 .card {
@@ -28,8 +12,8 @@ a {
     color: black;
 }
 
-.card-link.no-comment.comments-count+.card-link{
-    margin-left: 0;
+a {
+    text-decoration: none;
 }
 
 .triggers-modal {
@@ -37,66 +21,17 @@ a {
     color: #007bff !important;
 }
 
-span.rating {
-    padding: .5rem;
+/* navbar */
+nav {
+    background-color: rgb(0, 0, 25);
 }
 
-span#album-rating {
-    float: right;
+#body-content {
+    margin-top: 4em;
 }
 
-.no-comment.comments-count {
-    display: none;
-}
-
-#filter-button {
-    padding-right: 10px;
-}
-
-/* profile */
-#profile-picture {
-    width: 100px;
-}
-
-#user-profile #user_form {
-    display: none;
-}
-
-
-
-#user-profile {
-    display: flex;
-}
-
-#user-profile #profile-left {
-    flex: 2;
-}
-
-#user-profile #profile-right {
-    border-left: 1px solid white;
-}
-
-
-#profile-header {
-    display: flex;
-    margin-right: 10px;
-}
-
-#profile-header #info {
-    flex: 1;
-}
-
-#edit-button {
-    width: 100px;
-}
-
-
-#profile-right #profile-picture {
-    width: 50px;
-}
-
-#profile-right #username {
-    float: right;
+#intempo-logo {
+    display: contents;
 }
 
 /* toast */
@@ -105,7 +40,7 @@ span#album-rating {
     left: 0;
     right: 0;
     border-radius: 10px;
-    color: white;
+    color: black;
     margin-bottom: 0px;
     margin-left: auto;
     margin-right: auto;
@@ -120,3 +55,45 @@ span#album-rating {
 .message.success {
     background-color: #00F2FF;
 } 
+
+/* album page */
+#album-description {
+    margin-bottom: 20px;
+}
+
+#albums span{
+    display: block;
+}
+
+#album-cover {
+    max-width: 10em;
+}
+
+.card-link.no-comment.comments-count+.card-link{
+    margin-left: 0;
+}
+
+span.rating {
+    padding: .5rem;
+}
+
+span#album-rating {
+    float: right;
+}
+
+.no-comment.comments-count {
+    display: none;
+}
+
+/* profile */
+#profile-picture {
+    height: 100px;
+}
+
+.similar-profile {
+    height: 50px;
+}
+
+#collection div {
+    margin-bottom: 20px;
+}

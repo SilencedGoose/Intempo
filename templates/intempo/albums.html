@@ -52,7 +52,6 @@
         </div>
         <div class="row" id="albums">
             {% for album in albums%}
-            <!-- <div style="float:left; width:400px; height:400px; padding: 50px;"> -->
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <a href="{% url 'intempo:album_page' album.id %}">
                         <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">

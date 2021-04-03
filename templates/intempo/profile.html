@@ -7,83 +7,89 @@
 {% endblock %}
 
 {% block body_block %}
-    <div id="user-profile">
-        <div id="profile-left">
-            <div id="profile-header">
-                <div id="info">
-                    <h1>Profile</h1>
-                    <h5>{{ profile.username }}</h5>
-                    Joined: {{ profile.time_since_joined }}<br><br>
-                </div>
-            </div>
-            <div>
-                <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" id="profile-picture" alt="Profile picture"><br><br>
-                {% if this_user == True %}
-                    <a data-bs-toggle="modal" data-bs-target="#updateProfileModal" class="triggers-modal">Edit Profile</a>
-                {% endif %}
-            </div>
+    <div class="row">
+        <div class="col">
+            <h1>{{ profile.username }}</h1>
+            Joined {{ profile.time_since_joined }}<br><br>
         </div>
-        
+        <div class="col-auto">
+            <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" id="profile-picture" alt="Profile picture" class="float-end img-thumbnail">
+        </div>
+    </div>
+    <div class="row">
         {% if this_user == True %}
-            <div class="modal fade" tabindex="-1" id="updateProfileModal" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title">Add an album</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="update-profile-picture">
-                    <div class="modal-body">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Update Profile Picture</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-        {% endif %}
-
-        <h3>Your Collection</h3>
-            {% if profile.collection %}
-            <ul>
-                <div>
-                    {% for album in profile.collection %}
-                        <div style="float:left; width:400px; height:400px; padding: 50px;">
-                            <a href="{% url 'intempo:album_page' album.id %}">
-                                <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
-                            </a>
-                        </div>
-                    {% endfor%}
-                </div>
-            </ul>
-        {% else %}
-            <strong>No albums reviewed.</strong>
+            <a data-bs-toggle="modal" data-bs-target="#updateProfileModal" class="triggers-modal">Edit Profile</a>
         {% endif %}
     </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-lg-9">
+            <h2>Your Collection</h2>
+            <p class="text-muted">Albums {{ profile.username }} rated 5 or above.</p>
+            {% if profile.collection %}
+            <div class="row" id="collection">
+                {% for album in profile.collection %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <a href="{% url 'intempo:album_page' album.id %}">
+                            <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
+                        </a>
+                    </div>
+                {% endfor%}
+            </div>
+            {% else %}
+                <p>There is no albums here :(</p>
+            {% endif %}
+        </div>
 
-    <div id="profile-right">
-        <h3>Similar Users</h3>
-        {% if profile.similar_profiles %}
-            <ul>
-                <div>
-                    {% for user in profile.similar_profiles %}
+        <div class="col-sm-12 col-md-4 col-lg-3">
+            <h2>Similar Users</h2>
+            <p class="text-muted">Users who gave similar ratings to {{ profile.username }}.</p>
+            {% if profile.similar_profiles %}
+                {% for user in profile.similar_profiles %}
+                    <div class="row">
                         <div class="card">
                             <div class="card-body">
-                                <a href="{% url 'intempo:profile' user.username %}">
-                                    <img src="{{ MEDIA_URL }}{{ user.profile_picture }}" id="profile-picture" class="img-thumbnail" alt="{{user.username}}">
-                                    <p id="username">{{user.username}}</p>
-                                </a>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="{% url 'intempo:profile' user.username %}">
+                                            <img src="{{ MEDIA_URL }}{{ user.profile_picture }}" class="similar-profile" alt="{{user.username}}">
+                                        </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="{% url 'intempo:profile' user.username %}">
+                                            <p id="username">{{user.username}}</p>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    {% endfor%}
-                </div>
-            </ul>
-        {% else %}
-            <strong>No similar users.</strong>
-        {% endif %}
+                    </div>
+                {% endfor%}
+            {% else %}
+                <p>There are no similar users :(</p>
+            {% endif %}
+        </div>
     </div>
+
+    {% if this_user == True %}
+        <div class="modal fade" tabindex="-1" id="updateProfileModal" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add an album</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="update-profile-picture">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Update Profile Picture</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
