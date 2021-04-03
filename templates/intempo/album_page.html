@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block body_block %}
-  <div>
-    <div>
+  <div class="row" id="album-description">
+    <div class="col-lg-9 col-md-8 col-sm-12">
       <h1 class="col">
         <span>{{ album.name }}</span>
         <span class="rating rounded-circle border border-secondary float-end" id="album-rating">{{ album.avg_rating }}</span>
@@ -22,7 +22,9 @@
         <p>{{ album.description }}</p>
       </div>
     </div>
-    <!-- <img class="col-sm align-self-end" id="profile-picture" style="max-width: 40em; max-height: 50em;" src="{{ MEDIA_URL }}/{{ album.album_cover }}" alt="Profile picture" /> -->
+    <div class="col-lg-3 col-md-4 col-sm-12">
+      <img class="img-thumbnail" src="{{ MEDIA_URL }}{{ album.album_cover }}" alt="Album Cover">
+    </div>
   </div>
   
   <div>

@@ -268,7 +268,7 @@ def signup(request):
 
             profile.save()
             registered = True
-            messages.success(request, f"your account has been created")
+            messages.success(request, f"Your account has been created")
             return redirect(reverse("intempo:login"))
     else:
         user_form = UserForm()

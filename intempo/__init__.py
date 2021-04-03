@@ -9,4 +9,4 @@ def on_login(sender, user, request, **kwargs):
 
 @receiver(user_logged_out)
 def on_logout(sender, user, request, **kwargs):
-    messages.success(request, f"you have been logged out")
+    messages.success(request, f"You have been logged out")
