@@ -6,18 +6,23 @@
   Log In
 {% endblock %}
 
+{% block css_block %}
+  <link rel="stylesheet" href="{% static 'login_signup.css' %}">
+{% endblock %}
+
 {% block body_block %}
   {% block form_area_block %}
     <div class="content-section">
     <form id="login_form" method="POST" action="{% url 'intempo:login' %}">
       {% csrf_token %}
-      <fieldset class="form-group col-3">
-        <legend class="border-bottom mb-4 col-3">Login</legend>
+      <h1>Login</h1>
+
+      <fieldset class="form-group">
         {{ form|crispy }}
       </fieldset>
-      <br>
-      <div class="form-group">
-        <button class="btn btn-outline-info col-3" type="submit">Login</button>
+
+      <div class = "button">
+        <button class="btn btn-primary" type="submit">Login</button>
       </div>
     </form>
     <div>
