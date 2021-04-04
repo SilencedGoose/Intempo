@@ -6,13 +6,9 @@
   Sign Up
 {% endblock %}
 
-{% block css_block %}
-	<link rel="stylesheet" href="{% static 'login_signup.css' %}">
-{% endblock %}
-
 {% block form_area_block %}
 	<div class="content-section">
-		<form id="user_form" method="POST" action="{% url 'intempo:signup' %}" enctype="multipart/form-data">
+		<form id="signup_form" method="POST" action="{% url 'intempo:signup' %}" enctype="multipart/form-data">
 			{% csrf_token %}
 			<h1>Sign Up</h1>
 			<fieldset class="form-group">

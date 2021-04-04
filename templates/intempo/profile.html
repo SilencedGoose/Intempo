@@ -16,11 +16,9 @@
             <img src="{{ MEDIA_URL }}{{ profile.profile_picture }}" id="profile-picture" alt="Profile picture" class="float-end img-thumbnail">
         </div>
     </div>
-    <div class="row">
-        {% if this_user == True %}
-            <a data-bs-toggle="modal" data-bs-target="#updateProfileModal" class="triggers-modal">Edit Profile</a>
-        {% endif %}
-    </div>
+    {% if this_user == True %}
+        <p><a data-bs-toggle="modal" data-bs-target="#updateProfileModal" class="triggers-modal">Update Profile Picture</a></p>
+    {% endif %}
     <div class="row">
         <div class="col-sm-12 col-md-8 col-lg-9">
             <h2>Your Collection</h2>
@@ -36,37 +34,39 @@
                 {% endfor%}
             </div>
             {% else %}
-                <p>There is no albums here :(</p>
+                <p>There are no albums here :(</p>
             {% endif %}
         </div>
 
         <div class="col-sm-12 col-md-4 col-lg-3">
             <h2>Similar Users</h2>
             <p class="text-muted">Users who gave similar ratings to {{ profile.username }}.</p>
-            {% if profile.similar_profiles %}
-                {% for user in profile.similar_profiles %}
-                    <div class="row">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <a href="{% url 'intempo:profile' user.username %}">
-                                            <img src="{{ MEDIA_URL }}{{ user.profile_picture }}" class="similar-profile" alt="{{user.username}}">
-                                        </a>
-                                    </div>
-                                    <div class="col-auto">
-                                        <a href="{% url 'intempo:profile' user.username %}">
-                                            <p id="username">{{user.username}}</p>
-                                        </a>
+            <div class="row">
+                {% if profile.similar_profiles %}
+                    {% for user in profile.similar_profiles %}
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="{% url 'intempo:profile' user.username %}">
+                                                <img src="{{ MEDIA_URL }}{{ user.profile_picture }}" class="similar-profile" alt="{{user.username}}">
+                                            </a>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="{% url 'intempo:profile' user.username %}">
+                                                <p id="username">{{user.username}}</p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor%}
-            {% else %}
-                <p>There are no similar users :(</p>
-            {% endif %}
+                    {% endfor%}
+                {% else %}
+                    <p>There are no similar users :(</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 
@@ -75,7 +75,7 @@
             <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add an album</h5>
+                    <h5 class="modal-title">Update Profile Picture</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="update-profile-picture">

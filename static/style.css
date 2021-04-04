@@ -50,12 +50,9 @@ nav {
     text-align: center;
     width: 30%;
     opacity: 0.9;
+    background-color: #00F2FF;
 }
   
-.message.success {
-    background-color: #00F2FF;
-} 
-
 /* album page */
 #album-description {
     margin-bottom: 20px;
@@ -96,4 +93,13 @@ span#album-rating {
 
 #collection div {
     margin-bottom: 20px;
+}
+
+/* login and signup */
+#login_form  .form-group, #signup_form .form-group{
+    margin-bottom: 15px;
+}
+
+#login_form .button, #signup_form .button{
+    margin-top: -10px;
 }
