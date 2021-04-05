@@ -16,5 +16,6 @@ Created for Web App Development course.
 
 
 ## External Sources:
+* JQuery
 * Django Crispy Forms
 * Bootstrap
