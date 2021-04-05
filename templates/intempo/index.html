@@ -14,8 +14,8 @@
         <div class="carousel-inner">
             {% for trending_album in trending %}
             <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
-              <a class="d-block w-100" href="{% url 'intempo:album_page' trending_album.id %}">
-                <img class="img-thumbnail" src="{{ MEDIA_URL }}{{ trending_album.album_cover }}" alt="Trending album {{ forloop.counter }}">
+              <a href="{% url 'intempo:album_page' trending_album.id %}">
+                <img class="img-thumbnail d-block w-100" src="{{ MEDIA_URL }}{{ trending_album.album_cover }}" alt="Trending album {{ forloop.counter }}">
               </a>
             </div>
           {% endfor %}
@@ -38,8 +38,8 @@
         <div class="carousel-inner">
           {% for top_album in top %}
             <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
-              <a class="d-block w-100" href="{% url 'intempo:album_page' top_album.id %}">
-                <img class="img-thumbnail" src="{{ MEDIA_URL }}{{ top_album.album_cover }}" alt="Top rated album {{ forloop.counter }}">
+              <a href="{% url 'intempo:album_page' top_album.id %}">
+                <img class="img-thumbnail d-block w-100" src="{{ MEDIA_URL }}{{ top_album.album_cover }}" alt="Top rated album {{ forloop.counter }}">
               </a>
             </div>
           {% endfor %}
