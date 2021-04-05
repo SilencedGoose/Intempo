@@ -53,13 +53,14 @@ nav {
     background-color: #00F2FF;
 }
 
+/* albums */
+#albums span, #hint_id_album_cover {
+    display: block;
+}
+
 /* album page */
 #album-description {
     margin-bottom: 20px;
-}
-
-#albums span{
-    display: block;
 }
 
 #album-cover {
