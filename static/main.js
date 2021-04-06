@@ -304,7 +304,7 @@ function updateAlbums(response) {
         albumsDiv += `
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <a href="${album["url"]}">
-                <img src="${album["cover"]}" class="img-thumbnail" alt="${album["name"]}">
+                <img src="${album["cover"]}" class="img-thumbnail d-block w-100" alt="${album["name"]}">
             </a>
             <p>
                 <a href="${album["url"]}"><strong>${album["name"]}</strong></a><br>
