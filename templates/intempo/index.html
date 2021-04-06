@@ -10,49 +10,57 @@
     <div class="col-md-6 col-12">
       <h1>Trending Albums</h1>
       <p class="text-muted">Check out what everyone is listening to right now.</p>
-      <div id="trending-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-        <div class="carousel-inner">
-            {% for trending_album in trending %}
-            <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
-              <a href="{% url 'intempo:album_page' trending_album.id %}">
-                <img class="img-thumbnail d-block w-100" src="{{ MEDIA_URL }}{{ trending_album.album_cover }}" alt="Trending album {{ forloop.counter }}">
-              </a>
-            </div>
-          {% endfor %}
-          <button class="carousel-control-prev" type="button" data-bs-target="#trending-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#trending-carousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+      {% if trending %}
+        <div id="trending-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+          <div class="carousel-inner">
+              {% for trending_album in trending %}
+              <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                <a href="{% url 'intempo:album_page' trending_album.id %}">
+                  <img class="img-thumbnail d-block w-100" src="{{ MEDIA_URL }}{{ trending_album.album_cover }}" alt="Trending album {{ forloop.counter }}">
+                </a>
+              </div>
+            {% endfor %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#trending-carousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#trending-carousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
         </div>
-      </div>
+      {% else %}
+        <p>There are no trending albums</p>
+      {% endif %}
     </div>
     
     <div class="col-md-6 col-12">
       <h1>Top Rated Albums</h1>
       <p class="text-muted">Certified classics and GOATs -- according to our members.</p>
-      <div id="top-rated-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-        <div class="carousel-inner">
-          {% for top_album in top %}
-            <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
-              <a href="{% url 'intempo:album_page' top_album.id %}">
-                <img class="img-thumbnail d-block w-100" src="{{ MEDIA_URL }}{{ top_album.album_cover }}" alt="Top rated album {{ forloop.counter }}">
-              </a>
-            </div>
-          {% endfor %}
-          <button class="carousel-control-prev" type="button" data-bs-target="#top-rated-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#top-rated-carousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+      {% if top %}
+        <div id="top-rated-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+          <div class="carousel-inner">
+            {% for top_album in top %}
+              <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                <a href="{% url 'intempo:album_page' top_album.id %}">
+                  <img class="img-thumbnail d-block w-100" src="{{ MEDIA_URL }}{{ top_album.album_cover }}" alt="Top rated album {{ forloop.counter }}">
+                </a>
+              </div>
+            {% endfor %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#top-rated-carousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#top-rated-carousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
         </div>
-      </div>
+      {% else %}
+        <p>There are no top albums!</p>
+      {% endif %}
     </div>
   </div>
   <br>
