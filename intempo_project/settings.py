@@ -6,7 +6,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 
 SECRET_KEY = 'et1s8hp1nna&_)&tc=u4=w6k7()#m)c575t6n#qv3@_m0gbmub'
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
