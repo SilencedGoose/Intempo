@@ -1,18 +1,23 @@
 from django import forms
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.forms.widgets import NumberInput
-from django.utils import timezone
 from django.core.files.images import get_image_dimensions
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.forms.widgets import NumberInput
+from django.utils.translation import gettext_lazy as _
 
-from datetime import datetime
+from .models import UserProfile, Album, Review, Comment, get_all_tags
 
-from intempo.models import UserProfile, Album, Review, Comment, get_all_tags
+def CheckPicture(picture):
+    """
+    Ensures the image is a square, if present.
+    """
+    if picture:
+        width, height = get_image_dimensions(picture)
+        if width != height:
+            raise ValidationError(_("The image isn't a square!"))
 
-## USER REGISTRATION
+# Sign up forms: UserForm for User model, and UserProfileForm for UserProfile model
 class UserForm(forms.ModelForm):
     username = forms.CharField(max_length=30)
     password = forms.CharField(
@@ -24,12 +29,6 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'password',)
 
-def CheckPicture(picture):
-    if picture:
-        width, height = get_image_dimensions(picture)
-        if width != height:
-            raise ValidationError(_("The image isn't a square!"))
-
 class UserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(
         label="Add Profile Picture (Optional)", 
@@ -40,6 +39,7 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('profile_picture',)
 
+# AlbumForm for searching/filtering albums
 class AlbumForm(forms.Form):
     fltr = forms.CharField(
         label="Filter by Tags:",
@@ -55,7 +55,7 @@ class AlbumForm(forms.Form):
     class Meta:
         fields = ('fltr', 'search')
 
-#album form
+# AddAlbumForm to add a new album
 class AddAlbumForm(forms.ModelForm):
     name = forms.CharField(
         label = "Name", 
@@ -85,14 +85,17 @@ class AddAlbumForm(forms.ModelForm):
         fields = ('name', 'artist', 'creation_date', 'album_cover', 'description', 'tags')
 
 def ValidateRating(rating):
-    possible_ratings = [i/10 for i in range(0, 101)]
-    if rating not in possible_ratings:
+    """
+    Checks whether a rating between 0 and 10 is to 1 decimal place.
+    """
+    valid_ratings = [i/10 for i in range(0, 101)]
+    if rating not in valid_ratings:
         raise ValidationError(
             _('%(value) must have at most 1 decimal place!'),
             params={'value': rating},
             )    
 
-#review form
+# AddReviewForm to add a new review
 class AddReviewForm(forms.ModelForm):
     rating = forms.FloatField(
         label="Rating", 
@@ -112,6 +115,7 @@ class AddReviewForm(forms.ModelForm):
         model = Review
         fields = ('rating', 'review_text')
 
+# AddCommentForm to add a new comment
 class AddCommentForm(forms.ModelForm):
     comment_text = forms.CharField(
         label = "Comment",
@@ -121,6 +125,7 @@ class AddCommentForm(forms.ModelForm):
         model = Comment
         fields = ('comment_text',)
 
+# UpdateUserProfileForm to update profile picture
 class UpdateUserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(
         label="Update Profile Picture", 

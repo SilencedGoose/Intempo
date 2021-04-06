@@ -4,10 +4,10 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.template.response import TemplateResponse
 from django.contrib.auth.models import User
 
-from .models import Album, Review, UserProfile, Comment
-
 from json import loads
 from datetime import date
+
+from .models import Album, Review, UserProfile, Comment
 
 class SignUpFormTestCase(TestCase):
     def test_sign_up_raises_error(self):

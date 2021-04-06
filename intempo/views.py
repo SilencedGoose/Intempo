@@ -1,13 +1,10 @@
+from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.http import JsonResponse
-from django.contrib import messages
 
-from intempo.models import Album, UserProfile, Review, get_all_tags
-from intempo.forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserProfileForm, AddCommentForm
+from .forms import UserForm, UserProfileForm, AddAlbumForm, AddReviewForm, AlbumForm, UpdateUserProfileForm, AddCommentForm
+from .models import Album, UserProfile, Review, get_all_tags
 
 def get_or_make_userprofile(request):
     """
@@ -268,6 +265,8 @@ def signup(request):
 
             profile.save()
             registered = True
+            
+            # only add the message if it's not testing the views
             if hasattr(request, '_messages'): 
                 messages.success(request, f"Your account has been created")
             return redirect(reverse("intempo:login"))

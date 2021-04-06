@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from intempo.models import UserProfile, Album, Review, Comment
+from .models import UserProfile, Album, Review, Comment
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'user', 'profile_picture','join_date')

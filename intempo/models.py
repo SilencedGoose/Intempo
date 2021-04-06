@@ -1,12 +1,12 @@
-import os
-
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
-BaseCommand.requires_system_checks = False
 
 from datetime import datetime, timedelta
+import os
+
+BaseCommand.requires_system_checks = False
 
 class Album(models.Model):
     name = models.CharField(max_length=30)

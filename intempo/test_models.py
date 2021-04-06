@@ -1,9 +1,8 @@
-from datetime import datetime, timedelta
-
-from django.utils import timezone
-from django.test import TestCase
 from django.contrib.auth.models import User
-from django.utils.timezone import make_aware
+from django.test import TestCase
+from django.utils import timezone
+
+from datetime import datetime, timedelta
 
 from .models import Album, Review, UserProfile, formatted_difference
 
@@ -30,7 +29,7 @@ def setup_albums():
         album = Album.objects.create(
             name="album" + str(i),
             artist="artist" + str(i),
-            creation_date=make_aware(album_creation_time[i]),
+            creation_date=timezone.make_aware(album_creation_time[i]),
             description="Album " + str(i),
             tags=",".join(["tag" + str(j) for j in range(i)])
         )
