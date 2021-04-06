@@ -28,7 +28,7 @@
                 {% for album in profile.collection %}
                     <div class="col-12 col-md-6 col-lg-4">
                         <a href="{% url 'intempo:album_page' album.id %}">
-                            <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail" alt="{{album.name}}">
+                            <img src="{{ MEDIA_URL }}{{ album.album_cover }}" class="img-thumbnail d-block w-100" alt="{{album.name}}">
                         </a>
                     </div>
                 {% endfor%}
