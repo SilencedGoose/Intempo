@@ -89,7 +89,7 @@ def sort_albums(request, sort_type):
         ##gets search value  
         if form.cleaned_data["search"]:
             search = form.cleaned_data["search"]
-            albums = [album for album in albums if album.by_filter(search)]
+            albums = [album for album in albums if album.satisfies(search)]
 
         try:
             return format_albums(albums, sort_type)

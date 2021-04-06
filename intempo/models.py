@@ -91,9 +91,9 @@ class Album(models.Model):
                     albums.append(album)
         return albums
 
-    def by_filter(self, keywords):
+    def satisfies(self, keywords):
         """
-        Returns true if this album satisfies the keywords
+        Returns true if the name or the artist of the album is a keyword.
         """
         keywords = keywords.split(" ")
         for keyword in keywords:
