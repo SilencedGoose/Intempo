@@ -1,9 +1,12 @@
 # Intempo
 Intempo is an album review website, where music fans can share ratings and reviews on various albums.
 
+Interact with the website hosted on [PythonAnywhere](http://2459354.pythonanywhere.com)
+
 Created for Web App Development course.
 
-## Preview:
+
+## Website Preview:
 #### View currently trending and top rated albums:
 ![5eNqdzOKmS](https://user-images.githubusercontent.com/33594615/116297932-b8f49580-a793-11eb-92f4-0003094a8142.gif)
 
@@ -20,16 +23,13 @@ Created for Web App Development course.
 ![05r1oHj4Fe](https://user-images.githubusercontent.com/33594615/116298873-e8f06880-a794-11eb-89e1-c4938266ab57.gif)
 
 
+
 ## Team Members:
 * Alan Joy, 2460256
 * Jamie McCready, 2459354
 * Pete Gautam, 2481471
 * Sophie Li, 2520708
 * Tanisha Sarkar, 2424417
-
-
-## PythonAnywhere:
-[Link to PythonAnywhere](http://2459354.pythonanywhere.com)
 
 
 ## External Sources:
